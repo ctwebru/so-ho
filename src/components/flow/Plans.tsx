@@ -1,54 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { Check } from "lucide-react";
-import { toast } from "sonner";
+import { PLANS } from "@/data/mock";
 
-const plans = [
-  {
-    code: "fast",
-    name: "Fast",
-    price: 350,
-    duration: "2 часа",
-    desc: "Забежать на встречу или быстро поработать.",
-    features: ["Любое свободное место", "Wi-Fi и кофе-точка", "Без бронирования"],
-    featured: false,
-  },
-  {
-    code: "day",
-    name: "Day",
-    price: 900,
-    duration: "1 день",
-    desc: "Полный рабочий день в пространстве.",
-    features: ["Любое место", "Skype-комнаты по слотам", "Скидка 10% на кофе"],
-    featured: false,
-  },
-  {
-    code: "flex",
-    name: "Flex",
-    price: 12000,
-    duration: "месяц",
-    desc: "Любое свободное место, каждый день.",
-    features: ["Безлимитный доступ", "Skype-комнаты", "Скидка 15% на кофе", "Доступ к событиям клуба"],
-    featured: true,
-  },
-  {
-    code: "fix",
-    name: "Fix",
-    price: 18000,
-    duration: "месяц",
-    desc: "Закреплённое место — твоё личное.",
-    features: ["Своё рабочее место", "Хранение вещей", "Skype-комнаты", "Скидка 20% на кофе", "Приоритет на события"],
-    featured: false,
-  },
-];
-
-const Plans = ({ onPurchase }: { onPurchase: () => void }) => {
-  const handleBuy = (name: string) => {
-    onPurchase();
-    toast.success(`Тариф ${name} активирован`, {
-      description: "Демо-режим. Доступ открыт — загляни в раздел «Мой доступ».",
-    });
-  };
-
+const Plans = () => {
   return (
     <section id="plans" className="py-24 md:py-40 bg-secondary/40">
       <div className="container mx-auto px-6">
@@ -60,11 +15,14 @@ const Plans = ({ onPurchase }: { onPurchase: () => void }) => {
             <h2 className="font-display text-4xl md:text-6xl font-semibold text-balance leading-tight">
               Выбери свой <span className="italic font-normal text-accent">ритм.</span>
             </h2>
+            <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
+              Купить тариф можно в личном кабинете — за минуту.
+            </p>
           </div>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {plans.map((plan) => (
+          {PLANS.map((plan) => (
             <div
               key={plan.code}
               className={`relative rounded-3xl p-8 flex flex-col transition-all duration-500 hover:-translate-y-1 ${
@@ -102,12 +60,8 @@ const Plans = ({ onPurchase }: { onPurchase: () => void }) => {
                 </ul>
               </div>
 
-              <Button
-                variant={plan.featured ? "hero" : "default"}
-                className="w-full"
-                onClick={() => handleBuy(plan.name)}
-              >
-                Оплатить
+              <Button variant={plan.featured ? "hero" : "default"} className="w-full" asChild>
+                <Link to="/app/plans">Купить</Link>
               </Button>
             </div>
           ))}

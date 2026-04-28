@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-flow.jpg";
 import { ArrowDown } from "lucide-react";
 
@@ -35,7 +36,7 @@ const Hero = () => {
 
           <div className="mt-10 flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
             <Button variant="hero" size="xl" asChild>
-              <a href="#plans">Выбрать тариф</a>
+              <Link to="/app">Открыть кабинет</Link>
             </Button>
             <Button variant="glass" size="xl" asChild>
               <a href="#concept">Узнать о Flow</a>
