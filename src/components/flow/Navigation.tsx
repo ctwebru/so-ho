@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const links = [
   { label: "Концепция", href: "#concept" },
   { label: "Тарифы", href: "#plans" },
-  { label: "Места", href: "#seatmap" },
-  { label: "Кофе", href: "#cafe" },
-  { label: "События", href: "#events" },
+  { label: "Контакты", href: "#contact" },
 ];
 
 const Navigation = () => {
@@ -21,18 +20,14 @@ const Navigation = () => {
 
         <nav className="hidden md:flex items-center gap-8">
           {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
+            <a key={l.href} href={l.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {l.label}
             </a>
           ))}
         </nav>
 
         <Button variant="default" size="sm" asChild>
-          <a href="#access">Мой доступ</a>
+          <Link to="/app">Войти в кабинет</Link>
         </Button>
       </div>
     </header>
