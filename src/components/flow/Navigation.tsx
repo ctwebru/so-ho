@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const links = [
   { label: "Концепция", href: "#concept" },
   { label: "Тарифы", href: "#plans" },
+  { label: "Афиша", href: "#events-teaser" },
   { label: "Контакты", href: "#contact" },
 ];
 
