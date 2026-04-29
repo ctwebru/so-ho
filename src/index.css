@@ -9,55 +9,39 @@
 */
 
 @layer base {
-  :root {
+  :root,
+  [data-theme="forest"] {
     --background: 90 14% 96%;
     --foreground: 145 38% 12%;
-
     --card: 90 20% 98%;
     --card-foreground: 145 38% 12%;
-
     --popover: 90 20% 98%;
     --popover-foreground: 145 38% 12%;
-
-    /* Forest deep */
     --primary: 145 38% 17%;
     --primary-foreground: 80 35% 92%;
-
-    /* Moss */
     --secondary: 120 20% 88%;
     --secondary-foreground: 145 38% 17%;
-
     --muted: 90 14% 90%;
     --muted-foreground: 145 12% 38%;
-
-    /* Sage accent */
     --accent: 122 18% 53%;
     --accent-foreground: 145 38% 12%;
-
-    /* Soft moss highlight */
     --highlight: 105 30% 70%;
     --highlight-foreground: 145 38% 12%;
-
     --destructive: 12 70% 45%;
     --destructive-foreground: 80 35% 95%;
-
     --border: 120 14% 84%;
     --input: 120 14% 84%;
     --ring: 145 38% 27%;
-
     --radius: 1rem;
 
-    /* Gradients */
     --gradient-forest: linear-gradient(135deg, hsl(145 38% 14%) 0%, hsl(145 35% 22%) 50%, hsl(122 25% 30%) 100%);
     --gradient-moss: linear-gradient(180deg, hsl(105 30% 80%) 0%, hsl(122 18% 53%) 100%);
     --gradient-fade: linear-gradient(180deg, hsl(90 14% 96% / 0) 0%, hsl(90 14% 96%) 100%);
 
-    /* Shadows */
     --shadow-soft: 0 4px 24px -8px hsl(145 38% 12% / 0.12);
     --shadow-deep: 0 24px 60px -20px hsl(145 38% 12% / 0.30);
     --shadow-glow: 0 0 60px hsl(122 25% 40% / 0.25);
 
-    /* Motion */
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
     --sidebar-background: 0 0% 98%;
@@ -68,6 +52,105 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Warm Sand — тёплые песочные нейтрали */
+  [data-theme="sand"] {
+    --background: 36 33% 97%;
+    --foreground: 28 25% 18%;
+    --card: 36 40% 99%;
+    --card-foreground: 28 25% 18%;
+    --popover: 36 40% 99%;
+    --popover-foreground: 28 25% 18%;
+    --primary: 28 22% 32%;
+    --primary-foreground: 36 40% 96%;
+    --secondary: 35 28% 88%;
+    --secondary-foreground: 28 25% 22%;
+    --muted: 36 22% 92%;
+    --muted-foreground: 28 14% 42%;
+    --accent: 33 32% 70%;
+    --accent-foreground: 28 25% 18%;
+    --highlight: 33 45% 65%;
+    --highlight-foreground: 28 30% 15%;
+    --destructive: 12 70% 45%;
+    --destructive-foreground: 36 40% 96%;
+    --border: 33 22% 84%;
+    --input: 33 22% 84%;
+    --ring: 28 22% 42%;
+
+    --gradient-forest: linear-gradient(135deg, hsl(28 25% 22%) 0%, hsl(30 22% 35%) 50%, hsl(33 30% 50%) 100%);
+    --gradient-moss: linear-gradient(180deg, hsl(35 35% 85%) 0%, hsl(33 32% 60%) 100%);
+    --gradient-fade: linear-gradient(180deg, hsl(36 33% 97% / 0) 0%, hsl(36 33% 97%) 100%);
+
+    --shadow-soft: 0 4px 24px -8px hsl(28 25% 18% / 0.12);
+    --shadow-deep: 0 24px 60px -20px hsl(28 25% 18% / 0.30);
+    --shadow-glow: 0 0 60px hsl(33 45% 50% / 0.25);
+  }
+
+  /* Charcoal & Ember — тёмная угольная с янтарным акцентом */
+  [data-theme="charcoal"] {
+    --background: 0 0% 8%;
+    --foreground: 30 15% 92%;
+    --card: 0 0% 11%;
+    --card-foreground: 30 15% 92%;
+    --popover: 0 0% 11%;
+    --popover-foreground: 30 15% 92%;
+    --primary: 14 78% 56%;
+    --primary-foreground: 0 0% 8%;
+    --secondary: 0 0% 17%;
+    --secondary-foreground: 30 15% 92%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 30 8% 65%;
+    --accent: 14 60% 45%;
+    --accent-foreground: 30 15% 95%;
+    --highlight: 14 88% 60%;
+    --highlight-foreground: 0 0% 8%;
+    --destructive: 0 75% 50%;
+    --destructive-foreground: 30 15% 95%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 14 78% 56%;
+
+    --gradient-forest: linear-gradient(135deg, hsl(0 0% 8%) 0%, hsl(0 0% 15%) 50%, hsl(14 40% 25%) 100%);
+    --gradient-moss: linear-gradient(180deg, hsl(14 78% 56%) 0%, hsl(14 60% 40%) 100%);
+    --gradient-fade: linear-gradient(180deg, hsl(0 0% 8% / 0) 0%, hsl(0 0% 8%) 100%);
+
+    --shadow-soft: 0 4px 24px -8px hsl(0 0% 0% / 0.5);
+    --shadow-deep: 0 24px 60px -20px hsl(0 0% 0% / 0.7);
+    --shadow-glow: 0 0 60px hsl(14 78% 50% / 0.4);
+  }
+
+  /* Sage & Cream — мягкий шалфей и крем */
+  [data-theme="sage"] {
+    --background: 38 35% 95%;
+    --foreground: 110 18% 18%;
+    --card: 38 40% 98%;
+    --card-foreground: 110 18% 18%;
+    --popover: 38 40% 98%;
+    --popover-foreground: 110 18% 18%;
+    --primary: 110 14% 35%;
+    --primary-foreground: 38 35% 95%;
+    --secondary: 105 18% 86%;
+    --secondary-foreground: 110 18% 22%;
+    --muted: 38 22% 90%;
+    --muted-foreground: 110 10% 42%;
+    --accent: 105 20% 62%;
+    --accent-foreground: 110 18% 15%;
+    --highlight: 105 25% 70%;
+    --highlight-foreground: 110 20% 15%;
+    --destructive: 12 65% 50%;
+    --destructive-foreground: 38 35% 95%;
+    --border: 105 15% 82%;
+    --input: 105 15% 82%;
+    --ring: 110 14% 45%;
+
+    --gradient-forest: linear-gradient(135deg, hsl(110 18% 30%) 0%, hsl(108 16% 40%) 50%, hsl(105 20% 55%) 100%);
+    --gradient-moss: linear-gradient(180deg, hsl(105 25% 82%) 0%, hsl(105 20% 62%) 100%);
+    --gradient-fade: linear-gradient(180deg, hsl(38 35% 95% / 0) 0%, hsl(38 35% 95%) 100%);
+
+    --shadow-soft: 0 4px 24px -8px hsl(110 18% 18% / 0.10);
+    --shadow-deep: 0 24px 60px -20px hsl(110 18% 18% / 0.25);
+    --shadow-glow: 0 0 60px hsl(105 25% 50% / 0.20);
   }
 
   .dark {
