@@ -1,19 +1,43 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero-flow.jpg";
+import heroForest from "@/assets/hero-flow.jpg";
+import heroSand from "@/assets/hero-sand.jpg";
+import heroCharcoal from "@/assets/hero-charcoal.jpg";
+import heroSage from "@/assets/hero-sage.jpg";
 import { ArrowDown } from "lucide-react";
+import { useTheme, ThemeId } from "@/state/ThemeProvider";
+
+const heroByTheme: Record<ThemeId, string> = {
+  forest: heroForest,
+  sand: heroSand,
+  charcoal: heroCharcoal,
+  sage: heroSage,
+};
+
+const altByTheme: Record<ThemeId, string> = {
+  forest: "Интерьер Flow с зелёными стенами и деревянной мебелью",
+  sand: "Тёплый светлый интерьер Flow в песочных тонах",
+  charcoal: "Тёмный атмосферный интерьер Flow с янтарным светом",
+  sage: "Спокойный интерьер Flow в шалфейно-кремовой палитре",
+};
 
 const Hero = () => {
+  const { theme } = useTheme();
   return (
     <section id="top" className="relative min-h-screen flex items-end overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img
-          src={heroImage}
-          alt="Интерьер пространства Flow с зелёными стенами и деревянной мебелью"
-          className="w-full h-full object-cover animate-slow-zoom"
-          width={1600}
-          height={1200}
-        />
+        {(Object.keys(heroByTheme) as ThemeId[]).map((id) => (
+          <img
+            key={id}
+            src={heroByTheme[id]}
+            alt={altByTheme[id]}
+            className={`absolute inset-0 w-full h-full object-cover animate-slow-zoom transition-opacity duration-700 ${
+              theme === id ? "opacity-100" : "opacity-0"
+            }`}
+            width={1600}
+            height={1200}
+          />
+        ))}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/30 via-primary/40 to-primary/90" />
       </div>
 
