@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const links = [
   { label: "Концепция", href: "#concept" },
@@ -27,9 +28,12 @@ const Navigation = () => {
           ))}
         </nav>
 
-        <Button variant="default" size="sm" asChild>
-          <Link to="/app">Войти в кабинет</Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <ThemeSwitcher />
+          <Button variant="default" size="sm" asChild>
+            <Link to="/app">Войти в кабинет</Link>
+          </Button>
+        </div>
       </div>
     </header>
   );
