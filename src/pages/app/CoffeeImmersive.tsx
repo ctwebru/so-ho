@@ -510,16 +510,37 @@ export default function CoffeeImmersive() {
         <CategoryTabs active={active} setActive={setActive} />
 
         {groups.map(([group, drinks], gi) => (
-          <section key={group} className="mt-10">
-            <h2 className="font-display text-2xl md:text-3xl mb-5 lowercase">{group}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-              {drinks.map((d, i) => (
-                <div key={d.id} className={i === 0 && gi === 0 ? "md:col-span-2 lg:col-span-2" : ""}>
-                  <DrinkCard drink={d} onOpen={() => setOpen(d)} large={i === 0 && gi === 0} />
-                </div>
-              ))}
-            </div>
-          </section>
+          <div key={group}>
+            {gi > 0 && gi % 2 === 0 && (
+              <VideoInterlude
+                title={gi === 2 ? "Кофе — это пауза, которую ты заслужил" : "Каждая чашка — отдельный момент"}
+                sub="Сваренный руками, поданный в ритме города."
+              />
+            )}
+            <section className="mt-10">
+              <h2 className="font-display text-3xl md:text-5xl mb-6 lowercase tracking-tight">{group}</h2>
+              {/* Mobile: simple grid. Desktop: bento asymmetric layout. */}
+              <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6 auto-rows-[minmax(280px,auto)]">
+                {drinks.map((d, i) => {
+                  // Bento pattern on desktop
+                  const span = (() => {
+                    if (gi === 0 && i === 0) return "md:col-span-4 md:row-span-2";
+                    if (i % 5 === 0) return "md:col-span-3";
+                    if (i % 5 === 1) return "md:col-span-3";
+                    if (i % 5 === 2) return "md:col-span-2";
+                    if (i % 5 === 3) return "md:col-span-2";
+                    return "md:col-span-2";
+                  })();
+                  const isLarge = gi === 0 && i === 0;
+                  return (
+                    <div key={d.id} className={span}>
+                      <DrinkCard drink={d} onOpen={() => setOpen(d)} large={isLarge} />
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          </div>
         ))}
 
         <div className="h-20" />
