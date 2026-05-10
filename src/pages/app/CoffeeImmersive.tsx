@@ -47,29 +47,65 @@ function VideoBg({
   );
 }
 
-// ---------- MOBILE Hero (locked) ----------
+// ---------- MOBILE Hero — full-bleed, full screen ----------
 function CoffeeHeroMobile({ scrollY }: { scrollY: number }) {
   const y = Math.min(scrollY * 0.35, 240);
-  const opacity = Math.max(1 - scrollY / 400, 0);
+  const opacity = Math.max(1 - scrollY / 500, 0);
   return (
-    <section className="relative h-[80vh] min-h-[520px] w-full overflow-hidden rounded-3xl">
-      <div className="absolute inset-0" style={{ transform: `translateY(${y}px) scale(1.1)` }}>
-        <VideoBg src={PROMO_VIDEO} overlay="from-black/40 via-black/10 to-black/80" />
+    <section className="relative w-screen h-screen min-h-[640px] overflow-hidden -mt-0">
+      <div className="absolute inset-0" style={{ transform: `translateY(${y}px) scale(1.12)` }}>
+        <VideoBg src={PROMO_VIDEO} overlay="from-black/30 via-black/10 to-black/85" />
       </div>
-      <div style={{ opacity }} className="relative h-full flex flex-col justify-end p-8 text-white">
-        <div className="flex items-center gap-3 mb-4">
+
+      {/* outline wordmark */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 flex items-center justify-center select-none"
+        style={{ transform: `translateY(${-y * 0.4}px)` }}
+      >
+        <span className="font-display text-[40vw] leading-none tracking-tighter text-white/[0.07]">
+          SO-HO!
+        </span>
+      </div>
+
+      {/* top bar */}
+      <div className="relative z-20 flex items-start justify-between p-6 pt-24 text-white">
+        <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur flex items-center justify-center">
             <CoffeeIcon className="w-5 h-5" />
           </div>
           <div>
             <div className="font-display text-base leading-none">SO-HO! Кофейня</div>
-            <div className="text-xs opacity-70 mt-1">открыто с 7:00 до 23:00</div>
+            <div className="text-[10px] opacity-70 mt-1 tracking-wider">7:00 — 23:00</div>
           </div>
         </div>
-        <h1 className="font-display text-6xl leading-[0.9] tracking-tight">
-          Проснись<br/><span className="italic font-light opacity-80">со мной</span>
+        <div className="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur text-[9px] uppercase tracking-[0.3em]">
+          весна 2026
+        </div>
+      </div>
+
+      <div style={{ opacity }} className="absolute inset-x-0 bottom-0 z-10 p-6 pb-10 text-white">
+        <div className="text-[10px] uppercase tracking-[0.4em] opacity-70 mb-4">Coffee · Ritual · Mood</div>
+        <h1 className="font-display text-7xl leading-[0.85] tracking-tight">
+          Проснись<br/><span className="italic font-light opacity-85">со мной</span>
         </h1>
-        <p className="mt-4 text-sm opacity-80 max-w-md">Не товар — эмоция. Кофе как ритуал.</p>
+        <p className="mt-5 text-sm opacity-80 max-w-md">Не товар — эмоция. Кофе как ритуал.</p>
+
+        <div className="mt-8 grid grid-cols-2 gap-6 text-[10px] uppercase tracking-[0.25em] opacity-80 border-t border-white/15 pt-5">
+          <div>
+            <div className="opacity-50 mb-1">бариста</div>
+            <div className="font-display text-sm normal-case tracking-normal opacity-95">Артём · до 16:00</div>
+          </div>
+          <div>
+            <div className="opacity-50 mb-1">зерно недели</div>
+            <div className="font-display text-sm normal-case tracking-normal opacity-95">Руанда Мутетели</div>
+          </div>
+        </div>
+
+        <div className="mt-6 flex items-center justify-center gap-2 opacity-70">
+          <div className="text-[10px] uppercase tracking-[0.3em]">scroll</div>
+          <ChevronDown className="w-4 h-4 animate-bounce" />
+        </div>
       </div>
     </section>
   );
