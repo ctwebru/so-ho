@@ -636,10 +636,8 @@ export default function CoffeeImmersive() {
   }, [visible]);
 
   return (
-    <div className="-m-4 md:-m-8 lg:-m-10">
-      <div className="px-4 md:px-8 lg:px-10 pt-4">
-        <CoffeeHero scrollY={scrollY} />
-      </div>
+    <div>
+      <CoffeeHero scrollY={scrollY} />
 
       <div className="px-4 md:px-8 lg:px-10 mt-8">
         <CategoryTabs active={active} setActive={setActive} />
