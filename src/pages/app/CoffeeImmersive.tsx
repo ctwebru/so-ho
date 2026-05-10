@@ -79,7 +79,7 @@ function CoffeeHero({ scrollY }: { scrollY: number }) {
           подробнее
           <ChevronDown className="inline w-4 h-4 ml-1 opacity-70" />
         </p>
-      </motion.div>
+      </div>
     </section>
   );
 }
