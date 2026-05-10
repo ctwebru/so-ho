@@ -52,7 +52,7 @@ function CoffeeHeroMobile({ scrollY }: { scrollY: number }) {
   const y = Math.min(scrollY * 0.35, 240);
   const opacity = Math.max(1 - scrollY / 500, 0);
   return (
-    <section className="relative w-screen h-screen min-h-[640px] overflow-hidden -mt-0">
+    <section className="relative w-full h-screen min-h-[640px] overflow-hidden">
       <div className="absolute inset-0" style={{ transform: `translateY(${y}px) scale(1.12)` }}>
         <VideoBg src={PROMO_VIDEO} overlay="from-black/30 via-black/10 to-black/85" />
       </div>
