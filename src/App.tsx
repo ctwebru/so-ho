@@ -13,6 +13,7 @@ import PlansPage from "./pages/app/PlansPage";
 import AccessPage from "./pages/app/AccessPage";
 import SeatsPage from "./pages/app/SeatsPage";
 import CafePage from "./pages/app/CafePage";
+import CoffeeImmersive from "./pages/app/CoffeeImmersive";
 import EventsPage from "./pages/app/EventsPage";
 import ProfilePage from "./pages/app/ProfilePage";
 
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="access" element={<AccessPage />} />
               <Route path="seats" element={<SeatsPage />} />
               <Route path="cafe" element={<CafePage />} />
+              <Route path="coffee" element={<CoffeeImmersive />} />
               <Route path="events" element={<EventsPage />} />
               <Route path="profile" element={<ProfilePage />} />
             </Route>
