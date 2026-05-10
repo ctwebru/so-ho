@@ -47,61 +47,159 @@ function VideoBg({
   );
 }
 
-// ---------- Hero (mobile: full bleed; desktop: split with parallax word art) ----------
-function CoffeeHero({ scrollY }: { scrollY: number }) {
-  const y = Math.min(scrollY * 0.35, 260);
-  const yWord = Math.min(scrollY * 0.6, 400);
-  const opacity = Math.max(1 - scrollY / 500, 0);
+// ---------- MOBILE Hero (locked) ----------
+function CoffeeHeroMobile({ scrollY }: { scrollY: number }) {
+  const y = Math.min(scrollY * 0.35, 240);
+  const opacity = Math.max(1 - scrollY / 400, 0);
   return (
-    <section className="relative h-[80vh] min-h-[560px] md:h-[92vh] w-full overflow-hidden rounded-3xl">
+    <section className="relative h-[80vh] min-h-[520px] w-full overflow-hidden rounded-3xl">
       <div className="absolute inset-0" style={{ transform: `translateY(${y}px) scale(1.1)` }}>
         <VideoBg src={PROMO_VIDEO} overlay="from-black/40 via-black/10 to-black/80" />
       </div>
-
-      {/* Desktop-only giant parallax wordmark */}
-      <div
-        aria-hidden
-        style={{ transform: `translateY(${-yWord * 0.3}px)` }}
-        className="hidden md:block pointer-events-none absolute -top-10 left-0 right-0 text-center font-display text-[18vw] leading-none tracking-tighter text-white/[0.07] select-none"
-      >
-        SO-HO!
-      </div>
-
-      <div
-        style={{ opacity }}
-        className="relative h-full grid md:grid-cols-12 gap-8 p-8 md:p-16 text-white"
-      >
-        <div className="md:col-span-7 flex flex-col justify-end">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-11 h-11 rounded-full bg-white/15 backdrop-blur flex items-center justify-center">
-              <CoffeeIcon className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="font-display text-base leading-none">SO-HO! Кофейня</div>
-              <div className="text-xs opacity-70 mt-1">открыто с 7:00 до 23:00</div>
-            </div>
+      <div style={{ opacity }} className="relative h-full flex flex-col justify-end p-8 text-white">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur flex items-center justify-center">
+            <CoffeeIcon className="w-5 h-5" />
           </div>
-          <h1 className="font-display text-6xl md:text-[8rem] lg:text-[10rem] leading-[0.85] tracking-tight">
-            Проснись<br/><span className="italic font-light opacity-80">со мной</span>
-          </h1>
-          <p className="mt-6 text-sm md:text-base opacity-80 max-w-md">
-            Не товар — эмоция. Кофе как ритуал, ритм и состояние.
-          </p>
+          <div>
+            <div className="font-display text-base leading-none">SO-HO! Кофейня</div>
+            <div className="text-xs opacity-70 mt-1">открыто с 7:00 до 23:00</div>
+          </div>
         </div>
-
-        {/* Desktop side panel — vertical info ribbon */}
-        <div className="hidden md:flex md:col-span-5 flex-col justify-end items-end text-right gap-4">
-          <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur text-xs uppercase tracking-[0.25em]">
-            новая весенняя карта
-          </div>
-          <div className="font-display text-sm opacity-70 max-w-[220px]">
-            Скролль вниз — каждый напиток живёт своим вайбом.
-          </div>
-          <ChevronDown className="w-6 h-6 opacity-60 animate-bounce" />
-        </div>
+        <h1 className="font-display text-6xl leading-[0.9] tracking-tight">
+          Проснись<br/><span className="italic font-light opacity-80">со мной</span>
+        </h1>
+        <p className="mt-4 text-sm opacity-80 max-w-md">Не товар — эмоция. Кофе как ритуал.</p>
       </div>
     </section>
   );
+}
+
+// ---------- DESKTOP Hero — full-bleed, multi-layer parallax ----------
+function CoffeeHeroDesktop() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.35]);
+  const wordY = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
+  const wordScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
+  const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "-25%"]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const subY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.4, 0.85]);
+
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 80, damping: 20 });
+  const sy = useSpring(my, { stiffness: 80, damping: 20 });
+  const wordMX = useTransform(sx, (v) => v * -40);
+  const titleMX = useTransform(sx, (v) => v * 20);
+  const titleMY = useTransform(sy, (v) => v * 14);
+  const sideMX = useTransform(sx, (v) => v * -30);
+
+  return (
+    <section
+      ref={ref}
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        mx.set((e.clientX - r.left) / r.width - 0.5);
+        my.set((e.clientY - r.top) / r.height - 0.5);
+      }}
+      className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen h-screen overflow-hidden -mt-4"
+    >
+      {/* video */}
+      <motion.div style={{ y: videoY, scale: videoScale }} className="absolute inset-0">
+        <VideoBg src={PROMO_VIDEO} overlay="from-black/30 via-black/10 to-black/80" />
+      </motion.div>
+      <motion.div
+        style={{ opacity: overlayOpacity }}
+        className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-transparent pointer-events-none"
+      />
+
+      {/* outline wordmark */}
+      <motion.div
+        aria-hidden
+        style={{ y: wordY, scale: wordScale, x: wordMX }}
+        className="pointer-events-none absolute inset-0 flex items-center justify-center select-none"
+      >
+        <span className="font-display text-[22vw] leading-none tracking-tighter text-white/[0.06]">
+          SO-HO!
+        </span>
+      </motion.div>
+
+      {/* top bar */}
+      <div className="relative z-20 flex items-start justify-between p-10 lg:p-14 text-white">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center">
+            <CoffeeIcon className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="font-display text-base leading-none">SO-HO! Кофейня</div>
+            <div className="text-xs opacity-70 mt-1 tracking-wider">открыто 7:00 — 23:00</div>
+          </div>
+        </div>
+        <motion.div style={{ x: sideMX }} className="flex flex-col items-end gap-3">
+          <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur text-[10px] uppercase tracking-[0.35em]">
+            весенняя карта 2026
+          </div>
+          <div className="text-xs opacity-60 max-w-[220px] text-right leading-relaxed">
+            Двигай курсором, листай вниз — каждый напиток живёт своим вайбом.
+          </div>
+        </motion.div>
+      </div>
+
+      {/* main title */}
+      <motion.div
+        style={{ y: titleY, opacity: titleOpacity, x: titleMX, translateY: titleMY }}
+        className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center text-white px-10 pointer-events-none"
+      >
+        <div className="text-xs uppercase tracking-[0.5em] opacity-70 mb-8">Coffee · Ritual · Mood</div>
+        <h1 className="font-display text-[12vw] xl:text-[11rem] leading-[0.82] tracking-[-0.04em]">
+          Проснись<br/><span className="italic font-light opacity-90">со мной</span>
+        </h1>
+        <p className="mt-10 text-base opacity-75 max-w-lg">
+          Не товар — эмоция. Кофе как ритм города и состояние утра.
+        </p>
+      </motion.div>
+
+      {/* bottom strip */}
+      <motion.div
+        style={{ y: subY }}
+        className="absolute bottom-0 inset-x-0 z-20 px-10 lg:px-14 pb-10 text-white"
+      >
+        <div className="flex items-end justify-between gap-8">
+          <div className="grid grid-cols-3 gap-10 text-xs uppercase tracking-[0.25em] opacity-80">
+            <div>
+              <div className="opacity-50 mb-1">01</div>
+              <div>Зерно недели</div>
+              <div className="font-display text-base normal-case tracking-normal mt-2 opacity-90">Руанда Мутетели</div>
+            </div>
+            <div>
+              <div className="opacity-50 mb-1">02</div>
+              <div>Бариста</div>
+              <div className="font-display text-base normal-case tracking-normal mt-2 opacity-90">Артём · до 16:00</div>
+            </div>
+            <div>
+              <div className="opacity-50 mb-1">03</div>
+              <div>Сейчас в чашке</div>
+              <div className="font-display text-base normal-case tracking-normal mt-2 opacity-90">бамбл с апельсином</div>
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-2 opacity-70">
+            <div className="text-[10px] uppercase tracking-[0.3em]">scroll</div>
+            <ChevronDown className="w-5 h-5 animate-bounce" />
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+function CoffeeHero({ scrollY }: { scrollY: number }) {
+  const isMobile = useIsMobile();
+  if (isMobile) return <CoffeeHeroMobile scrollY={scrollY} />;
+  return <CoffeeHeroDesktop />;
 }
 
 // ---------- Desktop full-bleed video interlude between sections ----------
