@@ -40,7 +40,15 @@ const Navigation = () => {
 
         <nav className="hidden md:flex items-center gap-8">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              key={l.href}
+              href={l.href}
+              className={`text-sm transition-colors ${
+                transparent
+                  ? "text-white/70 hover:text-white"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
               {l.label}
             </a>
           ))}
