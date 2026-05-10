@@ -36,7 +36,7 @@ interface ThemeCtx {
 
 const ThemeContext = createContext<ThemeCtx | undefined>(undefined);
 
-const STORAGE_KEY = "flow-theme";
+const STORAGE_KEY = "soho-theme";
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setThemeState] = useState<ThemeId>(() => {

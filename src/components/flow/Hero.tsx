@@ -15,10 +15,10 @@ const heroByTheme: Record<ThemeId, string> = {
 };
 
 const altByTheme: Record<ThemeId, string> = {
-  forest: "Интерьер Flow с зелёными стенами и деревянной мебелью",
-  sand: "Тёплый светлый интерьер Flow в песочных тонах",
-  charcoal: "Тёмный атмосферный интерьер Flow с янтарным светом",
-  sage: "Спокойный интерьер Flow в шалфейно-кремовой палитре",
+  forest: "Интерьер SO-HO! с зелёными стенами и деревянной мебелью",
+  sand: "Тёплый светлый интерьер SO-HO! в песочных тонах",
+  charcoal: "Тёмный атмосферный интерьер SO-HO! с янтарным светом",
+  sage: "Спокойный интерьер SO-HO! в шалфейно-кремовой палитре",
 };
 
 const Hero = () => {
@@ -43,19 +43,22 @@ const Hero = () => {
 
       <div className="relative z-10 container mx-auto px-6 pb-20 pt-32">
         <div className="max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-background/10 backdrop-blur-md border border-background/20 text-primary-foreground/90 text-xs uppercase tracking-widest mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-background/10 backdrop-blur-md border border-background/20 text-primary-foreground/90 text-xs uppercase tracking-[0.25em] mb-8 animate-fade-in">
             <span className="w-1.5 h-1.5 rounded-full bg-highlight animate-pulse" />
-            Lifestyle Space · Открыто
+            Coffee · Work · Meet
           </div>
 
-          <h1 className="font-display text-primary-foreground text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.9] tracking-tight text-balance animate-fade-up">
-            Место,<br />
-            где случается <em className="font-normal italic text-highlight">flow</em>.
+          <h1 className="font-display text-primary-foreground text-7xl md:text-9xl lg:text-[12rem] font-bold leading-[0.85] tracking-tight text-balance animate-fade-up">
+            SO-HO<span className="text-highlight">!</span>
           </h1>
 
-          <p className="mt-8 text-lg md:text-xl text-primary-foreground/80 max-w-xl leading-relaxed animate-fade-up" style={{ animationDelay: "0.2s" }}>
-            Коворкинг, мини-кофейня и соседский клуб под одной крышей.
-            Приходи работать — оставайся жить.
+          <p className="mt-6 font-display text-2xl md:text-4xl text-primary-foreground/90 tracking-tight animate-fade-up" style={{ animationDelay: "0.15s" }}>
+            <span className="text-highlight">Coffee.</span> Work. Meet.
+          </p>
+
+          <p className="mt-8 text-lg md:text-xl text-primary-foreground/75 max-w-xl leading-relaxed animate-fade-up" style={{ animationDelay: "0.3s" }}>
+            Кофейня, коворкинг и соседский клуб под одной крышей.
+            Приходи за кофе — оставайся жить.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
@@ -63,7 +66,7 @@ const Hero = () => {
               <Link to="/app">Открыть кабинет</Link>
             </Button>
             <Button variant="glass" size="xl" asChild>
-              <a href="#concept">Узнать о Flow</a>
+              <a href="#concept">Узнать о SO-HO!</a>
             </Button>
           </div>
         </div>

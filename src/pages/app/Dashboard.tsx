@@ -22,7 +22,7 @@ const QUOTES = [
   { t: "Сделай меньше — сделай лучше.", a: "Дитер Рамс" },
   { t: "Тишина — это тоже музыка, просто без нот.", a: "Майлз Дэвис" },
   { t: "Простота — высшая форма изысканности.", a: "Леонардо да Винчи" },
-  { t: "Лучшее место для идеи — стол, на котором уже стоит чашка.", a: "Flow" },
+  { t: "Лучшее место для идеи — стол, на котором уже стоит чашка.", a: "SO-HO!" },
 ];
 
 const greetingFor = (h: number) => {
@@ -73,7 +73,7 @@ const Dashboard = () => {
             </div>
             <h2 className="font-display text-4xl md:text-6xl font-semibold leading-[1.05] text-balance">
               {greeting.text}, {user.name.split(" ")[0]}.<br />
-              <span className="italic font-normal text-highlight">Хорошего flow.</span>
+              <span className="italic font-normal text-highlight">Кофе уже горячий.</span>
             </h2>
             <p className="mt-5 text-primary-foreground/75 max-w-md">{greeting.mood}</p>
           </div>
@@ -105,7 +105,7 @@ const Dashboard = () => {
                 <span className="absolute inset-0 rounded-full bg-highlight animate-pulse-ring" />
                 <span className="absolute inset-0 rounded-full bg-highlight" />
               </div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground">Сейчас в Flow</div>
+              <div className="text-xs uppercase tracking-widest text-muted-foreground">Сейчас в SO-HO!</div>
             </div>
             <Link to="/app/seats" className="text-xs text-accent hover:underline flex items-center gap-1">
               К карте мест <ArrowUpRight className="w-3 h-3" />
@@ -273,7 +273,7 @@ const Dashboard = () => {
             <Zap className="w-4 h-4 text-accent" /> Твой месяц
           </div>
           <div className="font-display text-5xl font-semibold tabular-nums">{monthProgress}%</div>
-          <div className="text-sm text-muted-foreground mt-1">прошло — самое время взять день в Flow</div>
+          <div className="text-sm text-muted-foreground mt-1">прошло — самое время взять день в SO-HO!</div>
           <div className="mt-5 h-2 rounded-full bg-secondary overflow-hidden">
             <div
               className="h-full bg-gradient-forest transition-all duration-1000"

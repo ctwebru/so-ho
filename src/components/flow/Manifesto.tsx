@@ -12,7 +12,7 @@ const Manifesto = () => {
         </p>
         <div className="mt-12 flex items-center gap-4">
           <div className="h-px flex-1 bg-primary-foreground/20" />
-          <span className="text-xs uppercase tracking-widest text-primary-foreground/60">Команда Flow</span>
+          <span className="text-xs uppercase tracking-widest text-primary-foreground/60">Команда SO-HO!</span>
         </div>
       </div>
     </section>

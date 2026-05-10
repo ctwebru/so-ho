@@ -38,13 +38,14 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" className="border-r border-border">
       <SidebarHeader className="p-4">
         <NavLink to="/" className="flex items-center gap-2 group">
-          <div className="w-9 h-9 rounded-full bg-gradient-forest flex items-center justify-center shadow-soft shrink-0">
-            <span className="text-primary-foreground font-display font-bold text-sm">F</span>
-          </div>
-          {!collapsed && (
+          {collapsed ? (
+            <div className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-soft shrink-0 font-display font-bold text-xs">
+              S!
+            </div>
+          ) : (
             <div className="overflow-hidden">
-              <div className="font-display font-semibold leading-tight">Flow</div>
-              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Lifestyle Space</div>
+              <div className="font-display font-bold leading-none text-lg tracking-tight">SO-HO!</div>
+              <div className="text-[10px] uppercase tracking-widest text-accent mt-1">Coffee · Work · Meet</div>
             </div>
           )}
         </NavLink>
