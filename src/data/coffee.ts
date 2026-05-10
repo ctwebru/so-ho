@@ -32,16 +32,18 @@ export const CATEGORIES: { id: CategoryId; label: string }[] = [
   { id: "combo", label: "комбо" },
 ];
 
-// Ambient mixkit videos — short, looping, food/drink mood
+// Promo placeholder used everywhere until real videos are added per drink
+import promo from "@/assets/coffee-promo.mp4";
+export const PROMO_VIDEO = promo;
 const V = {
-  pour: "https://assets.mixkit.co/videos/4742/4742-720.mp4",
-  iced: "https://assets.mixkit.co/videos/preview/mixkit-coffee-with-milk-being-served-43250-large.mp4",
-  steam: "https://assets.mixkit.co/videos/preview/mixkit-coffee-cup-on-a-table-with-steam-coming-out-of-it-44805-large.mp4",
-  beans: "https://assets.mixkit.co/videos/preview/mixkit-coffee-beans-falling-from-a-grinder-43395-large.mp4",
-  latteart: "https://assets.mixkit.co/videos/preview/mixkit-barista-pouring-milk-into-a-coffee-43249-large.mp4",
-  orange: "https://assets.mixkit.co/videos/preview/mixkit-pouring-orange-juice-into-a-glass-with-ice-43254-large.mp4",
-  matcha: "https://assets.mixkit.co/videos/preview/mixkit-pouring-green-tea-into-a-cup-43398-large.mp4",
-  cream: "https://assets.mixkit.co/videos/preview/mixkit-pink-paint-being-mixed-44308-large.mp4",
+  pour: promo,
+  iced: promo,
+  steam: promo,
+  beans: promo,
+  latteart: promo,
+  orange: promo,
+  matcha: promo,
+  cream: promo,
 };
 
 const sizesStd: Size[] = [
