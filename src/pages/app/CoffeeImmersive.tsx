@@ -142,7 +142,7 @@ function CoffeeHeroDesktop() {
         mx.set((e.clientX - r.left) / r.width - 0.5);
         my.set((e.clientY - r.top) / r.height - 0.5);
       }}
-      className="relative w-screen h-screen overflow-hidden"
+      className="relative w-full h-screen overflow-hidden"
     >
       {/* video */}
       <motion.div style={{ y: videoY, scale: videoScale }} className="absolute inset-0">
