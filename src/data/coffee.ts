@@ -459,6 +459,7 @@ export const DRINKS: Drink[] = [
     variants: [],
   },
   {
+    id: "kofepass-10",
     name: "10 кофе с молоком",
     subtitle: "кофепасс на месяц",
     price: 1990,
