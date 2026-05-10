@@ -29,7 +29,7 @@ const AccessPage = () => {
         <div className="relative">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <p className="text-xs uppercase tracking-widest text-primary-foreground/60">Flow Pass</p>
+              <p className="text-xs uppercase tracking-widest text-primary-foreground/60">SO-HO! Pass</p>
               <p className="font-display text-2xl mt-1">{user.name}</p>
             </div>
             <div className="px-3 py-1 rounded-full text-xs font-medium bg-highlight text-highlight-foreground">

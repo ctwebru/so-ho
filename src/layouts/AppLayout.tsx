@@ -6,7 +6,7 @@ import { Bell } from "lucide-react";
 import ThemeSwitcher from "@/components/flow/ThemeSwitcher";
 
 const titles: Record<string, { title: string; sub: string }> = {
-  "/app": { title: "Обзор", sub: "Что у тебя сейчас в Flow" },
+  "/app": { title: "Обзор", sub: "Что у тебя сейчас в SO-HO!" },
   "/app/plans": { title: "Тарифы", sub: "Выбери свой ритм" },
   "/app/access": { title: "Мой доступ", sub: "Покажи экран администратору" },
   "/app/seats": { title: "Карта мест", sub: "Выбери, где сегодня сядешь" },
@@ -17,7 +17,7 @@ const titles: Record<string, { title: string; sub: string }> = {
 
 const AppLayout = () => {
   const { pathname } = useLocation();
-  const meta = titles[pathname] ?? { title: "Flow", sub: "" };
+  const meta = titles[pathname] ?? { title: "SO-HO!", sub: "" };
   const { user } = useAppState();
 
   return (
