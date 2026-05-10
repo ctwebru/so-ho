@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import { Plus, X, Check, ChevronDown, Coffee as CoffeeIcon, Sparkles } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CATEGORIES, CategoryId, DRINKS, Drink, FOR_YOU_IDS, Addon, PROMO_VIDEO } from "@/data/coffee";
