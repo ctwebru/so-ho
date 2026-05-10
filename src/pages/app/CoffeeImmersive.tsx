@@ -48,18 +48,18 @@ function VideoBg({
 
 // ---------- Hero ----------
 function CoffeeHero({ scrollY }: { scrollY: number }) {
-  const y = useTransform({ get: () => scrollY } as any, [0, 600], [0, 200]);
-  const opacity = useTransform({ get: () => scrollY } as any, [0, 400], [1, 0]);
+  const y = Math.min(scrollY * 0.35, 240);
+  const opacity = Math.max(1 - scrollY / 400, 0);
   return (
     <section className="relative h-[70vh] min-h-[480px] w-full overflow-hidden rounded-3xl">
-      <motion.div style={{ y }} className="absolute inset-0">
+      <div className="absolute inset-0" style={{ transform: `translateY(${y}px)` }}>
         <VideoBg
           src="https://assets.mixkit.co/videos/preview/mixkit-pink-paint-being-mixed-44308-large.mp4"
           overlay="from-black/30 via-transparent to-black/70"
         />
-      </motion.div>
+      </div>
 
-      <motion.div
+      <div
         style={{ opacity }}
         className="relative h-full flex flex-col justify-end p-8 md:p-14 text-white"
       >
