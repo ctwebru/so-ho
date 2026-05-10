@@ -4,10 +4,11 @@ import ThemeSwitcher from "./ThemeSwitcher";
 import Logo from "./Logo";
 
 const links = [
-  { label: "Концепция", href: "#concept" },
-  { label: "Тарифы", href: "#plans" },
-  { label: "Афиша", href: "#events-teaser" },
-  { label: "Контакты", href: "#contact" },
+  { label: "Концепция", href: "/#concept" },
+  { label: "Кофе", href: "/coffee" },
+  { label: "Тарифы", href: "/#plans" },
+  { label: "Афиша", href: "/#events-teaser" },
+  { label: "Контакты", href: "/#contact" },
 ];
 
 const Navigation = () => {

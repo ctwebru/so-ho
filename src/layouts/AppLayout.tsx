@@ -11,7 +11,6 @@ const titles: Record<string, { title: string; sub: string }> = {
   "/app/access": { title: "Мой доступ", sub: "Покажи экран администратору" },
   "/app/seats": { title: "Карта мест", sub: "Выбери, где сегодня сядешь" },
   "/app/cafe": { title: "Кофейня", sub: "Закажи к месту или на вынос" },
-  "/app/coffee": { title: "Кофе · вайб", sub: "Не товар, а эмоция" },
   "/app/events": { title: "События", sub: "Соседский клуб ждёт" },
   "/app/profile": { title: "Профиль", sub: "Аккаунт и история" },
 };
