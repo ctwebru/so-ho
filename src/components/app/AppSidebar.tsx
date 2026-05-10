@@ -1,5 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, CreditCard, QrCode, MapPin, Coffee, CalendarDays, User, ArrowLeft, Sparkles } from "lucide-react";
+import { LayoutDashboard, CreditCard, QrCode, MapPin, Coffee, CalendarDays, User, ArrowLeft } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
