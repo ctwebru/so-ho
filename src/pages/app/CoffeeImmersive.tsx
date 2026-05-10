@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Plus, X, Check, ChevronDown, Coffee as CoffeeIcon, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { CATEGORIES, CategoryId, DRINKS, Drink, FOR_YOU_IDS, Addon } from "@/data/coffee";
+import { CATEGORIES, CategoryId, DRINKS, Drink, FOR_YOU_IDS, Addon, PROMO_VIDEO } from "@/data/coffee";
 import { useAppState } from "@/state/AppState";
 
 // ---------- Reusable VideoBg ----------
@@ -46,41 +46,82 @@ function VideoBg({
   );
 }
 
-// ---------- Hero ----------
+// ---------- Hero (mobile: full bleed; desktop: split with parallax word art) ----------
 function CoffeeHero({ scrollY }: { scrollY: number }) {
-  const y = Math.min(scrollY * 0.35, 240);
-  const opacity = Math.max(1 - scrollY / 400, 0);
+  const y = Math.min(scrollY * 0.35, 260);
+  const yWord = Math.min(scrollY * 0.6, 400);
+  const opacity = Math.max(1 - scrollY / 500, 0);
   return (
-    <section className="relative h-[70vh] min-h-[480px] w-full overflow-hidden rounded-3xl">
-      <div className="absolute inset-0" style={{ transform: `translateY(${y}px)` }}>
-        <VideoBg
-          src="https://assets.mixkit.co/videos/preview/mixkit-pink-paint-being-mixed-44308-large.mp4"
-          overlay="from-black/30 via-transparent to-black/70"
-        />
+    <section className="relative h-[80vh] min-h-[560px] md:h-[92vh] w-full overflow-hidden rounded-3xl">
+      <div className="absolute inset-0" style={{ transform: `translateY(${y}px) scale(1.1)` }}>
+        <VideoBg src={PROMO_VIDEO} overlay="from-black/40 via-black/10 to-black/80" />
+      </div>
+
+      {/* Desktop-only giant parallax wordmark */}
+      <div
+        aria-hidden
+        style={{ transform: `translateY(${-yWord * 0.3}px)` }}
+        className="hidden md:block pointer-events-none absolute -top-10 left-0 right-0 text-center font-display text-[18vw] leading-none tracking-tighter text-white/[0.07] select-none"
+      >
+        SO-HO!
       </div>
 
       <div
         style={{ opacity }}
-        className="relative h-full flex flex-col justify-end p-8 md:p-14 text-white"
+        className="relative h-full grid md:grid-cols-12 gap-8 p-8 md:p-16 text-white"
       >
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur flex items-center justify-center">
-            <CoffeeIcon className="w-5 h-5" />
+        <div className="md:col-span-7 flex flex-col justify-end">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-11 h-11 rounded-full bg-white/15 backdrop-blur flex items-center justify-center">
+              <CoffeeIcon className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="font-display text-base leading-none">SO-HO! Кофейня</div>
+              <div className="text-xs opacity-70 mt-1">открыто с 7:00 до 23:00</div>
+            </div>
           </div>
-          <div>
-            <div className="font-display text-base leading-none">SO-HO! Кофейня</div>
-            <div className="text-xs opacity-70 mt-1">откроемся в 7:00</div>
-          </div>
+          <h1 className="font-display text-6xl md:text-[8rem] lg:text-[10rem] leading-[0.85] tracking-tight">
+            Проснись<br/><span className="italic font-light opacity-80">со мной</span>
+          </h1>
+          <p className="mt-6 text-sm md:text-base opacity-80 max-w-md">
+            Не товар — эмоция. Кофе как ритуал, ритм и состояние.
+          </p>
         </div>
-        <h1 className="font-display text-5xl md:text-7xl leading-[0.95] tracking-tight max-w-2xl">
-          Проснись<br/>со мной
-        </h1>
-        <p className="mt-4 text-sm md:text-base opacity-80 max-w-md">
-          подробнее
-          <ChevronDown className="inline w-4 h-4 ml-1 opacity-70" />
-        </p>
+
+        {/* Desktop side panel — vertical info ribbon */}
+        <div className="hidden md:flex md:col-span-5 flex-col justify-end items-end text-right gap-4">
+          <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur text-xs uppercase tracking-[0.25em]">
+            новая весенняя карта
+          </div>
+          <div className="font-display text-sm opacity-70 max-w-[220px]">
+            Скролль вниз — каждый напиток живёт своим вайбом.
+          </div>
+          <ChevronDown className="w-6 h-6 opacity-60 animate-bounce" />
+        </div>
       </div>
     </section>
+  );
+}
+
+// ---------- Desktop full-bleed video interlude between sections ----------
+function VideoInterlude({ title, sub }: { title: string; sub: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1.15, 1.05]);
+  return (
+    <div ref={ref} className="hidden md:block relative h-[70vh] my-16 overflow-hidden rounded-3xl">
+      <motion.div style={{ y, scale }} className="absolute inset-0">
+        <VideoBg src={PROMO_VIDEO} overlay="from-black/50 via-black/20 to-black/70" />
+      </motion.div>
+      <div className="relative h-full flex flex-col justify-center items-center text-center text-white p-8">
+        <div className="text-xs uppercase tracking-[0.4em] opacity-70 mb-4">SO-HO! Ритуал</div>
+        <h3 className="font-display text-6xl lg:text-8xl tracking-tight italic font-light max-w-3xl">
+          {title}
+        </h3>
+        <p className="mt-6 max-w-md opacity-80">{sub}</p>
+      </div>
+    </div>
   );
 }
 
