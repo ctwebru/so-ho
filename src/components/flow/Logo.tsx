@@ -4,7 +4,7 @@ interface LogoProps {
   className?: string;
   withSignal?: boolean;
   size?: "sm" | "md" | "lg";
-  variant?: "default" | "inverted";
+  variant?: "default" | "inverted" | "ghost";
 }
 
 const sizes = {
@@ -30,8 +30,9 @@ const SignalArcs = ({ size, side }: { size: number; side: "left" | "right" }) =>
 
 const Logo = ({ className, withSignal = true, size = "md", variant = "default" }: LogoProps) => {
   const s = sizes[size];
-  const colorClass = variant === "inverted" ? "text-primary-foreground" : "text-foreground";
-  const accentClass = variant === "inverted" ? "text-highlight" : "text-accent";
+  const colorClass =
+    variant === "inverted" ? "text-primary-foreground" : variant === "ghost" ? "text-current" : "text-foreground";
+  const accentClass = variant === "inverted" ? "text-highlight" : variant === "ghost" ? "text-current" : "text-accent";
   return (
     <span className={cn("inline-flex items-center", s.gap, colorClass, className)}>
       {withSignal && <span className={accentClass}><SignalArcs size={s.arc} side="left" /></span>}

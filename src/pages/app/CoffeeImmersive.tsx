@@ -624,8 +624,9 @@ export default function CoffeeImmersive() {
     return DRINKS.filter((d) => d.category === active);
   }, [active]);
 
-  // group by sub-category
+  // group by sub-category — but in "для тебя" show all as one feed
   const groups = useMemo(() => {
+    if (active === "you") return [["подобрано для тебя", visible] as [string, Drink[]]];
     const map = new Map<string, Drink[]>();
     visible.forEach((d) => {
       const arr = map.get(d.group) ?? [];
@@ -633,7 +634,7 @@ export default function CoffeeImmersive() {
       map.set(d.group, arr);
     });
     return Array.from(map.entries());
-  }, [visible]);
+  }, [visible, active]);
 
   return (
     <div>
