@@ -112,6 +112,18 @@ const ConceptShowcase = () => {
         ))}
       </div>
 
+      {/* Real space gallery */}
+      <div className="mt-32 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="group relative overflow-hidden rounded-3xl shadow-deep aspect-[4/3]">
+          <img src={coffeeSideImg} alt="Барная стойка SO-HO! и проход к коворкингу" loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+          <div className="absolute bottom-6 left-6 px-3 py-1 rounded-full bg-background/80 backdrop-blur-md text-xs font-display tracking-widest">Кофейня · вход</div>
+        </div>
+        <div className="group relative overflow-hidden rounded-3xl shadow-deep aspect-[4/3]">
+          <img src={clubReverseImg} alt="Зал соседского клуба для лекций и йоги" loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+          <div className="absolute bottom-6 left-6 px-3 py-1 rounded-full bg-background/80 backdrop-blur-md text-xs font-display tracking-widest">Клуб · трансформер</div>
+        </div>
+      </div>
+
       {/* Numbers strip */}
       <div className="mt-32 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 border-t border-border pt-16">
         {[
