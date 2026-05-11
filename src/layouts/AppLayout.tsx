@@ -3,7 +3,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app/AppSidebar";
 import { useAppState } from "@/state/AppState";
 import { Bell } from "lucide-react";
-import ThemeSwitcher from "@/components/flow/ThemeSwitcher";
+
 
 const titles: Record<string, { title: string; sub: string }> = {
   "/app": { title: "Обзор", sub: "Что у тебя сейчас в SO-HO!" },
@@ -32,7 +32,7 @@ const AppLayout = () => {
               <h1 className="font-display text-lg font-semibold truncate">{meta.title}</h1>
               <p className="text-xs text-muted-foreground truncate">{meta.sub}</p>
             </div>
-            <ThemeSwitcher />
+            
             <button className="w-9 h-9 rounded-full bg-secondary hover:bg-accent/30 flex items-center justify-center transition" aria-label="Уведомления">
               <Bell className="w-4 h-4" />
             </button>

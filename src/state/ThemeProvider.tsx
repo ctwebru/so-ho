@@ -39,18 +39,17 @@ const ThemeContext = createContext<ThemeCtx | undefined>(undefined);
 const STORAGE_KEY = "soho-theme";
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setThemeState] = useState<ThemeId>(() => {
-    if (typeof window === "undefined") return "forest";
-    return (localStorage.getItem(STORAGE_KEY) as ThemeId) || "forest";
-  });
+  const theme: ThemeId = "forest";
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem(STORAGE_KEY, theme);
-  }, [theme]);
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch {}
+  }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme: setThemeState }}>
+    <ThemeContext.Provider value={{ theme, setTheme: () => {} }}>
       {children}
     </ThemeContext.Provider>
   );
