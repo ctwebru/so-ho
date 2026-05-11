@@ -4,7 +4,7 @@ interface LogoProps {
   className?: string;
   withSignal?: boolean;
   size?: "sm" | "md" | "lg";
-  variant?: "default" | "inverted";
+  variant?: "default" | "inverted" | "ghost";
 }
 
 const sizes = {
