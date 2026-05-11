@@ -32,18 +32,30 @@ export const CATEGORIES: { id: CategoryId; label: string }[] = [
   { id: "combo", label: "комбо" },
 ];
 
-// Promo placeholder used everywhere until real videos are added per drink
+// Local ambient videos used as backgrounds for cards.
 import promo from "@/assets/coffee-promo.mp4";
+import vPour from "@/assets/mixkit-pouring-coffee-in-a-cup-43941-hd-ready.mp4";
+import vIced from "@/assets/mixkit-orange-juice-poured-over-ice-48092-hd-ready.mp4";
+import vSteam from "@/assets/mixkit-cinemagraph-of-steaming-cup-of-tea-and-sweats-45086-hd-ready.mp4";
+import vBeans from "@/assets/mixkit-barista-cleaning-a-coffee-machine-817-hd-ready.mp4";
+import vLatteart from "@/assets/mixkit-serving-a-sparkling-cappuccino-in-a-cup-41859-hd-ready.mp4";
+import vCream from "@/assets/mixkit-cup-being-filled-with-coffee-in-a-coffee-machine-41865-hd-ready.mp4";
+import vMatcha from "@/assets/mixkit-mug-with-sparkling-cappuccino-5072-hd-ready.mp4";
+import vHand from "@/assets/mixkit-hand-takes-cup-of-coffee-from-the-table-20029-hd-ready.mp4";
+import vServed from "@/assets/mixkit-coffee-is-served-in-a-cup-3573-hd-ready.mp4";
+
 export const PROMO_VIDEO = promo;
 const V = {
-  pour: promo,
-  iced: promo,
-  steam: promo,
-  beans: promo,
-  latteart: promo,
-  orange: promo,
-  matcha: promo,
-  cream: promo,
+  pour: vPour,
+  iced: vIced,
+  steam: vSteam,
+  beans: vBeans,
+  latteart: vLatteart,
+  orange: vIced,
+  matcha: vMatcha,
+  cream: vCream,
+  hand: vHand,
+  served: vServed,
 };
 
 const sizesStd: Size[] = [
