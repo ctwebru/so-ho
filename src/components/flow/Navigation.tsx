@@ -35,7 +35,7 @@ const Navigation = () => {
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-6">
         <a href="#top" className="group">
-          <Logo size="md" />
+          {transparent ? <Logo size="md" variant="ghost" withSignal={false} /> : <Logo size="md" />}
         </a>
 
         <nav className="hidden md:flex items-center gap-8">
