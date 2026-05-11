@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Coffee, Users, MapPin, CalendarDays } from "lucide-react";
-import workspaceImg from "@/assets/workspace.jpg";
-import coffeeImg from "@/assets/coffee.jpg";
-import communityImg from "@/assets/community.jpg";
+import workspaceImg from "@/assets/real/cowork-view.png";
+import coffeeImg from "@/assets/real/coffee-front.png";
+import communityImg from "@/assets/real/club-front.png";
+import coffeeSideImg from "@/assets/real/coffee-side.png";
+import clubReverseImg from "@/assets/real/club-reverse.png";
 
 const blocks = [
   {
