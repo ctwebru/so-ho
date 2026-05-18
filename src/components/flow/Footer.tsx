@@ -17,12 +17,13 @@ const Footer = () => {
 
           <div>
             <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">Адрес</p>
-            <p className="font-display">ул. Большая Зелёная, 12<br />Москва</p>
+            <p className="font-display">Дачное шоссе, 22/3<br />Новосибирск</p>
+            <p className="mt-3 text-sm text-muted-foreground">Ежедневно 08:00 — 20:00</p>
           </div>
 
           <div>
             <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">Связь</p>
-            <p className="font-display">@so_ho_space<br />hello@so-ho.space</p>
+            <p className="font-display"><a href="mailto:hello@so-ho.ru" className="hover:text-accent transition-colors">hello@so-ho.ru</a><br /><a href="https://so-ho.ru" className="hover:text-accent transition-colors">so-ho.ru</a></p>
           </div>
         </div>
 

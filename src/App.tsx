@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppStateProvider } from "@/state/AppState";
 import { ThemeProvider } from "@/state/ThemeProvider";
 import Index from "./pages/Index.tsx";
+import ComingSoon from "./pages/ComingSoon.tsx";
 import Coffee from "./pages/Coffee.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AppLayout from "./layouts/AppLayout";
@@ -28,7 +29,8 @@ const App = () => (
        <AppStateProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<ComingSoon />} />
+            <Route path="/preview" element={<Index />} />
             <Route path="/coffee" element={<Coffee />} />
             <Route path="/app" element={<AppLayout />}>
               <Route index element={<Dashboard />} />
