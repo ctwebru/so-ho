@@ -555,6 +555,24 @@ export const DRINKS: Drink[] = [
     toppings: [],
     variants: [],
   },
+  {
+    id: "pistachio-latte",
+    name: "Фисташковый латте",
+    subtitle: "сезонный · ограниченная серия",
+    price: 385,
+    category: "spring",
+    group: "весна 🌸",
+    video: V.cream,
+    accent: "#9cb87a",
+    badge: "нет в наличии",
+    soldOut: true,
+    macro: { kcal: 215, protein: 7.0, fat: 11.0, carbs: 22.0 },
+    sizes: sizesStd,
+    defaultSize: "M",
+    milks,
+    toppings,
+    variants: [{ id: "iced", name: "Со льдом", price: 0 }],
+  },
 ];
 
 export const FOR_YOU_IDS = ["bumble", "iced-latte", "matcha", "kofepass-10", "v60"];
