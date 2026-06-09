@@ -21,6 +21,7 @@ export type Drink = {
   milks: Addon[];
   toppings: Addon[];
   variants: Addon[]; // related variants (горячая версия, со льдом и пр.)
+  soldOut?: boolean; // остатки закончились — не доступен для заказа
 };
 
 export type CategoryId = "you" | "spring" | "coffee" | "nocoffee" | "combo";
@@ -553,6 +554,24 @@ export const DRINKS: Drink[] = [
     milks: [{ id: "any", name: "Воронка/аэропресс", price: 0 }],
     toppings: [],
     variants: [],
+  },
+  {
+    id: "pistachio-latte",
+    name: "Фисташковый латте",
+    subtitle: "сезонный · ограниченная серия",
+    price: 385,
+    category: "spring",
+    group: "весна 🌸",
+    video: V.cream,
+    accent: "#9cb87a",
+    badge: "нет в наличии",
+    soldOut: true,
+    macro: { kcal: 215, protein: 7.0, fat: 11.0, carbs: 22.0 },
+    sizes: sizesStd,
+    defaultSize: "M",
+    milks,
+    toppings,
+    variants: [{ id: "iced", name: "Со льдом", price: 0 }],
   },
 ];
 
