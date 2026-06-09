@@ -21,6 +21,7 @@ export type Drink = {
   milks: Addon[];
   toppings: Addon[];
   variants: Addon[]; // related variants (горячая версия, со льдом и пр.)
+  soldOut?: boolean; // остатки закончились — не доступен для заказа
 };
 
 export type CategoryId = "you" | "spring" | "coffee" | "nocoffee" | "combo";
