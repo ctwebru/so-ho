@@ -306,15 +306,16 @@ function DrinkCard({
   return (
     <motion.button
       ref={ref}
-      onClick={onOpen}
-      whileHover={{ y: -4 }}
+      onClick={drink.soldOut ? undefined : onOpen}
+      disabled={drink.soldOut}
+      whileHover={drink.soldOut ? undefined : { y: -4 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
       className={`group relative overflow-hidden rounded-3xl text-left w-full ${
         large ? "h-[420px] md:h-[520px]" : "h-[300px] md:h-[360px]"
-      }`}
+      } ${drink.soldOut ? "cursor-not-allowed" : ""}`}
       style={{ background: drink.accent }}
     >
-      <motion.div style={{ y }} className="absolute inset-0">
+      <motion.div style={{ y }} className={`absolute inset-0 ${drink.soldOut ? "grayscale opacity-60" : ""}`}>
         <VideoBg
           src={drink.video}
           overlay="from-transparent via-transparent to-black/80"
@@ -322,8 +323,18 @@ function DrinkCard({
       </motion.div>
 
       {drink.badge && (
-        <div className="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-medium">
+        <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-medium ${
+          drink.soldOut ? "bg-black/70 text-white border border-white/20" : "bg-primary text-primary-foreground"
+        }`}>
           {drink.badge}
+        </div>
+      )}
+
+      {drink.soldOut && (
+        <div className="absolute inset-0 z-[5] flex items-center justify-center pointer-events-none">
+          <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur text-white text-xs uppercase tracking-[0.3em] border border-white/15">
+            закончилось
+          </div>
         </div>
       )}
 
@@ -335,10 +346,16 @@ function DrinkCard({
           <p className="text-xs md:text-sm opacity-75 mt-1">{drink.subtitle}</p>
         )}
         <div className="flex items-center justify-between mt-4">
-          <span className="font-display text-lg tabular-nums">{drink.price} ₽</span>
-          <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center group-hover:bg-white group-hover:text-black transition">
-            <Plus className="w-4 h-4" />
-          </div>
+          <span className={`font-display text-lg tabular-nums ${drink.soldOut ? "line-through opacity-60" : ""}`}>
+            {drink.price} ₽
+          </span>
+          {drink.soldOut ? (
+            <span className="text-[10px] uppercase tracking-[0.2em] opacity-70">скоро вернётся</span>
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center group-hover:bg-white group-hover:text-black transition">
+              <Plus className="w-4 h-4" />
+            </div>
+          )}
         </div>
       </div>
     </motion.button>
