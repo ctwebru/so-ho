@@ -499,6 +499,35 @@ function DrinkDetail({ drink, onClose }: { drink: Drink; onClose: () => void }) 
           </div>
         )}
 
+        {/* Flavor picker — обязательный выбор для коктейлей */}
+        {hasFlavors && (
+          <div className="px-6 md:px-10 mb-4">
+            <button
+              onClick={() => setOpenSheet("flavor")}
+              className={`w-full rounded-2xl p-4 flex items-center gap-4 text-left transition border ${
+                flavor
+                  ? "bg-white text-black border-white"
+                  : "bg-white/10 backdrop-blur text-white border-white/30 hover:bg-white/15 animate-pulse"
+              }`}
+            >
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
+                flavor ? "bg-black/10" : "bg-white/15"
+              }`}>
+                <Layers className="w-5 h-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[10px] uppercase tracking-[0.25em] opacity-60">
+                  {flavor ? "вкус" : `выбрать вкус · ${drink.flavors!.length} вариантов`}
+                </div>
+                <div className="font-display text-lg truncate">
+                  {drink.flavors!.find((f) => f.id === flavor)?.name ?? "не выбран"}
+                </div>
+              </div>
+              <ChevronDown className="w-4 h-4 opacity-60 -rotate-90" />
+            </button>
+          </div>
+        )}
+
         {/* Customizers */}
         <div className="px-6 md:px-10 grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           {drink.toppings.length > 0 && (
