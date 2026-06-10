@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/state/ThemeProvider";
 import Index from "./pages/Index.tsx";
 import ComingSoon from "./pages/ComingSoon.tsx";
 import Coffee from "./pages/Coffee.tsx";
+import Login from "./pages/Login.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AppLayout from "./layouts/AppLayout";
 import Dashboard from "./pages/app/Dashboard";
