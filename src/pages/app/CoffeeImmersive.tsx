@@ -615,6 +615,19 @@ function DrinkDetail({ drink, onClose }: { drink: Drink; onClose: () => void }) 
               <AddonGrid items={drink.toppings} selected={picked} onPick={togglePick} />
             </BottomSheet>
           )}
+          {openSheet === "flavor" && hasFlavors && (
+            <BottomSheet onClose={() => setOpenSheet(null)} title={`Вкус · ${drink.flavors!.length} вариантов`} macro={drink.macro}>
+              <AddonGrid
+                items={drink.flavors!}
+                selected={[flavor]}
+                onPick={(id) => {
+                  setFlavor(id);
+                  setOpenSheet(null);
+                }}
+                singleSelect
+              />
+            </BottomSheet>
+          )}
         </AnimatePresence>
       </div>
     </motion.div>
