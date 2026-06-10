@@ -401,8 +401,10 @@ function DrinkDetail({ drink, onClose }: { drink: Drink; onClose: () => void }) 
   const [size, setSize] = useState(drink.defaultSize);
   const [milk, setMilk] = useState<string>(drink.milks[0]?.id ?? "");
   const [picked, setPicked] = useState<string[]>([]);
-  const [openSheet, setOpenSheet] = useState<null | "milk" | "topping">(null);
+  const [flavor, setFlavor] = useState<string>("");
+  const [openSheet, setOpenSheet] = useState<null | "milk" | "topping" | "flavor">(null);
 
+  const hasFlavors = !!drink.flavors && drink.flavors.length > 0;
   const sizeMul = size === "S" ? 0.85 : size === "L" ? 1.15 : 1;
   const milkPrice = drink.milks.find((m) => m.id === milk)?.price ?? 0;
   const toppingPrice = picked.reduce(
@@ -415,9 +417,15 @@ function DrinkDetail({ drink, onClose }: { drink: Drink; onClose: () => void }) 
     setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
 
   const order = () => {
+    if (hasFlavors && !flavor) {
+      toast.error("Выберите вкус", { description: `У напитка ${drink.flavors!.length} вариантов вкуса` });
+      setOpenSheet("flavor");
+      return;
+    }
     const milkName = drink.milks.find((m) => m.id === milk)?.name;
+    const flavorName = drink.flavors?.find((f) => f.id === flavor)?.name;
     const tops = picked.map((id) => drink.toppings.find((t) => t.id === id)?.name).filter(Boolean).join(", ");
-    const desc = `${drink.name} (${size})${milkName && milkName !== "Без молока" ? `, ${milkName}` : ""}${tops ? `, ${tops}` : ""}`;
+    const desc = `${drink.name} (${size})${flavorName ? `, вкус: ${flavorName}` : ""}${milkName && milkName !== "Без молока" ? `, ${milkName}` : ""}${tops ? `, ${tops}` : ""}`;
     addOrder(desc, total);
     toast.success("В корзине", { description: `${desc} · ${total} ₽` });
     onClose();
