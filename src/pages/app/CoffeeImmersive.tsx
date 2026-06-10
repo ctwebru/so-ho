@@ -303,6 +303,7 @@ function DrinkCard({
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
+  const hasFlavors = !!drink.flavors && drink.flavors.length > 0;
   return (
     <motion.button
       ref={ref}
@@ -310,52 +311,84 @@ function DrinkCard({
       disabled={drink.soldOut}
       whileHover={drink.soldOut ? undefined : { y: -4 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className={`group relative overflow-hidden rounded-3xl text-left w-full ${
+      className={`group relative text-left w-full ${
         large ? "h-[420px] md:h-[520px]" : "h-[300px] md:h-[360px]"
       } ${drink.soldOut ? "cursor-not-allowed" : ""}`}
-      style={{ background: drink.accent }}
     >
-      <motion.div style={{ y }} className={`absolute inset-0 ${drink.soldOut ? "grayscale opacity-60" : ""}`}>
-        <VideoBg
-          src={drink.video}
-          overlay="from-transparent via-transparent to-black/80"
-        />
-      </motion.div>
-
-      {drink.badge && (
-        <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-medium ${
-          drink.soldOut ? "bg-black/70 text-white border border-white/20" : "bg-primary text-primary-foreground"
-        }`}>
-          {drink.badge}
-        </div>
+      {/* Stacked layers behind, чтобы было видно — внутри несколько вкусов */}
+      {hasFlavors && !drink.soldOut && (
+        <>
+          <div
+            aria-hidden
+            className="absolute inset-x-3 -bottom-2 top-3 rounded-3xl opacity-50"
+            style={{ background: drink.accent, transform: "translateY(8px) scale(0.96)" }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-2 -bottom-1 top-2 rounded-3xl opacity-75"
+            style={{ background: drink.accent, transform: "translateY(4px) scale(0.98)" }}
+          />
+        </>
       )}
 
-      {drink.soldOut && (
-        <div className="absolute inset-0 z-[5] flex items-center justify-center pointer-events-none">
-          <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur text-white text-xs uppercase tracking-[0.3em] border border-white/15">
-            закончилось
+      <div
+        className="relative h-full w-full overflow-hidden rounded-3xl"
+        style={{ background: drink.accent }}
+      >
+        <motion.div style={{ y }} className={`absolute inset-0 ${drink.soldOut ? "grayscale opacity-60" : ""}`}>
+          <VideoBg
+            src={drink.video}
+            overlay="from-transparent via-transparent to-black/80"
+          />
+        </motion.div>
+
+        {drink.badge && (
+          <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-medium ${
+            drink.soldOut ? "bg-black/70 text-white border border-white/20" : "bg-primary text-primary-foreground"
+          }`}>
+            {drink.badge}
           </div>
-        </div>
-      )}
-
-      <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6 text-white">
-        <h3 className={`font-display tracking-tight ${large ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"}`}>
-          {drink.name}
-        </h3>
-        {drink.subtitle && (
-          <p className="text-xs md:text-sm opacity-75 mt-1">{drink.subtitle}</p>
         )}
-        <div className="flex items-center justify-between mt-4">
-          <span className={`font-display text-lg tabular-nums ${drink.soldOut ? "line-through opacity-60" : ""}`}>
-            {drink.price} ₽
-          </span>
-          {drink.soldOut ? (
-            <span className="text-[10px] uppercase tracking-[0.2em] opacity-70">скоро вернётся</span>
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center group-hover:bg-white group-hover:text-black transition">
-              <Plus className="w-4 h-4" />
+
+        {hasFlavors && !drink.soldOut && (
+          <div className="absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-white text-[11px] tracking-wide border border-white/20">
+            <Layers className="w-3 h-3" />
+            <span>{drink.flavors!.length} вкусов · выбрать</span>
+          </div>
+        )}
+
+        {drink.soldOut && (
+          <div className="absolute inset-0 z-[5] flex items-center justify-center pointer-events-none">
+            <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur text-white text-xs uppercase tracking-[0.3em] border border-white/15">
+              закончилось
             </div>
+          </div>
+        )}
+
+        <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6 text-white">
+          <h3 className={`font-display tracking-tight ${large ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"}`}>
+            {drink.name}
+          </h3>
+          {drink.subtitle && (
+            <p className="text-xs md:text-sm opacity-75 mt-1">{drink.subtitle}</p>
           )}
+          <div className="flex items-center justify-between mt-4">
+            <span className={`font-display text-lg tabular-nums ${drink.soldOut ? "line-through opacity-60" : ""}`}>
+              {hasFlavors && !drink.soldOut ? "от " : ""}{drink.price} ₽
+            </span>
+            {drink.soldOut ? (
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-70">скоро вернётся</span>
+            ) : hasFlavors ? (
+              <div className="px-3 h-10 rounded-full bg-white/15 backdrop-blur-md flex items-center gap-1.5 text-xs group-hover:bg-white group-hover:text-black transition">
+                <Layers className="w-3.5 h-3.5" />
+                <span>выбрать вкус</span>
+              </div>
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center group-hover:bg-white group-hover:text-black transition">
+                <Plus className="w-4 h-4" />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </motion.button>
