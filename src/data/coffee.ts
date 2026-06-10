@@ -21,6 +21,7 @@ export type Drink = {
   milks: Addon[];
   toppings: Addon[];
   variants: Addon[]; // related variants (горячая версия, со льдом и пр.)
+  flavors?: Addon[]; // выбор вкуса — карточка показывает, что внутри несколько вкусов
   soldOut?: boolean; // остатки закончились — не доступен для заказа
 };
 
