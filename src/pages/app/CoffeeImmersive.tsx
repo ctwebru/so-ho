@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
-import { Plus, X, Check, ChevronDown, Coffee as CoffeeIcon, Sparkles } from "lucide-react";
+import { Plus, X, Check, ChevronDown, Coffee as CoffeeIcon, Sparkles, Layers } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -303,6 +303,7 @@ function DrinkCard({
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
+  const hasFlavors = !!drink.flavors && drink.flavors.length > 0;
   return (
     <motion.button
       ref={ref}
@@ -310,52 +311,84 @@ function DrinkCard({
       disabled={drink.soldOut}
       whileHover={drink.soldOut ? undefined : { y: -4 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className={`group relative overflow-hidden rounded-3xl text-left w-full ${
+      className={`group relative text-left w-full ${
         large ? "h-[420px] md:h-[520px]" : "h-[300px] md:h-[360px]"
       } ${drink.soldOut ? "cursor-not-allowed" : ""}`}
-      style={{ background: drink.accent }}
     >
-      <motion.div style={{ y }} className={`absolute inset-0 ${drink.soldOut ? "grayscale opacity-60" : ""}`}>
-        <VideoBg
-          src={drink.video}
-          overlay="from-transparent via-transparent to-black/80"
-        />
-      </motion.div>
-
-      {drink.badge && (
-        <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-medium ${
-          drink.soldOut ? "bg-black/70 text-white border border-white/20" : "bg-primary text-primary-foreground"
-        }`}>
-          {drink.badge}
-        </div>
+      {/* Stacked layers behind, чтобы было видно — внутри несколько вкусов */}
+      {hasFlavors && !drink.soldOut && (
+        <>
+          <div
+            aria-hidden
+            className="absolute inset-x-3 -bottom-2 top-3 rounded-3xl opacity-50"
+            style={{ background: drink.accent, transform: "translateY(8px) scale(0.96)" }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-2 -bottom-1 top-2 rounded-3xl opacity-75"
+            style={{ background: drink.accent, transform: "translateY(4px) scale(0.98)" }}
+          />
+        </>
       )}
 
-      {drink.soldOut && (
-        <div className="absolute inset-0 z-[5] flex items-center justify-center pointer-events-none">
-          <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur text-white text-xs uppercase tracking-[0.3em] border border-white/15">
-            закончилось
+      <div
+        className="relative h-full w-full overflow-hidden rounded-3xl"
+        style={{ background: drink.accent }}
+      >
+        <motion.div style={{ y }} className={`absolute inset-0 ${drink.soldOut ? "grayscale opacity-60" : ""}`}>
+          <VideoBg
+            src={drink.video}
+            overlay="from-transparent via-transparent to-black/80"
+          />
+        </motion.div>
+
+        {drink.badge && (
+          <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-medium ${
+            drink.soldOut ? "bg-black/70 text-white border border-white/20" : "bg-primary text-primary-foreground"
+          }`}>
+            {drink.badge}
           </div>
-        </div>
-      )}
-
-      <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6 text-white">
-        <h3 className={`font-display tracking-tight ${large ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"}`}>
-          {drink.name}
-        </h3>
-        {drink.subtitle && (
-          <p className="text-xs md:text-sm opacity-75 mt-1">{drink.subtitle}</p>
         )}
-        <div className="flex items-center justify-between mt-4">
-          <span className={`font-display text-lg tabular-nums ${drink.soldOut ? "line-through opacity-60" : ""}`}>
-            {drink.price} ₽
-          </span>
-          {drink.soldOut ? (
-            <span className="text-[10px] uppercase tracking-[0.2em] opacity-70">скоро вернётся</span>
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center group-hover:bg-white group-hover:text-black transition">
-              <Plus className="w-4 h-4" />
+
+        {hasFlavors && !drink.soldOut && (
+          <div className="absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur-md text-white text-[11px] tracking-wide border border-white/20">
+            <Layers className="w-3 h-3" />
+            <span>{drink.flavors!.length} вкусов · выбрать</span>
+          </div>
+        )}
+
+        {drink.soldOut && (
+          <div className="absolute inset-0 z-[5] flex items-center justify-center pointer-events-none">
+            <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur text-white text-xs uppercase tracking-[0.3em] border border-white/15">
+              закончилось
             </div>
+          </div>
+        )}
+
+        <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6 text-white">
+          <h3 className={`font-display tracking-tight ${large ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"}`}>
+            {drink.name}
+          </h3>
+          {drink.subtitle && (
+            <p className="text-xs md:text-sm opacity-75 mt-1">{drink.subtitle}</p>
           )}
+          <div className="flex items-center justify-between mt-4">
+            <span className={`font-display text-lg tabular-nums ${drink.soldOut ? "line-through opacity-60" : ""}`}>
+              {hasFlavors && !drink.soldOut ? "от " : ""}{drink.price} ₽
+            </span>
+            {drink.soldOut ? (
+              <span className="text-[10px] uppercase tracking-[0.2em] opacity-70">скоро вернётся</span>
+            ) : hasFlavors ? (
+              <div className="px-3 h-10 rounded-full bg-white/15 backdrop-blur-md flex items-center gap-1.5 text-xs group-hover:bg-white group-hover:text-black transition">
+                <Layers className="w-3.5 h-3.5" />
+                <span>выбрать вкус</span>
+              </div>
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center group-hover:bg-white group-hover:text-black transition">
+                <Plus className="w-4 h-4" />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </motion.button>
@@ -368,8 +401,10 @@ function DrinkDetail({ drink, onClose }: { drink: Drink; onClose: () => void }) 
   const [size, setSize] = useState(drink.defaultSize);
   const [milk, setMilk] = useState<string>(drink.milks[0]?.id ?? "");
   const [picked, setPicked] = useState<string[]>([]);
-  const [openSheet, setOpenSheet] = useState<null | "milk" | "topping">(null);
+  const [flavor, setFlavor] = useState<string>("");
+  const [openSheet, setOpenSheet] = useState<null | "milk" | "topping" | "flavor">(null);
 
+  const hasFlavors = !!drink.flavors && drink.flavors.length > 0;
   const sizeMul = size === "S" ? 0.85 : size === "L" ? 1.15 : 1;
   const milkPrice = drink.milks.find((m) => m.id === milk)?.price ?? 0;
   const toppingPrice = picked.reduce(
@@ -382,9 +417,15 @@ function DrinkDetail({ drink, onClose }: { drink: Drink; onClose: () => void }) 
     setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
 
   const order = () => {
+    if (hasFlavors && !flavor) {
+      toast.error("Выберите вкус", { description: `У напитка ${drink.flavors!.length} вариантов вкуса` });
+      setOpenSheet("flavor");
+      return;
+    }
     const milkName = drink.milks.find((m) => m.id === milk)?.name;
+    const flavorName = drink.flavors?.find((f) => f.id === flavor)?.name;
     const tops = picked.map((id) => drink.toppings.find((t) => t.id === id)?.name).filter(Boolean).join(", ");
-    const desc = `${drink.name} (${size})${milkName && milkName !== "Без молока" ? `, ${milkName}` : ""}${tops ? `, ${tops}` : ""}`;
+    const desc = `${drink.name} (${size})${flavorName ? `, вкус: ${flavorName}` : ""}${milkName && milkName !== "Без молока" ? `, ${milkName}` : ""}${tops ? `, ${tops}` : ""}`;
     addOrder(desc, total);
     toast.success("В корзине", { description: `${desc} · ${total} ₽` });
     onClose();
@@ -455,6 +496,35 @@ function DrinkDetail({ drink, onClose }: { drink: Drink; onClose: () => void }) 
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Flavor picker — обязательный выбор для коктейлей */}
+        {hasFlavors && (
+          <div className="px-6 md:px-10 mb-4">
+            <button
+              onClick={() => setOpenSheet("flavor")}
+              className={`w-full rounded-2xl p-4 flex items-center gap-4 text-left transition border ${
+                flavor
+                  ? "bg-white text-black border-white"
+                  : "bg-white/10 backdrop-blur text-white border-white/30 hover:bg-white/15 animate-pulse"
+              }`}
+            >
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
+                flavor ? "bg-black/10" : "bg-white/15"
+              }`}>
+                <Layers className="w-5 h-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[10px] uppercase tracking-[0.25em] opacity-60">
+                  {flavor ? "вкус" : `выбрать вкус · ${drink.flavors!.length} вариантов`}
+                </div>
+                <div className="font-display text-lg truncate">
+                  {drink.flavors!.find((f) => f.id === flavor)?.name ?? "не выбран"}
+                </div>
+              </div>
+              <ChevronDown className="w-4 h-4 opacity-60 -rotate-90" />
+            </button>
           </div>
         )}
 
@@ -543,6 +613,19 @@ function DrinkDetail({ drink, onClose }: { drink: Drink; onClose: () => void }) 
           {openSheet === "topping" && (
             <BottomSheet onClose={() => setOpenSheet(null)} title="Посыпки" macro={drink.macro}>
               <AddonGrid items={drink.toppings} selected={picked} onPick={togglePick} />
+            </BottomSheet>
+          )}
+          {openSheet === "flavor" && hasFlavors && (
+            <BottomSheet onClose={() => setOpenSheet(null)} title={`Вкус · ${drink.flavors!.length} вариантов`} macro={drink.macro}>
+              <AddonGrid
+                items={drink.flavors!}
+                selected={[flavor]}
+                onPick={(id) => {
+                  setFlavor(id);
+                  setOpenSheet(null);
+                }}
+                singleSelect
+              />
             </BottomSheet>
           )}
         </AnimatePresence>
