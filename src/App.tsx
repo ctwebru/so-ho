@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/state/ThemeProvider";
 import Index from "./pages/Index.tsx";
 import ComingSoon from "./pages/ComingSoon.tsx";
 import Coffee from "./pages/Coffee.tsx";
+import Login from "./pages/Login.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AppLayout from "./layouts/AppLayout";
 import Dashboard from "./pages/app/Dashboard";
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/" element={<ComingSoon />} />
             <Route path="/preview" element={<Index />} />
             <Route path="/coffee" element={<Coffee />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/app" element={<AppLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="plans" element={<PlansPage />} />
