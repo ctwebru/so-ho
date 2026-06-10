@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
-import { Plus, X, Check, ChevronDown, Coffee as CoffeeIcon, Sparkles } from "lucide-react";
+import { Plus, X, Check, ChevronDown, Coffee as CoffeeIcon, Sparkles, Layers } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
