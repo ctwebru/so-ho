@@ -137,43 +137,27 @@ const CafePage = () => {
           </div>
         )}
 
-        <div className="space-y-2 mb-5 pt-5 border-t border-border">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Доставка</p>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={() => setDelivery("pickup")}
-              className={`p-3 rounded-xl text-sm transition ${delivery === "pickup" ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-accent/30"}`}
-            >
-              Самовывоз
-            </button>
-            <button
-              onClick={() => setDelivery("table")}
-              className={`p-3 rounded-xl text-sm transition ${delivery === "table" ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-accent/30"}`}
-            >
-              К месту
-            </button>
-          </div>
-          {delivery === "table" && (
-            <input
-              type="number"
-              min={1}
-              max={15}
-              placeholder="№ места"
-              value={tableNo}
-              onChange={(e) => setTableNo(e.target.value)}
-              className="mt-2 w-full px-3 py-2 rounded-xl bg-secondary text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-          )}
-        </div>
-
-        <div className="flex justify-between items-baseline mb-4 pt-4 border-t border-border">
+        <div className="flex justify-between items-baseline mb-4 pt-5 border-t border-border">
           <span className="text-sm text-muted-foreground">Итого</span>
           <span className="font-display text-2xl font-semibold tabular-nums">{total} ₽</span>
         </div>
-        <Button className="w-full" disabled={total === 0} onClick={order}>
-          Оплатить
+        <Button className="w-full" disabled={total === 0} onClick={onCheckoutClick}>
+          Оформить заказ
         </Button>
+        {!isAuthenticated && total > 0 && (
+          <p className="text-[11px] text-muted-foreground text-center mt-3">
+            Для оформления потребуется вход в кабинет
+          </p>
+        )}
       </aside>
+
+      <CheckoutDialog
+        open={checkoutOpen}
+        onOpenChange={setCheckoutOpen}
+        cartSummary={cartSummary}
+        total={total}
+        onConfirm={onOrderConfirmed}
+      />
     </div>
   );
 };
