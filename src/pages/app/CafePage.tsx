@@ -99,7 +99,11 @@ const CafePage = () => {
             <h3 className="font-display text-xl mb-4">Мои заказы</h3>
             <div className="rounded-2xl bg-card border border-border divide-y divide-border overflow-hidden">
               {orders.map((o) => (
-                <div key={o.id} className="flex items-center gap-4 p-4">
+                <button
+                  key={o.id}
+                  onClick={() => navigate(`/app/orders/${o.id}`)}
+                  className="w-full text-left flex items-center gap-4 p-4 hover:bg-secondary/40 transition"
+                >
                   <Coffee className="w-4 h-4 text-accent" />
                   <div className="flex-1 min-w-0">
                     <div className="text-sm truncate">{o.items}</div>
@@ -109,7 +113,7 @@ const CafePage = () => {
                   <span className={`text-xs px-2 py-1 rounded-full ${
                     o.status === "Готов" ? "bg-highlight/30" : "bg-secondary text-muted-foreground"
                   }`}>{o.status}</span>
-                </div>
+                </button>
               ))}
             </div>
           </div>
