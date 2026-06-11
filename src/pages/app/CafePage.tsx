@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Coffee } from "lucide-react";
 import { toast } from "sonner";
 import { MENU } from "@/data/mock";
 import { useAppState } from "@/state/AppState";
+import CheckoutDialog from "@/components/app/CheckoutDialog";
+
+const CART_KEY = "soho_cart_v1";
 
 const CafePage = () => {
-  const { addOrder, orders, selectedSeat } = useAppState();
-  const [cart, setCart] = useState<Record<string, number>>({});
-  const [delivery, setDelivery] = useState<"pickup" | "table">("pickup");
-  const [tableNo, setTableNo] = useState<string>(selectedSeat ? String(selectedSeat) : "");
+  const navigate = useNavigate();
+  const { orders, isAuthenticated } = useAppState();
+  const [cart, setCart] = useState<Record<string, number>>(() => {
+    try { return JSON.parse(sessionStorage.getItem(CART_KEY) || "{}"); } catch { return {}; }
+  });
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+
+  useEffect(() => {
+    try { sessionStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch {}
+  }, [cart]);
 
   const add = (id: string) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }));
   const sub = (id: string) =>
@@ -26,19 +36,25 @@ const CafePage = () => {
     return sum + (item ? item.price * qty : 0);
   }, 0);
 
-  const order = () => {
+  const cartSummary = Object.entries(cart)
+    .map(([id, qty]) => `${MENU.find((m) => m.id === id)!.name} ×${qty}`)
+    .join(", ");
+
+  const onCheckoutClick = () => {
     if (total === 0) return;
-    if (delivery === "table" && !tableNo) {
-      toast.error("Укажи номер места");
+    if (!isAuthenticated) {
+      toast("Сначала войдите в кабинет", { description: "Это займёт меньше минуты" });
+      navigate("/login?redirect=/app/cafe");
       return;
     }
-    const items = Object.entries(cart)
-      .map(([id, qty]) => `${MENU.find((m) => m.id === id)!.name} ×${qty}`)
-      .join(", ");
-    const suffix = delivery === "pickup" ? " · самовывоз" : ` · к месту №${tableNo}`;
-    addOrder(items + suffix, total);
-    toast.success("Заказ принят", { description: `${total} ₽${suffix}` });
+    setCheckoutOpen(true);
+  };
+
+  const onOrderConfirmed = (orderId: string) => {
+    setCheckoutOpen(false);
     setCart({});
+    toast.success("Заказ принят", { description: `№ ${orderId} · ${total} ₽` });
+    navigate(`/app/orders/${orderId}`);
   };
 
   const cats = ["Напитки", "Десерты"] as const;
