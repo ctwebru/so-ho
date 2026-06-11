@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Phone, PhoneCall, ShieldCheck, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Logo from "@/components/flow/Logo";
 import heroImg from "@/assets/real/cowork-view.png";
+import { useAppState } from "@/state/AppState";
 
 type Step = "phone" | "call" | "success";
 
