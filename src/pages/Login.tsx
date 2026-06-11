@@ -32,6 +32,9 @@ const formatPhone = (raw: string) => {
 
 const Login = () => {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const redirect = params.get("redirect") || "/app";
+  const { login } = useAppState();
   const [step, setStep] = useState<Step>("phone");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -69,9 +72,10 @@ const Login = () => {
   const handleConfirmCall = async () => {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 900));
+    login(phone);
     setStep("success");
     setLoading(false);
-    setTimeout(() => navigate("/app"), 1200);
+    setTimeout(() => navigate(redirect, { replace: true }), 1200);
   };
 
   return (
