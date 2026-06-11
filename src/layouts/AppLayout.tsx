@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, matchPath } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app/AppSidebar";
 import { useAppState } from "@/state/AppState";
@@ -17,7 +17,10 @@ const titles: Record<string, { title: string; sub: string }> = {
 
 const AppLayout = () => {
   const { pathname } = useLocation();
-  const meta = titles[pathname] ?? { title: "SO-HO!", sub: "" };
+  const isOrder = matchPath("/app/orders/:id", pathname);
+  const meta = isOrder
+    ? { title: "Статус заказа", sub: "Следим за приготовлением" }
+    : titles[pathname] ?? { title: "SO-HO!", sub: "" };
   const { user } = useAppState();
 
   return (

@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Coffee } from "lucide-react";
 import { toast } from "sonner";
 import { MENU } from "@/data/mock";
 import { useAppState } from "@/state/AppState";
+import CheckoutDialog from "@/components/app/CheckoutDialog";
+
+const CART_KEY = "soho_cart_v1";
 
 const CafePage = () => {
-  const { addOrder, orders, selectedSeat } = useAppState();
-  const [cart, setCart] = useState<Record<string, number>>({});
-  const [delivery, setDelivery] = useState<"pickup" | "table">("pickup");
-  const [tableNo, setTableNo] = useState<string>(selectedSeat ? String(selectedSeat) : "");
+  const navigate = useNavigate();
+  const { orders, isAuthenticated } = useAppState();
+  const [cart, setCart] = useState<Record<string, number>>(() => {
+    try { return JSON.parse(sessionStorage.getItem(CART_KEY) || "{}"); } catch { return {}; }
+  });
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+
+  useEffect(() => {
+    try { sessionStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch {}
+  }, [cart]);
 
   const add = (id: string) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }));
   const sub = (id: string) =>
@@ -26,19 +36,25 @@ const CafePage = () => {
     return sum + (item ? item.price * qty : 0);
   }, 0);
 
-  const order = () => {
+  const cartSummary = Object.entries(cart)
+    .map(([id, qty]) => `${MENU.find((m) => m.id === id)!.name} ×${qty}`)
+    .join(", ");
+
+  const onCheckoutClick = () => {
     if (total === 0) return;
-    if (delivery === "table" && !tableNo) {
-      toast.error("Укажи номер места");
+    if (!isAuthenticated) {
+      toast("Сначала войдите в кабинет", { description: "Это займёт меньше минуты" });
+      navigate("/login?redirect=/app/cafe");
       return;
     }
-    const items = Object.entries(cart)
-      .map(([id, qty]) => `${MENU.find((m) => m.id === id)!.name} ×${qty}`)
-      .join(", ");
-    const suffix = delivery === "pickup" ? " · самовывоз" : ` · к месту №${tableNo}`;
-    addOrder(items + suffix, total);
-    toast.success("Заказ принят", { description: `${total} ₽${suffix}` });
+    setCheckoutOpen(true);
+  };
+
+  const onOrderConfirmed = (orderId: string) => {
+    setCheckoutOpen(false);
     setCart({});
+    toast.success("Заказ принят", { description: `№ ${orderId} · ${total} ₽` });
+    navigate(`/app/orders/${orderId}`);
   };
 
   const cats = ["Напитки", "Десерты"] as const;
@@ -83,7 +99,11 @@ const CafePage = () => {
             <h3 className="font-display text-xl mb-4">Мои заказы</h3>
             <div className="rounded-2xl bg-card border border-border divide-y divide-border overflow-hidden">
               {orders.map((o) => (
-                <div key={o.id} className="flex items-center gap-4 p-4">
+                <button
+                  key={o.id}
+                  onClick={() => navigate(`/app/orders/${o.id}`)}
+                  className="w-full text-left flex items-center gap-4 p-4 hover:bg-secondary/40 transition"
+                >
                   <Coffee className="w-4 h-4 text-accent" />
                   <div className="flex-1 min-w-0">
                     <div className="text-sm truncate">{o.items}</div>
@@ -93,7 +113,7 @@ const CafePage = () => {
                   <span className={`text-xs px-2 py-1 rounded-full ${
                     o.status === "Готов" ? "bg-highlight/30" : "bg-secondary text-muted-foreground"
                   }`}>{o.status}</span>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -121,43 +141,27 @@ const CafePage = () => {
           </div>
         )}
 
-        <div className="space-y-2 mb-5 pt-5 border-t border-border">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Доставка</p>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={() => setDelivery("pickup")}
-              className={`p-3 rounded-xl text-sm transition ${delivery === "pickup" ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-accent/30"}`}
-            >
-              Самовывоз
-            </button>
-            <button
-              onClick={() => setDelivery("table")}
-              className={`p-3 rounded-xl text-sm transition ${delivery === "table" ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-accent/30"}`}
-            >
-              К месту
-            </button>
-          </div>
-          {delivery === "table" && (
-            <input
-              type="number"
-              min={1}
-              max={15}
-              placeholder="№ места"
-              value={tableNo}
-              onChange={(e) => setTableNo(e.target.value)}
-              className="mt-2 w-full px-3 py-2 rounded-xl bg-secondary text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-          )}
-        </div>
-
-        <div className="flex justify-between items-baseline mb-4 pt-4 border-t border-border">
+        <div className="flex justify-between items-baseline mb-4 pt-5 border-t border-border">
           <span className="text-sm text-muted-foreground">Итого</span>
           <span className="font-display text-2xl font-semibold tabular-nums">{total} ₽</span>
         </div>
-        <Button className="w-full" disabled={total === 0} onClick={order}>
-          Оплатить
+        <Button className="w-full" disabled={total === 0} onClick={onCheckoutClick}>
+          Оформить заказ
         </Button>
+        {!isAuthenticated && total > 0 && (
+          <p className="text-[11px] text-muted-foreground text-center mt-3">
+            Для оформления потребуется вход в кабинет
+          </p>
+        )}
       </aside>
+
+      <CheckoutDialog
+        open={checkoutOpen}
+        onOpenChange={setCheckoutOpen}
+        cartSummary={cartSummary}
+        total={total}
+        onConfirm={onOrderConfirmed}
+      />
     </div>
   );
 };
