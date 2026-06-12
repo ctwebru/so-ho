@@ -50,9 +50,7 @@ export default function QrMenu() {
 
       <main className="max-w-xl mx-auto px-4 py-6 space-y-8">
         {CATEGORIES.map((cat) => {
-          const drinks = DRINKS.filter(
-            (d) => d.category === cat.id && !d.soldOut
-          );
+          const drinks = DRINKS.filter((d) => d.category === cat.id);
           if (drinks.length === 0) return null;
 
           return (
@@ -65,15 +63,15 @@ export default function QrMenu() {
                 {drinks.map((drink) => (
                   <div
                     key={drink.id}
-                    className="flex items-center justify-between py-2.5 gap-3"
+                    className={`flex items-center justify-between py-2.5 gap-3 ${drink.soldOut ? "opacity-55" : ""}`}
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-sm leading-snug">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className={`font-medium text-sm leading-snug ${drink.soldOut ? "line-through" : ""}`}>
                           {drink.name}
                         </span>
                         {drink.badge && (
-                          <span className="shrink-0 text-[9px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                          <span className={`shrink-0 text-[9px] px-1.5 py-0.5 rounded-full font-medium ${drink.soldOut ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary"}`}>
                             {drink.badge}
                           </span>
                         )}
@@ -86,7 +84,7 @@ export default function QrMenu() {
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0">
-                      <span className="font-display text-base tabular-nums leading-none">
+                      <span className={`font-display text-base tabular-nums leading-none ${drink.soldOut ? "line-through" : ""}`}>
                         {drink.price} ₽
                       </span>
                       <button
