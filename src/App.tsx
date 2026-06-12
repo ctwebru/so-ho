@@ -10,6 +10,7 @@ import ComingSoon from "./pages/ComingSoon.tsx";
 import Coffee from "./pages/Coffee.tsx";
 import Login from "./pages/Login.tsx";
 import Checkout from "./pages/Checkout.tsx";
+import QrMenu from "./pages/QrMenu.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AppLayout from "./layouts/AppLayout";
 import Dashboard from "./pages/app/Dashboard";
