@@ -171,8 +171,9 @@ const Club = () => {
                   </div>
                   <div className="md:col-span-6">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
-                        {cat?.emoji} {cat?.title.split(" ")[0]}
+                      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+                        {cat && <cat.icon className="w-3 h-3" strokeWidth={2} />}
+                        {cat?.title.split(" ")[0]}
                       </span>
                       {e.ageLabel && (
                         <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full border border-border text-muted-foreground">
