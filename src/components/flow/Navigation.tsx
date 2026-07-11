@@ -7,6 +7,7 @@ const links = [
   { label: "Концепция", href: "/#concept" },
   { label: "Кофе", href: "/coffee" },
   { label: "Тарифы", href: "/#plans" },
+  { label: "Клуб", href: "/club" },
   { label: "Афиша", href: "/#events-teaser" },
   { label: "Контакты", href: "/#contact" },
 ];
