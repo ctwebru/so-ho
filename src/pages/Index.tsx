@@ -4,6 +4,7 @@ import ConceptShowcase from "@/components/flow/ConceptShowcase";
 import Manifesto from "@/components/flow/Manifesto";
 import Plans from "@/components/flow/Plans";
 import EventsTeaser from "@/components/flow/EventsTeaser";
+import ClubTeaser from "@/components/flow/ClubTeaser";
 import CtaSection from "@/components/flow/CtaSection";
 import Footer from "@/components/flow/Footer";
 
@@ -16,6 +17,7 @@ const Index = () => {
         <ConceptShowcase />
         <Manifesto />
         <Plans />
+        <ClubTeaser />
         <EventsTeaser />
         <CtaSection />
       </main>

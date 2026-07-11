@@ -11,6 +11,7 @@ import Coffee from "./pages/Coffee.tsx";
 import Login from "./pages/Login.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import QrMenu from "./pages/QrMenu.tsx";
+import Club from "./pages/Club.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AppLayout from "./layouts/AppLayout";
 import Dashboard from "./pages/app/Dashboard";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/qr-menu" element={<QrMenu />} />
+            <Route path="/club" element={<Club />} />
             <Route path="/app" element={<AppLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="plans" element={<PlansPage />} />
