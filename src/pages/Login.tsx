@@ -107,7 +107,7 @@ const Login = () => {
                   Вход в кабинет
                 </div>
                 <h1 className="font-display text-3xl md:text-4xl font-semibold leading-tight mb-3">
-                  Привет 👋
+                  Привет
                 </h1>
                 <p className="text-muted-foreground text-sm mb-8">
                   Введи свой номер — мы скажем, по какому короткому номеру позвонить,
