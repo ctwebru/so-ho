@@ -116,7 +116,9 @@ const Club = () => {
                 id={c.id}
                 className="scroll-mt-24 rounded-3xl bg-card border border-border p-6 hover:shadow-soft hover:-translate-y-0.5 transition-all"
               >
-                <div className="text-3xl mb-3">{c.emoji}</div>
+                <div className="w-12 h-12 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mb-4">
+                  <c.icon className="w-5 h-5" strokeWidth={1.75} />
+                </div>
                 <div className="font-display text-xl font-semibold mb-2">{c.title}</div>
                 <p className="text-sm text-muted-foreground">{c.desc}</p>
               </a>
@@ -169,8 +171,9 @@ const Club = () => {
                   </div>
                   <div className="md:col-span-6">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
-                        {cat?.emoji} {cat?.title.split(" ")[0]}
+                      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+                        {cat && <cat.icon className="w-3 h-3" strokeWidth={2} />}
+                        {cat?.title.split(" ")[0]}
                       </span>
                       {e.ageLabel && (
                         <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full border border-border text-muted-foreground">

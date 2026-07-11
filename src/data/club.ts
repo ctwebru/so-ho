@@ -1,3 +1,5 @@
+import { Palette, Baby, Dices, DoorOpen, type LucideIcon } from "lucide-react";
+
 export type ClubCategory =
   | "kids"
   | "adults"
@@ -24,31 +26,31 @@ export const CLUB_CATEGORIES: {
   id: ClubCategory;
   title: string;
   desc: string;
-  emoji: string;
+  icon: LucideIcon;
 }[] = [
   {
     id: "adults",
     title: "Мастер-классы для взрослых",
     desc: "Каллиграфия, керамика, кофейные каппинги, винные вечера.",
-    emoji: "🎨",
+    icon: Palette,
   },
   {
     id: "kids",
     title: "Детские мастер-классы",
     desc: "Творческие субботы: рисование, лепка, наука-шоу.",
-    emoji: "🧒",
+    icon: Baby,
   },
   {
     id: "games",
     title: "Игровые вечера",
     desc: "Настолки, мафия, интерактивные квизы по четвергам.",
-    emoji: "🎲",
+    icon: Dices,
   },
   {
     id: "rent",
     title: "Аренда пространства",
     desc: "Проведи свой мастер-класс, лекцию или встречу у нас.",
-    emoji: "🏠",
+    icon: DoorOpen,
   },
 ];
 

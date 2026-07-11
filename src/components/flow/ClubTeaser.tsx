@@ -35,7 +35,9 @@ const ClubTeaser = () => {
             to={`/club#${c.id}`}
             className="rounded-3xl bg-card border border-border p-6 hover:shadow-soft hover:-translate-y-0.5 transition-all"
           >
-            <div className="text-3xl mb-3">{c.emoji}</div>
+            <div className="w-11 h-11 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mb-4">
+              <c.icon className="w-5 h-5" strokeWidth={1.75} />
+            </div>
             <div className="font-display text-xl font-semibold mb-2">{c.title}</div>
             <p className="text-sm text-muted-foreground">{c.desc}</p>
           </Link>
