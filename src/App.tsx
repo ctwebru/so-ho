@@ -34,7 +34,8 @@ const App = () => (
        <AppStateProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<ComingSoon />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/soon" element={<ComingSoon />} />
             <Route path="/preview" element={<Index />} />
             <Route path="/coffee" element={<Coffee />} />
             <Route path="/login" element={<Login />} />
