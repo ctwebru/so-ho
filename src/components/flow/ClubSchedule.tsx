@@ -1,13 +1,20 @@
 import { useMemo, useState } from "react";
-import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+} from "@/components/ui/hover-card";
 import {
   KIND_META,
   WEEKLY_SCHEDULE,
   WEEK_DAYS,
   todayId,
+  type ScheduleSlot,
   type WeekDayId,
 } from "@/data/clubSchedule";
 import { CLUB_EVENTS, type ClubEvent } from "@/data/club";
+import EventDetailDialog, { type EventDetail } from "./EventDetailDialog";
 
 type Mode = "week" | "day" | "month";
 
@@ -16,8 +23,11 @@ const RU_MONTHS_FULL = [
   "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
   "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь",
 ];
+const RU_MONTHS_GEN = [
+  "января", "февраля", "марта", "апреля", "мая", "июня",
+  "июля", "августа", "сентября", "октября", "ноября", "декабря",
+];
 
-// Parse "18 МАЯ" → { day: 18, month: 4 }
 const parseEventDate = (s: string): { day: number; month: number } | null => {
   const m = s.trim().match(/^(\d{1,2})\s+([А-ЯЁ]+)$/i);
   if (!m) return null;
@@ -29,15 +39,41 @@ const parseEventDate = (s: string): { day: number; month: number } | null => {
 
 const jsDowToWeekDayId = (dow: number): WeekDayId => (dow === 0 ? 7 : dow) as WeekDayId;
 
+const slotToDetail = (s: ScheduleSlot, dayFull: string): EventDetail => ({
+  id: `slot-${dayFull}-${s.start}-${s.kind}`,
+  kind: s.kind,
+  title: s.title,
+  description:
+    s.note ??
+    "Регулярная активность соседского клуба. Приходи один, с семьёй или зови компанию — место найдётся.",
+  dateLabel: dayFull,
+  time: `${s.start}–${s.end}`,
+  note: "Записываться заранее не обязательно, но если планируешь прийти компанией — предупреди нас.",
+});
+
+const eventToDetail = (e: ClubEvent): EventDetail => ({
+  id: `event-${e.id}`,
+  kind: "special",
+  title: e.title,
+  description: e.desc,
+  dateLabel: e.date,
+  time: e.time,
+  duration: e.duration,
+  host: e.host,
+  ageLabel: e.ageLabel,
+  seatsLeft: e.seatsLeft,
+  image: e.image,
+});
+
 const ClubSchedule = () => {
   const [mode, setMode] = useState<Mode>("week");
   const [activeDay, setActiveDay] = useState<WeekDayId>(todayId());
+  const [detail, setDetail] = useState<EventDetail | null>(null);
 
   const now = new Date();
   const [monthCursor, setMonthCursor] = useState(() => new Date(now.getFullYear(), now.getMonth(), 1));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  // For week view: attach specials by day-of-week (demo scatter as before)
   const specialsByDay = useMemo(() => {
     const map = new Map<WeekDayId, ClubEvent[]>();
     CLUB_EVENTS.forEach((e, i) => {
@@ -49,7 +85,6 @@ const ClubSchedule = () => {
     return map;
   }, []);
 
-  // For month view: bucket real events by date key "YYYY-M-D"
   const eventsByDate = useMemo(() => {
     const map = new Map<string, ClubEvent[]>();
     CLUB_EVENTS.forEach((e) => {
@@ -78,7 +113,7 @@ const ClubSchedule = () => {
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl">
             С 08:00 до 17:00 — тихий клуб для работы и встреч. Вечером — игры,
-            настолки и мастер-классы. Расписание регулярно пополняется.
+            настолки и мастер-классы. Всё в клубной карте, разовое посещение — 200 ₽.
           </p>
         </div>
         <div className="md:col-span-5 md:justify-self-end inline-flex rounded-full border border-border bg-card p-1 text-sm flex-wrap">
@@ -94,7 +129,6 @@ const ClubSchedule = () => {
         </div>
       </div>
 
-      {/* MONTH VIEW */}
       {mode === "month" && (
         <MonthView
           cursor={monthCursor}
@@ -102,10 +136,10 @@ const ClubSchedule = () => {
           eventsByDate={eventsByDate}
           selectedDate={selectedDate}
           onSelectDate={setSelectedDate}
+          onOpenDetail={setDetail}
         />
       )}
 
-      {/* WEEK VIEW — desktop grid */}
       {mode === "week" && (
         <div className="hidden md:block rounded-3xl border border-border bg-card overflow-hidden shadow-soft">
           <div className="grid grid-cols-7 divide-x divide-border">
@@ -137,17 +171,16 @@ const ClubSchedule = () => {
               return (
                 <div
                   key={d.id}
-                  className={`p-3 space-y-2 ${
-                    d.id === today ? "bg-accent/5" : ""
-                  }`}
+                  className={`p-3 space-y-2 ${d.id === today ? "bg-accent/5" : ""}`}
                 >
                   {slots.map((s, i) => {
                     const meta = KIND_META[s.kind];
                     const Icon = meta.icon;
                     return (
-                      <div
+                      <button
                         key={i}
-                        className={`rounded-2xl border p-3 ${meta.tone}`}
+                        onClick={() => setDetail(slotToDetail(s, d.full))}
+                        className={`w-full text-left rounded-2xl border p-3 ${meta.tone} hover:opacity-90 transition-opacity`}
                       >
                         <div className="text-[11px] uppercase tracking-widest tabular-nums opacity-80">
                           {s.start}–{s.end}
@@ -163,21 +196,22 @@ const ClubSchedule = () => {
                             {s.note}
                           </div>
                         )}
-                      </div>
+                      </button>
                     );
                   })}
                   {specials.map((e) => (
-                    <div
+                    <button
                       key={e.id}
-                      className="rounded-2xl border border-dashed border-accent/40 bg-background p-3"
+                      onClick={() => setDetail(eventToDetail(e))}
+                      className="w-full text-left rounded-2xl border border-dashed border-accent/40 bg-background p-3 hover:bg-accent/5 transition-colors"
                     >
                       <div className="text-[10px] uppercase tracking-widest text-accent flex items-center gap-1">
-                        <CalendarDays className="w-3 h-3" /> событие · {e.time}
+                        <Sparkles className="w-3 h-3" /> событие · {e.time}
                       </div>
                       <div className="font-display text-sm font-medium leading-tight mt-1">
                         {e.title}
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               );
@@ -186,7 +220,6 @@ const ClubSchedule = () => {
         </div>
       )}
 
-      {/* WEEK VIEW — mobile: day chips + list */}
       {mode === "week" && (
         <div className="md:hidden">
           <div className="flex gap-2 overflow-x-auto pb-3 -mx-6 px-6 snap-x">
@@ -218,11 +251,14 @@ const ClubSchedule = () => {
               );
             })}
           </div>
-          <DayList day={activeDay} specials={specialsByDay.get(activeDay) ?? []} />
+          <DayList
+            day={activeDay}
+            specials={specialsByDay.get(activeDay) ?? []}
+            onOpen={setDetail}
+          />
         </div>
       )}
 
-      {/* DAY VIEW */}
       {mode === "day" && (
         <div className="space-y-4">
           {WEEK_DAYS.map((d) => (
@@ -249,9 +285,10 @@ const ClubSchedule = () => {
                   const meta = KIND_META[s.kind];
                   const Icon = meta.icon;
                   return (
-                    <div
+                    <button
                       key={i}
-                      className={`rounded-2xl border p-3 ${meta.tone}`}
+                      onClick={() => setDetail(slotToDetail(s, d.full))}
+                      className={`text-left rounded-2xl border p-3 ${meta.tone} hover:opacity-90 transition-opacity`}
                     >
                       <div className="text-[11px] uppercase tracking-widest tabular-nums opacity-80">
                         {s.start}–{s.end}
@@ -267,21 +304,22 @@ const ClubSchedule = () => {
                           {s.note}
                         </div>
                       )}
-                    </div>
+                    </button>
                   );
                 })}
                 {(specialsByDay.get(d.id) ?? []).map((e) => (
-                  <div
+                  <button
                     key={e.id}
-                    className="rounded-2xl border border-dashed border-accent/40 bg-background p-3"
+                    onClick={() => setDetail(eventToDetail(e))}
+                    className="text-left rounded-2xl border border-dashed border-accent/40 bg-background p-3 hover:bg-accent/5 transition-colors"
                   >
                     <div className="text-[10px] uppercase tracking-widest text-accent flex items-center gap-1">
-                      <CalendarDays className="w-3 h-3" /> {e.date} · {e.time}
+                      <Sparkles className="w-3 h-3" /> {e.date} · {e.time}
                     </div>
                     <div className="font-display text-sm font-medium mt-1">
                       {e.title}
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -303,9 +341,11 @@ const ClubSchedule = () => {
           );
         })}
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-dashed border-accent/40 text-accent">
-          <CalendarDays className="w-3 h-3" /> Разовое событие
+          <Sparkles className="w-3 h-3" /> Разовое событие
         </span>
       </div>
+
+      <EventDetailDialog event={detail} onClose={() => setDetail(null)} />
     </section>
   );
 };
@@ -336,18 +376,25 @@ const ModeBtn = ({
 const DayList = ({
   day,
   specials,
+  onOpen,
 }: {
   day: WeekDayId;
   specials: ClubEvent[];
+  onOpen: (d: EventDetail) => void;
 }) => {
   const slots = WEEKLY_SCHEDULE[day];
+  const dayFull = WEEK_DAYS.find((w) => w.id === day)?.full ?? "";
   return (
     <div className="rounded-3xl border border-border bg-card overflow-hidden shadow-soft divide-y divide-border">
       {slots.map((s, i) => {
         const meta = KIND_META[s.kind];
         const Icon = meta.icon;
         return (
-          <div key={i} className="p-4 flex items-start gap-4">
+          <button
+            key={i}
+            onClick={() => onOpen(slotToDetail(s, dayFull))}
+            className="w-full text-left p-4 flex items-start gap-4 hover:bg-secondary/40 transition-colors"
+          >
             <div className="w-20 shrink-0">
               <div className="font-display text-base font-semibold tabular-nums">
                 {s.start}
@@ -373,11 +420,15 @@ const DayList = ({
                 </div>
               )}
             </div>
-          </div>
+          </button>
         );
       })}
       {specials.map((e) => (
-        <div key={e.id} className="p-4 flex items-start gap-4 bg-accent/5">
+        <button
+          key={e.id}
+          onClick={() => onOpen(eventToDetail(e))}
+          className="w-full text-left p-4 flex items-start gap-4 bg-accent/5 hover:bg-accent/10 transition-colors"
+        >
           <div className="w-20 shrink-0">
             <div className="font-display text-base font-semibold tabular-nums">
               {e.time}
@@ -388,16 +439,16 @@ const DayList = ({
           </div>
           <div className="flex-1 min-w-0">
             <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-dashed border-accent/40 text-accent text-[10px] uppercase tracking-widest">
-              <CalendarDays className="w-3 h-3" /> событие
+              <Sparkles className="w-3 h-3" /> событие
             </div>
             <div className="font-display text-base font-medium mt-1.5">
               {e.title}
             </div>
             <div className="text-xs text-muted-foreground mt-0.5">
-              {e.host} · {e.price} ₽
+              {e.host}
             </div>
           </div>
-        </div>
+        </button>
       ))}
     </div>
   );
@@ -409,21 +460,22 @@ const MonthView = ({
   eventsByDate,
   selectedDate,
   onSelectDate,
+  onOpenDetail,
 }: {
   cursor: Date;
   onCursor: (d: Date) => void;
   eventsByDate: Map<string, ClubEvent[]>;
   selectedDate: Date | null;
   onSelectDate: (d: Date | null) => void;
+  onOpenDetail: (d: EventDetail) => void;
 }) => {
   const year = cursor.getFullYear();
   const month = cursor.getMonth();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  // Build 6-week grid (Mon-first)
   const firstOfMonth = new Date(year, month, 1);
-  const firstOffset = (firstOfMonth.getDay() + 6) % 7; // 0=Mon
+  const firstOffset = (firstOfMonth.getDay() + 6) % 7;
   const gridStart = new Date(year, month, 1 - firstOffset);
 
   const days: Date[] = [];
@@ -444,11 +496,13 @@ const MonthView = ({
   const selectedEvents = selectedDate ? eventsForDate(selectedDate) : [];
   const selectedDow = selectedDate ? jsDowToWeekDayId(selectedDate.getDay()) : null;
   const selectedSlots = selectedDow ? WEEKLY_SCHEDULE[selectedDow] : [];
+  const selectedDayFull = selectedDow
+    ? WEEK_DAYS.find((w) => w.id === selectedDow)?.full ?? ""
+    : "";
 
   return (
     <div className="space-y-6">
       <div className="rounded-3xl border border-border bg-card overflow-hidden shadow-soft">
-        {/* Month header */}
         <div className="flex items-center justify-between p-4 md:p-5 border-b border-border">
           <button
             onClick={() => shiftMonth(-1)}
@@ -474,7 +528,6 @@ const MonthView = ({
           </button>
         </div>
 
-        {/* Weekday header */}
         <div className="grid grid-cols-7 border-b border-border bg-secondary/30">
           {WEEK_DAYS.map((d) => (
             <div
@@ -486,7 +539,6 @@ const MonthView = ({
           ))}
         </div>
 
-        {/* Day cells */}
         <div className="grid grid-cols-7 auto-rows-fr">
           {days.map((d, i) => {
             const inMonth = d.getMonth() === month;
@@ -496,15 +548,15 @@ const MonthView = ({
             const dow = jsDowToWeekDayId(d.getDay());
             const slots = WEEKLY_SCHEDULE[dow];
             const evts = eventsForDate(d);
+            const total = slots.length + evts.length;
+            const kinds = Array.from(new Set(slots.map((s) => s.kind))).slice(0, 3);
+            const dayFull = WEEK_DAYS.find((w) => w.id === dow)?.full ?? "";
 
-            // Uniques kinds for dot bar
-            const kinds = Array.from(new Set(slots.map((s) => s.kind)));
-
-            return (
+            const cell = (
               <button
-                key={i}
+                type="button"
                 onClick={() => onSelectDate(isSelected ? null : d)}
-                className={`text-left border-r border-b border-border p-1.5 md:p-2 min-h-[64px] md:min-h-[96px] transition-colors relative
+                className={`w-full h-full text-left border-r border-b border-border p-1.5 md:p-2 min-h-[68px] md:min-h-[104px] transition-colors relative
                   ${(i + 1) % 7 === 0 ? "border-r-0" : ""}
                   ${i >= 35 ? "border-b-0" : ""}
                   ${inMonth ? "bg-card hover:bg-secondary/40" : "bg-secondary/20 text-muted-foreground/60"}
@@ -520,68 +572,118 @@ const MonthView = ({
                   >
                     {d.getDate()}
                   </span>
-                  {evts.length > 0 && (
-                    <span className="text-[9px] uppercase tracking-widest text-accent hidden md:inline">
-                      {evts.length} соб.
+                  {inMonth && total > 0 && (
+                    <span className="inline-flex items-center gap-0.5 text-[10px] font-medium tabular-nums px-1.5 h-5 rounded-full bg-secondary text-foreground">
+                      {total}
                     </span>
                   )}
                 </div>
 
-                {/* Kind dots */}
                 {inMonth && (
-                  <div className="mt-1.5 flex flex-wrap gap-1">
+                  <div className="mt-1.5 flex items-center gap-1 flex-wrap">
                     {kinds.map((k) => {
                       const meta = KIND_META[k];
+                      const Icon = meta.icon;
                       return (
                         <span
                           key={k}
-                          className={`w-1.5 h-1.5 rounded-full border ${meta.tone}`}
+                          className={`inline-flex items-center justify-center w-5 h-5 rounded-md border ${meta.tone}`}
                           title={meta.label}
-                        />
+                        >
+                          <Icon className="w-3 h-3" strokeWidth={2} />
+                        </span>
                       );
                     })}
-                  </div>
-                )}
-
-                {/* Event chips (desktop) */}
-                {inMonth && evts.length > 0 && (
-                  <div className="hidden md:block mt-1.5 space-y-0.5">
-                    {evts.slice(0, 2).map((e) => (
-                      <div
-                        key={e.id}
-                        className="text-[10px] leading-tight px-1.5 py-0.5 rounded border border-dashed border-accent/40 text-accent truncate"
-                      >
-                        {e.time} · {e.title}
-                      </div>
-                    ))}
-                    {evts.length > 2 && (
-                      <div className="text-[9px] text-muted-foreground">
-                        +{evts.length - 2}
-                      </div>
+                    {evts.length > 0 && (
+                      <span className="inline-flex items-center gap-0.5 text-[10px] font-medium px-1.5 h-5 rounded-md bg-accent/15 text-accent border border-accent/30">
+                        <Sparkles className="w-2.5 h-2.5" />
+                        {evts.length}
+                      </span>
                     )}
                   </div>
                 )}
-
-                {/* Event dot (mobile) */}
-                {inMonth && evts.length > 0 && (
-                  <div className="md:hidden absolute bottom-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-accent" />
-                )}
               </button>
+            );
+
+            if (!inMonth || total === 0) return <div key={i} className="contents">{cell}</div>;
+
+            return (
+              <HoverCard key={i} openDelay={120} closeDelay={80}>
+                <HoverCardTrigger asChild>{cell}</HoverCardTrigger>
+                <HoverCardContent
+                  align="start"
+                  className="w-72 p-0 overflow-hidden"
+                >
+                  <div className="p-3 border-b border-border bg-secondary/40">
+                    <div className="font-display text-base font-semibold">
+                      {d.getDate()} {RU_MONTHS_GEN[month]}
+                    </div>
+                    <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                      {dayFull} · {total} {total === 1 ? "активность" : "активностей"}
+                    </div>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto divide-y divide-border">
+                    {slots.map((s, si) => {
+                      const meta = KIND_META[s.kind];
+                      const Icon = meta.icon;
+                      return (
+                        <button
+                          key={`s-${si}`}
+                          onClick={() => onOpenDetail(slotToDetail(s, dayFull))}
+                          className="w-full text-left p-3 flex items-start gap-2.5 hover:bg-secondary/40 transition-colors"
+                        >
+                          <span
+                            className={`inline-flex items-center justify-center w-7 h-7 rounded-lg border shrink-0 ${meta.tone}`}
+                          >
+                            <Icon className="w-3.5 h-3.5" strokeWidth={2} />
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-[10px] uppercase tracking-widest text-muted-foreground tabular-nums">
+                              {s.start}–{s.end}
+                            </div>
+                            <div className="text-sm font-medium leading-tight truncate">
+                              {s.title}
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                    {evts.map((e) => (
+                      <button
+                        key={`e-${e.id}`}
+                        onClick={() => onOpenDetail(eventToDetail(e))}
+                        className="w-full text-left p-3 flex items-start gap-2.5 bg-accent/5 hover:bg-accent/10 transition-colors"
+                      >
+                        <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg border border-accent/40 text-accent shrink-0">
+                          <Sparkles className="w-3.5 h-3.5" />
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-[10px] uppercase tracking-widest text-accent tabular-nums">
+                            событие · {e.time}
+                          </div>
+                          <div className="text-sm font-medium leading-tight truncate">
+                            {e.title}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             );
           })}
         </div>
       </div>
 
-      {/* Selected day details */}
       {selectedDate && selectedDow && (
         <div className="rounded-3xl border border-accent/40 bg-accent/5 p-5 md:p-6">
           <div className="flex items-baseline justify-between mb-4">
             <div>
               <div className="font-display text-xl md:text-2xl font-semibold">
-                {selectedDate.getDate()} {RU_MONTHS_FULL[selectedDate.getMonth()].toLowerCase()}
+                {selectedDate.getDate()} {RU_MONTHS_GEN[selectedDate.getMonth()]}
               </div>
               <div className="text-[11px] uppercase tracking-widest text-muted-foreground mt-0.5">
-                {WEEK_DAYS.find((w) => w.id === selectedDow)?.full}
+                {selectedDayFull}
               </div>
             </div>
             <button
@@ -596,7 +698,11 @@ const MonthView = ({
               const meta = KIND_META[s.kind];
               const Icon = meta.icon;
               return (
-                <div key={i} className={`rounded-2xl border p-3 ${meta.tone}`}>
+                <button
+                  key={i}
+                  onClick={() => onOpenDetail(slotToDetail(s, selectedDayFull))}
+                  className={`text-left rounded-2xl border p-3 ${meta.tone} hover:opacity-90 transition-opacity`}
+                >
                   <div className="text-[11px] uppercase tracking-widest tabular-nums opacity-80">
                     {s.start}–{s.end}
                   </div>
@@ -609,24 +715,25 @@ const MonthView = ({
                   {s.note && (
                     <div className="text-[11px] opacity-70 mt-1">{s.note}</div>
                   )}
-                </div>
+                </button>
               );
             })}
             {selectedEvents.map((e) => (
-              <div
+              <button
                 key={e.id}
-                className="rounded-2xl border border-dashed border-accent/40 bg-background p-3"
+                onClick={() => onOpenDetail(eventToDetail(e))}
+                className="text-left rounded-2xl border border-dashed border-accent/40 bg-background p-3 hover:bg-accent/5 transition-colors"
               >
                 <div className="text-[10px] uppercase tracking-widest text-accent flex items-center gap-1">
-                  <CalendarDays className="w-3 h-3" /> событие · {e.time}
+                  <Sparkles className="w-3 h-3" /> событие · {e.time}
                 </div>
                 <div className="font-display text-sm font-medium mt-1">
                   {e.title}
                 </div>
                 <div className="text-[11px] text-muted-foreground mt-0.5">
-                  {e.host} · {e.price} ₽
+                  {e.host}
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
