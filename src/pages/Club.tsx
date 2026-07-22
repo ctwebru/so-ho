@@ -127,6 +127,8 @@ const Club = () => {
           </div>
         </section>
 
+        <ClubSchedule />
+
         {/* AFISHA */}
         <section className="container mx-auto px-6 pb-24">
           <div className="grid md:grid-cols-12 gap-8 mb-8 items-end">
