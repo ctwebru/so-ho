@@ -17,6 +17,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { CLUB_CATEGORIES, CLUB_EVENTS, type ClubCategory, type ClubEvent } from "@/data/club";
+import ClubSchedule from "@/components/flow/ClubSchedule";
 
 const FILTERS: { id: ClubCategory | "all"; label: string }[] = [
   { id: "all", label: "Все" },
