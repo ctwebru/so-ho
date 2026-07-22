@@ -22,6 +22,8 @@ import CafePage from "./pages/app/CafePage";
 import EventsPage from "./pages/app/EventsPage";
 import ProfilePage from "./pages/app/ProfilePage";
 import OrderStatusPage from "./pages/app/OrderStatusPage";
+import Auth from "./pages/Auth";
+import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +44,8 @@ const App = () => (
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/qr-menu" element={<QrMenu />} />
             <Route path="/club" element={<Club />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="/app" element={<AppLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="plans" element={<PlansPage />} />
