@@ -158,6 +158,37 @@ const ClubPage = () => {
         </div>
       </div>
 
+      {/* Привилегии членства */}
+      <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
+        <div className="mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-xs uppercase tracking-widest text-primary mb-3">
+            <Crown className="w-3 h-3" /> Членство, а не скидка
+          </div>
+          <h2 className="font-display text-2xl md:text-3xl font-semibold mb-2">Привилегии члена клуба</h2>
+          <p className="text-muted-foreground max-w-2xl">
+            Карта SO-HO! — это не абонемент на экономию, а статус внутри сообщества: приоритет, ранний доступ и закрытые возможности.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {MEMBER_PRIVILEGES.map((p, i) => (
+            <motion.div
+              key={p.label}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.04 }}
+              className="rounded-2xl bg-secondary/40 hover:bg-secondary/70 p-4 transition-colors group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                <p.icon className="w-4 h-4" />
+              </div>
+              <div className="font-medium text-sm mb-1">{p.label}</div>
+              <div className="text-xs text-muted-foreground leading-relaxed">{p.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
       {/* Тарифная сетка */}
       <div className="rounded-3xl border border-border bg-card p-6">
         <div className="flex items-center gap-2 mb-4">
