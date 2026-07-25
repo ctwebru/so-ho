@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, CreditCard, QrCode, MapPin, Coffee, CalendarDays, User, ArrowLeft } from "lucide-react";
+import { LayoutDashboard, CreditCard, QrCode, MapPin, Coffee, CalendarDays, User, ArrowLeft, Users, Ticket } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -19,6 +19,8 @@ const items = [
   { title: "Обзор", url: "/app", icon: LayoutDashboard, end: true },
   { title: "Тарифы", url: "/app/plans", icon: CreditCard },
   { title: "Мой доступ", url: "/app/access", icon: QrCode },
+  { title: "Соседский клуб", url: "/app/club", icon: Users },
+  { title: "Кошелёк входов", url: "/app/passes", icon: Ticket },
   { title: "Карта мест", url: "/app/seats", icon: MapPin },
   { title: "Кофейня", url: "/app/cafe", icon: Coffee },
   { title: "События", url: "/app/events", icon: CalendarDays },
