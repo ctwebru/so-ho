@@ -3,6 +3,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app/AppSidebar";
 import { useAppState } from "@/state/AppState";
 import { Bell } from "lucide-react";
+import { QuickPassButton } from "@/components/app/QuickPassButton";
 
 
 const titles: Record<string, { title: string; sub: string }> = {
@@ -36,6 +37,7 @@ const AppLayout = () => {
               <p className="text-xs text-muted-foreground truncate">{meta.sub}</p>
             </div>
             
+            <QuickPassButton />
             <button className="w-9 h-9 rounded-full bg-secondary hover:bg-accent/30 flex items-center justify-center transition" aria-label="Уведомления">
               <Bell className="w-4 h-4" />
             </button>
