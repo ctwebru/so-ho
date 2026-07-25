@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
 import {
   Users, Plus, Trash2, Check, Crown, Phone, X, Sparkles, Apple, Wallet, ShieldCheck, QrCode, RotateCw,
+  Ticket, Star, Coffee, CalendarClock, Trophy, UserPlus, Award, Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +19,49 @@ import {
 } from "@/data/clubMembership";
 
 const relationOptions: FamilyRelation[] = ["spouse", "child", "parent", "friend"];
+
+const MEMBER_PRIVILEGES = [
+  {
+    icon: Ticket,
+    label: "Бесплатный вход",
+    desc: "Доступ ко всем регулярным клубным событиям — как у своих.",
+  },
+  {
+    icon: Star,
+    label: "Привилегированные мероприятия",
+    desc: "Особые условия участия в спецсобытиях и мастер-классах.",
+  },
+  {
+    icon: Coffee,
+    label: "Клубное вознаграждение",
+    desc: "Двойной кешбэк в кофейне So-Ho — чем больше в клубе, тем больше пользы.",
+  },
+  {
+    icon: CalendarClock,
+    label: "Ранний доступ",
+    desc: "Первыми регистрируетесь на мероприятия с ограниченным количеством мест.",
+  },
+  {
+    icon: Trophy,
+    label: "Клубные турниры",
+    desc: "Участие в турнирах на привилегированных условиях.",
+  },
+  {
+    icon: UserPlus,
+    label: "Гость при госте",
+    desc: "Раз в месяц приглашаете одного гостя бесплатно.",
+  },
+  {
+    icon: Award,
+    label: "Статус участника",
+    desc: "Клубный рейтинг, достижения и сезонные награды.",
+  },
+  {
+    icon: Lock,
+    label: "Закрытый клуб",
+    desc: "Доступ к событиям и предложениям только для членов сообщества.",
+  },
+];
 
 const ClubPage = () => {
   const {
@@ -111,6 +155,37 @@ const ClubPage = () => {
               </AlertDialog>
             </>
           )}
+        </div>
+      </div>
+
+      {/* Привилегии членства */}
+      <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
+        <div className="mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-xs uppercase tracking-widest text-primary mb-3">
+            <Crown className="w-3 h-3" /> Членство, а не скидка
+          </div>
+          <h2 className="font-display text-2xl md:text-3xl font-semibold mb-2">Привилегии члена клуба</h2>
+          <p className="text-muted-foreground max-w-2xl">
+            Карта SO-HO! — это не абонемент на экономию, а статус внутри сообщества: приоритет, ранний доступ и закрытые возможности.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {MEMBER_PRIVILEGES.map((p, i) => (
+            <motion.div
+              key={p.label}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.04 }}
+              className="rounded-2xl bg-secondary/40 hover:bg-secondary/70 p-4 transition-colors group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                <p.icon className="w-4 h-4" />
+              </div>
+              <div className="font-medium text-sm mb-1">{p.label}</div>
+              <div className="text-xs text-muted-foreground leading-relaxed">{p.desc}</div>
+            </motion.div>
+          ))}
         </div>
       </div>
 
