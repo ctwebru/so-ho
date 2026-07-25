@@ -20,6 +20,49 @@ import {
 
 const relationOptions: FamilyRelation[] = ["spouse", "child", "parent", "friend"];
 
+const MEMBER_PRIVILEGES = [
+  {
+    icon: Ticket,
+    label: "Бесплатный вход",
+    desc: "Доступ ко всем регулярным клубным событиям — как у своих.",
+  },
+  {
+    icon: Star,
+    label: "Привилегированные мероприятия",
+    desc: "Особые условия участия в спецсобытиях и мастер-классах.",
+  },
+  {
+    icon: Coffee,
+    label: "Клубное вознаграждение",
+    desc: "Двойной кешбэк в кофейне So-Ho — чем больше в клубе, тем больше пользы.",
+  },
+  {
+    icon: CalendarClock,
+    label: "Ранний доступ",
+    desc: "Первыми регистрируетесь на мероприятия с ограниченным количеством мест.",
+  },
+  {
+    icon: Trophy,
+    label: "Клубные турниры",
+    desc: "Участие в турнирах на привилегированных условиях.",
+  },
+  {
+    icon: UserPlus,
+    label: "Гость при госте",
+    desc: "Раз в месяц приглашаете одного гостя бесплатно.",
+  },
+  {
+    icon: Award,
+    label: "Статус участника",
+    desc: "Клубный рейтинг, достижения и сезонные награды.",
+  },
+  {
+    icon: Lock,
+    label: "Закрытый клуб",
+    desc: "Доступ к событиям и предложениям только для членов сообщества.",
+  },
+];
+
 const ClubPage = () => {
   const {
     family, clubMembership, activateClub, cancelClub, addFamilyMember, removeFamilyMember, user,
