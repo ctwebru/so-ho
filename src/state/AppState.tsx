@@ -1,4 +1,27 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import {
+  FamilyMember,
+  FamilyRelation,
+  INITIAL_FAMILY,
+  MAX_FAMILY_MEMBERS,
+  priceForPosition,
+} from "@/data/clubMembership";
+
+export type ClubMembership = {
+  active: boolean;
+  since: string | null; // ISO
+  nextBilling: string | null; // ISO
+};
+
+export type Pass = {
+  id: string;
+  title: string; // "Тихий клуб", "Кинопоказ Wenders", "Разовый вход в клуб"
+  price: number;
+  purchasedAt: string; // ISO
+  validFor?: string; // "18 мая, 19:00" или "до 30.05"
+  category?: "club" | "event" | "cafe" | "other";
+  used?: boolean;
+};
 
 export type PlanCode = "fast" | "day" | "flex" | "fix" | null;
 
@@ -37,6 +60,10 @@ type AppState = {
   selectedSeat: number | null;
   registeredEvents: number[];
   orders: Order[];
+  // Соседский клуб — семья + подписка + разовые входы
+  family: FamilyMember[];
+  clubMembership: ClubMembership;
+  passes: Pass[];
   login: (phone: string) => void;
   logout: () => void;
   setPlan: (plan: PlanCode) => void;
@@ -44,6 +71,12 @@ type AppState = {
   toggleEvent: (id: number) => void;
   addOrder: (items: string, total: number, details?: OrderDetails) => string;
   requestPickup: (id: string) => void;
+  activateClub: () => void;
+  cancelClub: () => void;
+  addFamilyMember: (data: { name: string; phone?: string; relation: FamilyRelation; birthYear?: number }) => void;
+  removeFamilyMember: (id: string) => void;
+  buyPass: (pass: Omit<Pass, "id" | "purchasedAt" | "used">) => string;
+  usePass: (id: string) => void;
 };
 
 const Ctx = createContext<AppState | null>(null);
@@ -54,6 +87,13 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
   const [selectedSeat, setSelectedSeat] = useState<number | null>(null);
   const [registeredEvents, setRegisteredEvents] = useState<number[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [family, setFamily] = useState<FamilyMember[]>(INITIAL_FAMILY);
+  const [clubMembership, setClubMembership] = useState<ClubMembership>({
+    active: false,
+    since: null,
+    nextBilling: null,
+  });
+  const [passes, setPasses] = useState<Pass[]>([]);
   const [authPhone, setAuthPhone] = useState<string | null>(() => {
     try { return sessionStorage.getItem("soho_phone"); } catch { return null; }
   });
@@ -64,6 +104,46 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
       else sessionStorage.removeItem("soho_phone");
     } catch {}
   }, [authPhone]);
+
+  const activateClub = () => {
+    const since = new Date().toISOString();
+    const next = new Date();
+    next.setMonth(next.getMonth() + 1);
+    setClubMembership({ active: true, since, nextBilling: next.toISOString() });
+  };
+  const cancelClub = () => setClubMembership({ active: false, since: null, nextBilling: null });
+
+  const addFamilyMember: AppState["addFamilyMember"] = (data) => {
+    setFamily((f) => {
+      if (f.length >= MAX_FAMILY_MEMBERS) return f;
+      const next: FamilyMember = {
+        id: `m-${Math.random().toString(36).slice(2, 8)}`,
+        name: data.name,
+        phone: data.phone,
+        relation: data.relation,
+        birthYear: data.birthYear,
+        addedAt: new Date().toISOString(),
+        monthlyPrice: priceForPosition(f.length),
+      };
+      return [...f, next];
+    });
+  };
+  const removeFamilyMember = (id: string) => {
+    setFamily((f) => {
+      const filtered = f.filter((m) => m.id !== id);
+      // пересчёт цен по позиции
+      return filtered.map((m, i) => ({ ...m, monthlyPrice: priceForPosition(i) }));
+    });
+  };
+
+  const buyPass: AppState["buyPass"] = (pass) => {
+    const id = `p-${Math.random().toString(36).slice(2, 8)}`;
+    setPasses((p) => [{ ...pass, id, purchasedAt: new Date().toISOString(), used: false }, ...p]);
+    return id;
+  };
+  const usePass = (id: string) =>
+    setPasses((p) => p.map((x) => (x.id === id ? { ...x, used: true } : x)));
+
 
   const setPlan = (plan: PlanCode) => {
     setActivePlan(plan);
@@ -113,6 +193,9 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
         selectedSeat,
         registeredEvents,
         orders,
+        family,
+        clubMembership,
+        passes,
         login,
         logout,
         setPlan,
@@ -120,6 +203,12 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
         toggleEvent,
         addOrder,
         requestPickup,
+        activateClub,
+        cancelClub,
+        addFamilyMember,
+        removeFamilyMember,
+        buyPass,
+        usePass,
       }}
     >
       {children}
