@@ -22,6 +22,8 @@ import CafePage from "./pages/app/CafePage";
 import EventsPage from "./pages/app/EventsPage";
 import ProfilePage from "./pages/app/ProfilePage";
 import OrderStatusPage from "./pages/app/OrderStatusPage";
+import ClubPage from "./pages/app/ClubPage";
+import PassesPage from "./pages/app/PassesPage";
 import Auth from "./pages/Auth";
 import OAuthConsent from "./pages/OAuthConsent";
 
@@ -55,6 +57,8 @@ const App = () => (
               <Route path="events" element={<EventsPage />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="orders/:id" element={<OrderStatusPage />} />
+              <Route path="club" element={<ClubPage />} />
+              <Route path="passes" element={<PassesPage />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
