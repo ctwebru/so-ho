@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
 import {
-  Plus, Trash2, Check, Crown, Phone, X, Sparkles, Apple, Wallet, QrCode, RotateCw,
+  Plus, Trash2, Check, Crown, X, Sparkles, QrCode,
   Ticket, Star, Coffee, CalendarClock, Trophy, UserPlus, Award, Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,69 +14,38 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { toast } from "sonner";
 import { useAppState } from "@/state/AppState";
 import {
-  FAMILY_TIER_PRICES, MAX_FAMILY_MEMBERS, RELATION_LABEL, FamilyRelation,
+  MAX_FAMILY_MEMBERS, RELATION_LABEL, FamilyRelation,
   priceForPosition, totalFamilyPrice,
 } from "@/data/clubMembership";
 
 const relationOptions: FamilyRelation[] = ["spouse", "child", "parent", "friend"];
 
 const MEMBER_PRIVILEGES = [
-  {
-    icon: Ticket,
-    label: "Бесплатный вход",
-    desc: "Доступ ко всем регулярным клубным событиям — как у своих.",
-  },
-  {
-    icon: Star,
-    label: "Привилегированные мероприятия",
-    desc: "Особые условия участия в спецсобытиях и мастер-классах.",
-  },
-  {
-    icon: Coffee,
-    label: "Клубное вознаграждение",
-    desc: "Двойной кешбэк в кофейне So-Ho — чем больше в клубе, тем больше пользы.",
-  },
-  {
-    icon: CalendarClock,
-    label: "Ранний доступ",
-    desc: "Первыми регистрируетесь на мероприятия с ограниченным количеством мест.",
-  },
-  {
-    icon: Trophy,
-    label: "Клубные турниры",
-    desc: "Участие в турнирах на привилегированных условиях.",
-  },
-  {
-    icon: UserPlus,
-    label: "Гость при госте",
-    desc: "Раз в месяц приглашаете одного гостя бесплатно.",
-  },
-  {
-    icon: Award,
-    label: "Статус участника",
-    desc: "Клубный рейтинг, достижения и сезонные награды.",
-  },
-  {
-    icon: Lock,
-    label: "Закрытый клуб",
-    desc: "Доступ к событиям и предложениям только для членов сообщества.",
-  },
+  { icon: Ticket, label: "Бесплатный вход", desc: "Доступ ко всем регулярным клубным событиям — как у своих." },
+  { icon: Star, label: "Привилегированные мероприятия", desc: "Особые условия участия в спецсобытиях и мастер-классах." },
+  { icon: Coffee, label: "Клубное вознаграждение", desc: "Двойной кешбэк в кофейне So-Ho — чем больше в клубе, тем больше пользы." },
+  { icon: CalendarClock, label: "Ранний доступ", desc: "Первыми регистрируетесь на мероприятия с ограниченным количеством мест." },
+  { icon: Trophy, label: "Клубные турниры", desc: "Участие в турнирах на привилегированных условиях." },
+  { icon: UserPlus, label: "Гость при госте", desc: "Раз в месяц приглашаете одного гостя бесплатно." },
+  { icon: Award, label: "Статус участника", desc: "Клубный рейтинг, достижения и сезонные награды." },
+  { icon: Lock, label: "Закрытый клуб", desc: "Доступ к событиям и предложениям только для членов сообщества." },
 ];
 
 const ClubPage = () => {
   const {
-    family, clubMembership, activateClub, cancelClub, addFamilyMember, removeFamilyMember, user,
+    family, clubMembership, activateClub, cancelClub, addFamilyMember, removeFamilyMember,
   } = useAppState();
 
   const [addOpen, setAddOpen] = useState(false);
+  const [qrMember, setQrMember] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: "", phone: "", relation: "spouse" as FamilyRelation, birthYear: "",
   });
-  const [flipped, setFlipped] = useState<string | null>(null);
 
   const total = totalFamilyPrice(family);
   const canAdd = family.length < MAX_FAMILY_MEMBERS;
   const nextPrice = canAdd ? priceForPosition(family.length) : 0;
+  const activeMember = family.find((m) => m.id === qrMember);
 
   const submit = () => {
     if (!form.name.trim()) return toast.error("Введите имя");
@@ -86,9 +55,7 @@ const ClubPage = () => {
       relation: form.relation,
       birthYear: form.birthYear ? Number(form.birthYear) : undefined,
     });
-    toast.success(`${form.name} добавлен в семью`, {
-      description: `Ежемесячно +${nextPrice} ₽`,
-    });
+    toast.success(`${form.name} добавлен в семью`, { description: `Ежемесячно +${nextPrice} ₽` });
     setForm({ name: "", phone: "", relation: "spouse", birthYear: "" });
     setAddOpen(false);
   };
@@ -103,54 +70,115 @@ const ClubPage = () => {
       {/* HERO — статус членства */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-forest text-primary-foreground p-8 md:p-10 shadow-deep">
         <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-highlight/20 blur-3xl" />
-        <div className="relative max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-foreground/10 text-xs uppercase tracking-widest mb-4">
-            <Crown className="w-3 h-3" /> Соседский клуб · членство семьи
+        <div className="absolute -bottom-32 -left-20 w-80 h-80 rounded-full bg-accent/20 blur-3xl" />
+
+        <div className="relative grid md:grid-cols-[1fr_auto] gap-8 items-end">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-foreground/10 text-xs uppercase tracking-widest mb-4">
+              <Crown className="w-3 h-3" /> Соседский клуб
+            </div>
+            <h1 className="font-display text-4xl md:text-5xl font-semibold leading-tight mb-3">
+              {clubMembership.active ? "Ваш клуб активен" : "Статус члена сообщества"}
+            </h1>
+            <p className="text-primary-foreground/80 mb-6">
+              Один аккаунт, до {MAX_FAMILY_MEMBERS} персональных карт. Все регулярные события включены.
+            </p>
+
+            <div className="flex flex-wrap items-end gap-6">
+              <div>
+                <div className="text-xs uppercase tracking-widest text-primary-foreground/60 mb-1">В семье</div>
+                <div className="font-display text-3xl font-semibold">{family.length} чел.</div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-widest text-primary-foreground/60 mb-1">Итого в месяц</div>
+                <div className="font-display text-3xl font-semibold">{total.toLocaleString("ru")} ₽</div>
+              </div>
+              {clubMembership.active && clubMembership.nextBilling && (
+                <div>
+                  <div className="text-xs uppercase tracking-widest text-primary-foreground/60 mb-1">След. списание</div>
+                  <div className="font-display text-3xl font-semibold">
+                    {new Date(clubMembership.nextBilling).toLocaleDateString("ru", { day: "2-digit", month: "long" })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-          <h1 className="font-display text-4xl md:text-5xl font-semibold leading-tight mb-3">
-            {clubMembership.active ? "Ваш клуб активен" : "Статус члена сообщества"}
-          </h1>
-          <p className="text-primary-foreground/80">
-            Один аккаунт, до {MAX_FAMILY_MEMBERS} персональных карт. Все регулярные события включены.
-          </p>
+
+          <div className="flex flex-col gap-2 md:items-end">
+            {!clubMembership.active ? (
+              <Button variant="hero" size="lg" onClick={activate}>
+                <Sparkles className="w-4 h-4 mr-2" /> Оплатить {total.toLocaleString("ru")} ₽
+              </Button>
+            ) : (
+              <>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-highlight text-highlight-foreground text-xs font-medium">
+                  <Check className="w-3.5 h-3.5" /> Подписка активна
+                </div>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="bg-transparent border-primary-foreground/30 text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-primary-foreground">
+                      Отменить подписку
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Отменить клубную подписку?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Карты семьи перестанут действовать после {new Date(clubMembership.nextBilling!).toLocaleDateString("ru")}.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Оставить</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => { cancelClub(); toast("Подписка отменена"); }}>
+                        Отменить
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Конструктор членства: добавление + оплата в одном месте */}
+      {/* Моя семья */}
       <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
         <div className="mb-5">
-          <h2 className="font-display text-2xl font-semibold mb-1">Составьте членство семьи</h2>
-          <p className="text-sm text-muted-foreground">Добавьте членов и оплатите сразу. Каждый следующий — дешевле.</p>
+          <h2 className="font-display text-2xl font-semibold mb-1">Моя семья</h2>
+          <p className="text-sm text-muted-foreground">Добавьте близких — каждый следующий дешевле. QR-код каждого члена — для входа в клуб.</p>
         </div>
 
-        {/* Список членов */}
-        <div className="space-y-2 mb-4">
+        <div className="space-y-2">
           {family.map((m, i) => {
             const isOwner = m.relation === "owner";
             return (
               <div key={m.id} className="flex items-center justify-between rounded-2xl bg-secondary/40 p-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold shrink-0">
                     {i + 1}
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="font-medium text-sm flex items-center gap-1.5">
-                      {m.name}
-                      {isOwner && <Crown className="w-3 h-3 text-highlight" />}
+                      <span className="truncate">{m.name}</span>
+                      {isOwner && <Crown className="w-3 h-3 text-highlight shrink-0" />}
                     </div>
                     <div className="text-xs text-muted-foreground">
                       {RELATION_LABEL[m.relation]}{m.phone && " · свой ЛК"}
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="font-display text-sm font-semibold">{m.monthlyPrice} ₽/мес</div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    onClick={() => setQrMember(m.id)}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/15 transition-colors"
+                    aria-label={`QR-код ${m.name}`}
+                  >
+                    <QrCode className="w-3.5 h-3.5" /> QR
+                  </button>
+                  <div className="font-display text-sm font-semibold px-2 tabular-nums">{m.monthlyPrice} ₽</div>
                   {!isOwner && (
                     <button
-                      onClick={() => {
-                        removeFamilyMember(m.id);
-                        toast(`${m.name} удалён из семьи`);
-                      }}
+                      onClick={() => { removeFamilyMember(m.id); toast(`${m.name} удалён из семьи`); }}
                       className="text-muted-foreground hover:text-destructive p-1.5 rounded-full hover:bg-destructive/10 transition-colors"
                       aria-label="Удалить"
                     >
@@ -167,55 +195,13 @@ const ClubPage = () => {
               onClick={() => setAddOpen(true)}
               className="w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border hover:border-accent hover:bg-accent/5 py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Plus className="w-4 h-4" /> Добавить члена семьи · {nextPrice} ₽
+              <Plus className="w-4 h-4" /> Добавить · {nextPrice} ₽
             </button>
-          )}
-        </div>
-
-        {/* Итог + CTA */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-2xl bg-primary/5 p-4 border border-primary/10">
-          <div>
-            <div className="text-xs text-muted-foreground uppercase tracking-widest mb-0.5">Итого в месяц</div>
-            <div className="text-3xl font-display font-bold text-primary">{total.toLocaleString("ru")} ₽</div>
-            <div className="text-xs text-muted-foreground">{family.length} чел.</div>
-          </div>
-
-          {!clubMembership.active ? (
-            <Button variant="hero" size="lg" onClick={activate}>
-              <Sparkles className="w-4 h-4 mr-2" /> Оплатить {total.toLocaleString("ru")} ₽
-            </Button>
-          ) : (
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-highlight text-highlight-foreground text-xs font-medium">
-                <Check className="w-3.5 h-3.5" /> Списание {new Date(clubMembership.nextBilling!).toLocaleDateString("ru", { day: "2-digit", month: "long" })}
-              </div>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="outline" size="sm" className="text-muted-foreground hover:text-destructive hover:border-destructive/30">
-                    Отменить
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Отменить клубную подписку?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Карты семьи перестанут действовать после {new Date(clubMembership.nextBilling!).toLocaleDateString("ru")}.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Оставить</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => { cancelClub(); toast("Подписка отменена"); }}>
-                      Отменить
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
           )}
         </div>
       </div>
 
-      {/* Акцентные привилегии — компактно */}
+      {/* Привилегии */}
       <div className="rounded-3xl border border-border bg-card p-6">
         <div className="flex items-center gap-2 mb-4">
           <Crown className="w-4 h-4 text-accent" />
@@ -242,125 +228,38 @@ const ClubPage = () => {
         </div>
       </div>
 
-      {/* Виртуальные карты семьи */}
-      <div>
-        <div className="mb-4">
-          <h2 className="font-display text-2xl font-semibold">Виртуальные карты</h2>
-          <p className="text-sm text-muted-foreground">Персональная карта для каждого — как аватар клуба</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-4 [perspective:1600px]">
-          {family.map((m, i) => {
-            const isOwner = m.relation === "owner";
-            const isFlipped = flipped === m.id;
-            const qrPayload = JSON.stringify({ club: "soho", id: m.id, name: m.name, phone: m.phone ?? null });
-            return (
-              <motion.div
-                key={m.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="relative aspect-[1.6/1]"
-              >
-                <div
-                  className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d]"
-                  style={{ transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
-                >
-                  {/* Лицевая сторона */}
-                  <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-soft [backface-visibility:hidden]">
-                    <div className="absolute inset-0 bg-gradient-forest" />
-                    <div className="absolute inset-0 opacity-30" style={{
-                      backgroundImage: "radial-gradient(circle at 20% 20%, hsl(var(--highlight) / .6), transparent 50%), radial-gradient(circle at 80% 80%, hsl(var(--accent) / .5), transparent 50%)",
-                    }} />
-
-                    <div className="relative h-full p-5 flex flex-col justify-between text-primary-foreground">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <div className="text-[10px] uppercase tracking-widest opacity-70">SO-HO! Club</div>
-                          <div className="font-display text-xl font-semibold mt-1">{m.name}</div>
-                          <div className="text-xs opacity-80 mt-0.5 inline-flex items-center gap-1">
-                            {isOwner && <Crown className="w-3 h-3" />}
-                            {RELATION_LABEL[m.relation]}
-                            {m.birthYear && ` · ${new Date().getFullYear() - m.birthYear} лет`}
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => setFlipped(m.id)}
-                          className="flex flex-col items-center gap-1 p-2 rounded-xl bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors"
-                          aria-label="Показать QR"
-                        >
-                          <QrCode className="w-5 h-5" />
-                          <span className="text-[9px] uppercase tracking-widest">Вход</span>
-                        </button>
-                      </div>
-
-                      <div>
-                        {m.phone ? (
-                          <div className="inline-flex items-center gap-2 text-xs bg-primary-foreground/10 backdrop-blur px-2.5 py-1 rounded-full">
-                            <Phone className="w-3 h-3" /> {m.phone}
-                            <span className="opacity-60">·</span>
-                            <span className="opacity-80">свой ЛК</span>
-                          </div>
-                        ) : (
-                          <div className="inline-flex items-center gap-2 text-xs bg-primary-foreground/10 backdrop-blur px-2.5 py-1 rounded-full opacity-70">
-                            Гостевая карта (без ЛК)
-                          </div>
-                        )}
-                        <div className="flex items-center justify-between mt-3">
-                          <div className="flex gap-2 opacity-70">
-                            <button disabled className="text-[10px] uppercase tracking-widest inline-flex items-center gap-1 cursor-not-allowed">
-                              <Apple className="w-3 h-3" /> Apple Wallet
-                            </button>
-                            <button disabled className="text-[10px] uppercase tracking-widest inline-flex items-center gap-1 cursor-not-allowed">
-                              <Wallet className="w-3 h-3" /> Google
-                            </button>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <span className="font-display text-sm font-semibold opacity-80">{m.monthlyPrice} ₽</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Обратная сторона — QR */}
-                  <div
-                    className="absolute inset-0 rounded-3xl overflow-hidden shadow-soft bg-primary-foreground text-primary flex items-center justify-between p-5 [backface-visibility:hidden]"
-                    style={{ transform: "rotateY(180deg)" }}
-                  >
-                    <div className="flex-1 pr-4">
-                      <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Пропуск в клуб</div>
-                      <div className="font-display text-lg font-semibold mt-1 leading-tight">{m.name}</div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {RELATION_LABEL[m.relation]}
-                      </div>
-                      <div className="mt-3 text-xs text-muted-foreground max-w-[18ch]">
-                        Покажите код на входе — хост считает его сканером
-                      </div>
-                      <button
-                        onClick={() => setFlipped(null)}
-                        className="mt-3 inline-flex items-center gap-1 text-xs uppercase tracking-widest text-accent hover:underline"
-                      >
-                        <RotateCw className="w-3 h-3" /> Назад
-                      </button>
-                    </div>
-                    <div className="p-2 bg-background rounded-xl shrink-0">
-                      <QRCodeSVG
-                        value={qrPayload}
-                        size={112}
-                        bgColor="transparent"
-                        fgColor="hsl(var(--primary))"
-                        level="M"
-                      />
-                    </div>
-                  </div>
+      {/* QR-модалка */}
+      <Dialog open={!!qrMember} onOpenChange={(o) => !o && setQrMember(null)}>
+        <DialogContent className="max-w-sm">
+          {activeMember && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  {activeMember.name}
+                  {activeMember.relation === "owner" && <Crown className="w-4 h-4 text-highlight" />}
+                </DialogTitle>
+                <DialogDescription>
+                  {RELATION_LABEL[activeMember.relation]} · пропуск в клуб
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex flex-col items-center py-4">
+                <div className="p-4 bg-background rounded-2xl border border-border">
+                  <QRCodeSVG
+                    value={JSON.stringify({ club: "soho", id: activeMember.id, name: activeMember.name, phone: activeMember.phone ?? null })}
+                    size={220}
+                    bgColor="transparent"
+                    fgColor="hsl(var(--primary))"
+                    level="M"
+                  />
                 </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-
+                <p className="text-xs text-muted-foreground text-center mt-4 max-w-[26ch]">
+                  Покажите код на входе — хост считает его сканером
+                </p>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Модалка добавления */}
       <Dialog open={addOpen} onOpenChange={setAddOpen}>
