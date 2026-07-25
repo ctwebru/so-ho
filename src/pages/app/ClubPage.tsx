@@ -28,6 +28,7 @@ const ClubPage = () => {
   const [form, setForm] = useState({
     name: "", phone: "", relation: "spouse" as FamilyRelation, birthYear: "",
   });
+  const [flipped, setFlipped] = useState<string | null>(null);
 
   const total = totalFamilyPrice(family);
   const canAdd = family.length < MAX_FAMILY_MEMBERS;
