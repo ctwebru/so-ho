@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { QRCodeSVG } from "qrcode.react";
 import {
-  Users, Plus, Trash2, Check, Crown, Phone, X, Sparkles, Apple, Wallet, ShieldCheck,
+  Users, Plus, Trash2, Check, Crown, Phone, X, Sparkles, Apple, Wallet, ShieldCheck, QrCode, RotateCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +28,7 @@ const ClubPage = () => {
   const [form, setForm] = useState({
     name: "", phone: "", relation: "spouse" as FamilyRelation, birthYear: "",
   });
+  const [flipped, setFlipped] = useState<string | null>(null);
 
   const total = totalFamilyPrice(family);
   const canAdd = family.length < MAX_FAMILY_MEMBERS;
@@ -155,73 +157,121 @@ const ClubPage = () => {
           )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4 [perspective:1600px]">
           {family.map((m, i) => {
             const isOwner = m.relation === "owner";
+            const isFlipped = flipped === m.id;
+            const qrPayload = JSON.stringify({ club: "soho", id: m.id, name: m.name, phone: m.phone ?? null });
             return (
               <motion.div
                 key={m.id}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="relative aspect-[1.6/1] rounded-3xl overflow-hidden shadow-soft"
+                className="relative aspect-[1.6/1]"
               >
-                {/* Обложка карты */}
-                <div className="absolute inset-0 bg-gradient-forest" />
-                <div className="absolute inset-0 opacity-30" style={{
-                  backgroundImage: "radial-gradient(circle at 20% 20%, hsl(var(--highlight) / .6), transparent 50%), radial-gradient(circle at 80% 80%, hsl(var(--accent) / .5), transparent 50%)",
-                }} />
+                <div
+                  className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d]"
+                  style={{ transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
+                >
+                  {/* Лицевая сторона */}
+                  <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-soft [backface-visibility:hidden]">
+                    <div className="absolute inset-0 bg-gradient-forest" />
+                    <div className="absolute inset-0 opacity-30" style={{
+                      backgroundImage: "radial-gradient(circle at 20% 20%, hsl(var(--highlight) / .6), transparent 50%), radial-gradient(circle at 80% 80%, hsl(var(--accent) / .5), transparent 50%)",
+                    }} />
 
-                <div className="relative h-full p-5 flex flex-col justify-between text-primary-foreground">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="text-[10px] uppercase tracking-widest opacity-70">SO-HO! Club</div>
-                      <div className="font-display text-xl font-semibold mt-1">{m.name}</div>
-                      <div className="text-xs opacity-80 mt-0.5 inline-flex items-center gap-1">
-                        {isOwner && <Crown className="w-3 h-3" />}
-                        {RELATION_LABEL[m.relation]}
-                        {m.birthYear && ` · ${new Date().getFullYear() - m.birthYear} лет`}
+                    <div className="relative h-full p-5 flex flex-col justify-between text-primary-foreground">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="text-[10px] uppercase tracking-widest opacity-70">SO-HO! Club</div>
+                          <div className="font-display text-xl font-semibold mt-1">{m.name}</div>
+                          <div className="text-xs opacity-80 mt-0.5 inline-flex items-center gap-1">
+                            {isOwner && <Crown className="w-3 h-3" />}
+                            {RELATION_LABEL[m.relation]}
+                            {m.birthYear && ` · ${new Date().getFullYear() - m.birthYear} лет`}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setFlipped(m.id)}
+                          className="flex flex-col items-center gap-1 p-2 rounded-xl bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors"
+                          aria-label="Показать QR"
+                        >
+                          <QrCode className="w-5 h-5" />
+                          <span className="text-[9px] uppercase tracking-widest">Вход</span>
+                        </button>
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-[10px] uppercase tracking-widest opacity-70">Тариф</div>
-                      <div className="font-display text-lg font-bold">{m.monthlyPrice} ₽</div>
+
+                      <div>
+                        {m.phone ? (
+                          <div className="inline-flex items-center gap-2 text-xs bg-primary-foreground/10 backdrop-blur px-2.5 py-1 rounded-full">
+                            <Phone className="w-3 h-3" /> {m.phone}
+                            <span className="opacity-60">·</span>
+                            <span className="opacity-80">свой ЛК</span>
+                          </div>
+                        ) : (
+                          <div className="inline-flex items-center gap-2 text-xs bg-primary-foreground/10 backdrop-blur px-2.5 py-1 rounded-full opacity-70">
+                            Гостевая карта (без ЛК)
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between mt-3">
+                          <div className="flex gap-2 opacity-70">
+                            <button disabled className="text-[10px] uppercase tracking-widest inline-flex items-center gap-1 cursor-not-allowed">
+                              <Apple className="w-3 h-3" /> Apple Wallet
+                            </button>
+                            <button disabled className="text-[10px] uppercase tracking-widest inline-flex items-center gap-1 cursor-not-allowed">
+                              <Wallet className="w-3 h-3" /> Google
+                            </button>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span className="font-display text-sm font-semibold opacity-80">{m.monthlyPrice} ₽</span>
+                            {!isOwner && (
+                              <button
+                                onClick={() => {
+                                  removeFamilyMember(m.id);
+                                  toast(`${m.name} удалён из семьи`);
+                                }}
+                                className="text-primary-foreground/70 hover:text-primary-foreground p-1 rounded-full hover:bg-primary-foreground/10"
+                                aria-label="Удалить"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <div>
-                    {m.phone ? (
-                      <div className="inline-flex items-center gap-2 text-xs bg-primary-foreground/10 backdrop-blur px-2.5 py-1 rounded-full">
-                        <Phone className="w-3 h-3" /> {m.phone}
-                        <span className="opacity-60">·</span>
-                        <span className="opacity-80">свой ЛК</span>
+                  {/* Обратная сторона — QR */}
+                  <div
+                    className="absolute inset-0 rounded-3xl overflow-hidden shadow-soft bg-primary-foreground text-primary flex items-center justify-between p-5 [backface-visibility:hidden]"
+                    style={{ transform: "rotateY(180deg)" }}
+                  >
+                    <div className="flex-1 pr-4">
+                      <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Пропуск в клуб</div>
+                      <div className="font-display text-lg font-semibold mt-1 leading-tight">{m.name}</div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {RELATION_LABEL[m.relation]}
                       </div>
-                    ) : (
-                      <div className="inline-flex items-center gap-2 text-xs bg-primary-foreground/10 backdrop-blur px-2.5 py-1 rounded-full opacity-70">
-                        Гостевая карта (без ЛК)
+                      <div className="mt-3 text-xs text-muted-foreground max-w-[18ch]">
+                        Покажите код на входе — хост считает его сканером
                       </div>
-                    )}
-                    <div className="flex items-center justify-between mt-3">
-                      <div className="flex gap-2 opacity-70">
-                        <button disabled className="text-[10px] uppercase tracking-widest inline-flex items-center gap-1 cursor-not-allowed">
-                          <Apple className="w-3 h-3" /> Apple Wallet
-                        </button>
-                        <button disabled className="text-[10px] uppercase tracking-widest inline-flex items-center gap-1 cursor-not-allowed">
-                          <Wallet className="w-3 h-3" /> Google
-                        </button>
-                      </div>
-                      {!isOwner && (
-                        <button
-                          onClick={() => {
-                            removeFamilyMember(m.id);
-                            toast(`${m.name} удалён из семьи`);
-                          }}
-                          className="text-primary-foreground/70 hover:text-primary-foreground p-1 rounded-full hover:bg-primary-foreground/10"
-                          aria-label="Удалить"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      )}
+                      <button
+                        onClick={() => setFlipped(null)}
+                        className="mt-3 inline-flex items-center gap-1 text-xs uppercase tracking-widest text-accent hover:underline"
+                      >
+                        <RotateCw className="w-3 h-3" /> Назад
+                      </button>
+                    </div>
+                    <div className="p-2 bg-background rounded-xl shrink-0">
+                      <QRCodeSVG
+                        value={qrPayload}
+                        size={112}
+                        bgColor="transparent"
+                        fgColor="hsl(var(--primary))"
+                        level="M"
+                      />
                     </div>
                   </div>
                 </div>
