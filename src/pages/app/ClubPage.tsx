@@ -100,42 +100,99 @@ const ClubPage = () => {
 
   return (
     <div className="space-y-8">
-      {/* HERO — статус подписки */}
+      {/* HERO — статус членства */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-forest text-primary-foreground p-8 md:p-10 shadow-deep">
         <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-highlight/20 blur-3xl" />
-        <div className="relative flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-foreground/10 text-xs uppercase tracking-widest mb-4">
-              <Users className="w-3 h-3" /> Соседский клуб · семейная подписка
-            </div>
-            <h1 className="font-display text-4xl md:text-5xl font-semibold leading-tight mb-3">
-              {clubMembership.active ? "Ваш клуб активен" : "Впустите в клуб всю семью"}
-            </h1>
-            <p className="text-primary-foreground/80 max-w-lg">
-              Один аккаунт, до {MAX_FAMILY_MEMBERS} персональных карт. Первая — {FAMILY_TIER_PRICES[0]} ₽,
-              каждая следующая дешевле. Бесплатный вход на все клубные события.
-            </p>
+        <div className="relative max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-foreground/10 text-xs uppercase tracking-widest mb-4">
+            <Crown className="w-3 h-3" /> Соседский клуб · членство семьи
           </div>
-          <div className="shrink-0">
-            <div className="text-5xl font-display font-bold">{total.toLocaleString("ru")} ₽</div>
-            <div className="text-sm text-primary-foreground/70 text-right">в месяц · {family.length} чел.</div>
-          </div>
+          <h1 className="font-display text-4xl md:text-5xl font-semibold leading-tight mb-3">
+            {clubMembership.active ? "Ваш клуб активен" : "Статус члена сообщества"}
+          </h1>
+          <p className="text-primary-foreground/80">
+            Один аккаунт, до {MAX_FAMILY_MEMBERS} персональных карт. Все регулярные события включены.
+          </p>
+        </div>
+      </div>
+
+      {/* Конструктор членства: добавление + оплата в одном месте */}
+      <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
+        <div className="mb-5">
+          <h2 className="font-display text-2xl font-semibold mb-1">Составьте членство семьи</h2>
+          <p className="text-sm text-muted-foreground">Добавьте членов и оплатите сразу. Каждый следующий — дешевле.</p>
         </div>
 
-        <div className="relative mt-8 flex flex-wrap gap-3">
+        {/* Список членов */}
+        <div className="space-y-2 mb-4">
+          {family.map((m, i) => {
+            const isOwner = m.relation === "owner";
+            return (
+              <div key={m.id} className="flex items-center justify-between rounded-2xl bg-secondary/40 p-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold">
+                    {i + 1}
+                  </div>
+                  <div>
+                    <div className="font-medium text-sm flex items-center gap-1.5">
+                      {m.name}
+                      {isOwner && <Crown className="w-3 h-3 text-highlight" />}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {RELATION_LABEL[m.relation]}{m.phone && " · свой ЛК"}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="font-display text-sm font-semibold">{m.monthlyPrice} ₽/мес</div>
+                  {!isOwner && (
+                    <button
+                      onClick={() => {
+                        removeFamilyMember(m.id);
+                        toast(`${m.name} удалён из семьи`);
+                      }}
+                      className="text-muted-foreground hover:text-destructive p-1.5 rounded-full hover:bg-destructive/10 transition-colors"
+                      aria-label="Удалить"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+
+          {canAdd && (
+            <button
+              onClick={() => setAddOpen(true)}
+              className="w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border hover:border-accent hover:bg-accent/5 py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Plus className="w-4 h-4" /> Добавить члена семьи · {nextPrice} ₽
+            </button>
+          )}
+        </div>
+
+        {/* Итог + CTA */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-2xl bg-primary/5 p-4 border border-primary/10">
+          <div>
+            <div className="text-xs text-muted-foreground uppercase tracking-widest mb-0.5">Итого в месяц</div>
+            <div className="text-3xl font-display font-bold text-primary">{total.toLocaleString("ru")} ₽</div>
+            <div className="text-xs text-muted-foreground">{family.length} чел.</div>
+          </div>
+
           {!clubMembership.active ? (
             <Button variant="hero" size="lg" onClick={activate}>
               <Sparkles className="w-4 h-4 mr-2" /> Оплатить {total.toLocaleString("ru")} ₽
             </Button>
           ) : (
-            <>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-highlight text-highlight-foreground text-sm font-medium">
-                <Check className="w-4 h-4" /> Следующее списание {new Date(clubMembership.nextBilling!).toLocaleDateString("ru", { day: "2-digit", month: "long" })}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-highlight text-highlight-foreground text-xs font-medium">
+                <Check className="w-3.5 h-3.5" /> Списание {new Date(clubMembership.nextBilling!).toLocaleDateString("ru", { day: "2-digit", month: "long" })}
               </div>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="outline" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                    Отменить подписку
+                  <Button variant="outline" size="sm" className="text-muted-foreground hover:text-destructive hover:border-destructive/30">
+                    Отменить
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -153,83 +210,43 @@ const ClubPage = () => {
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
-            </>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Привилегии членства */}
-      <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
-        <div className="mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-xs uppercase tracking-widest text-primary mb-3">
-            <Crown className="w-3 h-3" /> Членство, а не скидка
-          </div>
-          <h2 className="font-display text-2xl md:text-3xl font-semibold mb-2">Привилегии члена клуба</h2>
-          <p className="text-muted-foreground max-w-2xl">
-            Карта SO-HO! — это не абонемент на экономию, а статус внутри сообщества: приоритет, ранний доступ и закрытые возможности.
-          </p>
+      {/* Акцентные привилегии — компактно */}
+      <div className="rounded-3xl border border-border bg-card p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Crown className="w-4 h-4 text-accent" />
+          <h2 className="font-display text-lg font-semibold">Привилегии члена</h2>
         </div>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
           {MEMBER_PRIVILEGES.map((p, i) => (
             <motion.div
               key={p.label}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.04 }}
-              className="rounded-2xl bg-secondary/40 hover:bg-secondary/70 p-4 transition-colors group"
+              transition={{ delay: i * 0.03 }}
+              className="flex items-start gap-3 rounded-xl bg-secondary/30 p-3 hover:bg-secondary/50 transition-colors"
             >
-              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
-                <p.icon className="w-4 h-4" />
+              <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                <p.icon className="w-3.5 h-3.5" />
               </div>
-              <div className="font-medium text-sm mb-1">{p.label}</div>
-              <div className="text-xs text-muted-foreground leading-relaxed">{p.desc}</div>
+              <div>
+                <div className="text-xs font-medium leading-tight">{p.label}</div>
+                <div className="text-[11px] text-muted-foreground leading-snug mt-0.5">{p.desc}</div>
+              </div>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Тарифная сетка */}
-      <div className="rounded-3xl border border-border bg-card p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <ShieldCheck className="w-4 h-4 text-accent" />
-          <h2 className="font-display text-xl font-semibold">Как считается цена</h2>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-          {FAMILY_TIER_PRICES.map((price, i) => {
-            const isCurrent = i < family.length;
-            const isNext = i === family.length;
-            return (
-              <div
-                key={i}
-                className={`rounded-2xl p-3 text-center transition-all ${
-                  isCurrent
-                    ? "bg-primary text-primary-foreground"
-                    : isNext
-                    ? "bg-highlight/20 border-2 border-highlight"
-                    : "bg-secondary/50 text-muted-foreground"
-                }`}
-              >
-                <div className="text-[10px] uppercase tracking-widest opacity-70">{i + 1}-й член</div>
-                <div className="font-display text-lg font-bold">{price} ₽</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Карты семьи */}
+      {/* Виртуальные карты семьи */}
       <div>
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="font-display text-2xl font-semibold">Виртуальные карты</h2>
-            <p className="text-sm text-muted-foreground">Персональная карта для каждого — как аватар клуба</p>
-          </div>
-          {canAdd && (
-            <Button onClick={() => setAddOpen(true)} variant="default">
-              <Plus className="w-4 h-4 mr-2" /> Добавить · {nextPrice} ₽
-            </Button>
-          )}
+        <div className="mb-4">
+          <h2 className="font-display text-2xl font-semibold">Виртуальные карты</h2>
+          <p className="text-sm text-muted-foreground">Персональная карта для каждого — как аватар клуба</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-4 [perspective:1600px]">
@@ -300,18 +317,6 @@ const ClubPage = () => {
                           </div>
                           <div className="flex items-center gap-1">
                             <span className="font-display text-sm font-semibold opacity-80">{m.monthlyPrice} ₽</span>
-                            {!isOwner && (
-                              <button
-                                onClick={() => {
-                                  removeFamilyMember(m.id);
-                                  toast(`${m.name} удалён из семьи`);
-                                }}
-                                className="text-primary-foreground/70 hover:text-primary-foreground p-1 rounded-full hover:bg-primary-foreground/10"
-                                aria-label="Удалить"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            )}
                           </div>
                         </div>
                       </div>
@@ -353,19 +358,9 @@ const ClubPage = () => {
               </motion.div>
             );
           })}
-
-          {canAdd && (
-            <button
-              onClick={() => setAddOpen(true)}
-              className="aspect-[1.6/1] rounded-3xl border-2 border-dashed border-border hover:border-accent hover:bg-accent/5 transition-colors flex flex-col items-center justify-center gap-2 text-muted-foreground hover:text-foreground"
-            >
-              <Plus className="w-6 h-6" />
-              <div className="font-medium">Добавить члена семьи</div>
-              <div className="text-xs">Следующий — {nextPrice} ₽ / мес</div>
-            </button>
-          )}
         </div>
       </div>
+
 
       {/* Модалка добавления */}
       <Dialog open={addOpen} onOpenChange={setAddOpen}>
