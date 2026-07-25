@@ -65,20 +65,22 @@ const ClubPage = () => {
     toast.success("Соседский клуб активирован", { description: "Мок-оплата прошла успешно" });
   };
 
+  const owner = family[0];
+
   return (
     <div className="space-y-8">
-      {/* HERO — статус членства */}
+      {/* HERO — статус клубной карты */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-forest text-primary-foreground p-8 md:p-10 shadow-deep">
         <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-highlight/20 blur-3xl" />
         <div className="absolute -bottom-32 -left-20 w-80 h-80 rounded-full bg-accent/20 blur-3xl" />
 
-        <div className="relative grid md:grid-cols-[1fr_auto] gap-8 items-end">
+        <div className="relative grid md:grid-cols-[1fr_auto] gap-8 items-center">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-foreground/10 text-xs uppercase tracking-widest mb-4">
               <Crown className="w-3 h-3" /> Соседский клуб
             </div>
             <h1 className="font-display text-4xl md:text-5xl font-semibold leading-tight mb-3">
-              {clubMembership.active ? "Ваш клуб активен" : "Статус члена сообщества"}
+              {clubMembership.active ? "Ваш клуб активен" : "Клубная карта Соседи"}
             </h1>
             <p className="text-primary-foreground/80 mb-6">
               Один аккаунт, до {MAX_FAMILY_MEMBERS} персональных карт. Все регулярные события включены.
@@ -104,7 +106,18 @@ const ClubPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 md:items-end">
+          <div className="flex flex-col gap-3 md:items-end">
+            {clubMembership.active && owner && (
+              <div className="bg-white rounded-2xl p-3 shadow-lg mb-1">
+                <QRCodeSVG
+                  value={JSON.stringify({ club: "soho", id: owner.id, name: owner.name, phone: owner.phone ?? null })}
+                  size={140}
+                  bgColor="transparent"
+                  fgColor="#0a0a0a"
+                  level="M"
+                />
+              </div>
+            )}
             {!clubMembership.active ? (
               <Button variant="hero" size="lg" onClick={activate}>
                 <Sparkles className="w-4 h-4 mr-2" /> Оплатить {total.toLocaleString("ru")} ₽
