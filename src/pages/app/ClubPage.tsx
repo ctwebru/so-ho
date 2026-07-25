@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
 import {
-  Users, Plus, Trash2, Check, Crown, Phone, X, Sparkles, Apple, Wallet, ShieldCheck, QrCode, RotateCw,
+  Plus, Trash2, Check, Crown, Phone, X, Sparkles, Apple, Wallet, QrCode, RotateCw,
   Ticket, Star, Coffee, CalendarClock, Trophy, UserPlus, Award, Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
