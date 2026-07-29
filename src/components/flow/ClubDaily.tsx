@@ -51,13 +51,34 @@ const ClubDaily = () => {
       <div className="relative rounded-[2.5rem] border-2 border-accent/30 bg-secondary/50 paper p-7 md:p-10 overflow-hidden">
         <div className="absolute -bottom-10 -right-10 w-48 h-48 rounded-full bg-accent/10" />
 
-        <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 mb-9">
+        <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
           <div>
             <h2 className="font-display text-2xl md:text-3xl font-semibold">Клуб открыт ежедневно</h2>
             <p className="font-hand text-accent text-2xl mt-1">Ждём вас с восьми утра до восьми вечера</p>
           </div>
           <div className="shrink-0 self-start md:self-auto rounded-full bg-primary text-primary-foreground px-6 py-2 font-display font-semibold tabular-nums">
             08:00 — 20:00
+          </div>
+        </div>
+
+        {/* Свободный день в клубе */}
+        <div className="relative mb-9 rounded-3xl bg-card border-2 border-accent/40 p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4 justify-between">
+          <div>
+            <div className="font-display text-lg md:text-xl font-semibold">
+              Приходи хоть каждый день — 150 ₽ за день
+            </div>
+            <p className="font-hand text-accent text-xl mt-0.5">членам клуба — бесплатно</p>
+            <p className="text-sm text-muted-foreground mt-2 max-w-xl">
+              Играй в настолки, читай, рисуй, собирай паззл недели или просто сиди с ноутбуком —
+              без лимита по времени и без записи.
+            </p>
+          </div>
+          <div className="shrink-0 flex flex-wrap gap-2 text-sm">
+            {["без записи", "весь день", "все игры и книги"].map((t) => (
+              <span key={t} className="inline-flex items-center gap-1 rounded-full bg-accent/15 px-3 py-1">
+                <Check className="w-3.5 h-3.5 text-accent" /> {t}
+              </span>
+            ))}
           </div>
         </div>
 
