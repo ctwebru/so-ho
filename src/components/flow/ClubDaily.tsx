@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Gamepad2, Dice5, BookOpen, Coffee, Users2, Home, ArrowUpRight } from "lucide-react";
+import { Gamepad2, Dice5, BookOpen, Puzzle, Users2, Home, ArrowUpRight, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
