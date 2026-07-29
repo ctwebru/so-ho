@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Gamepad2, Dice5, BookOpen, Coffee, Users2, Home, Clock, ArrowUpRight } from "lucide-react";
+import { Gamepad2, Dice5, BookOpen, Coffee, Users2, Home, ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,10 +14,10 @@ import {
 } from "@/components/ui/dialog";
 
 const ITEMS = [
-  { icon: Dice5, label: "Выбрать любую настольную игру", note: "40+ игр на полке" },
-  { icon: BookOpen, label: "Почитать книгу", note: "тихие места у окна" },
-  { icon: Coffee, label: "Выпить кофе", note: "спешелти от бариста" },
-  { icon: Users2, label: "Встретиться с друзьями", note: "большие столы" },
+  { icon: Dice5, title: "Настолки", note: "40+ игр на полке, бери любую" },
+  { icon: BookOpen, title: "Книги", note: "букшеринг и тихий угол у окна" },
+  { icon: Coffee, title: "Кофе", note: "всегда свежий, всегда горячий" },
+  { icon: Users2, title: "Встречи", note: "большие столы для своих" },
 ];
 
 const ClubDaily = () => {
@@ -47,69 +47,68 @@ const ClubDaily = () => {
   };
 
   return (
-    <section className="container mx-auto px-6 pb-14">
-      <div className="rounded-3xl border border-border bg-card shadow-soft overflow-hidden">
-        <div className="bg-gradient-moss px-6 md:px-8 py-6 flex flex-wrap items-center gap-x-6 gap-y-2">
-          <div className="flex items-center gap-3">
-            <Home className="w-5 h-5" strokeWidth={1.75} />
-            <span className="font-display text-xl md:text-2xl font-semibold">Клуб открыт ежедневно</span>
+    <section className="container mx-auto px-6 pb-16">
+      <div className="relative rounded-[2.5rem] border-2 border-accent/30 bg-secondary/50 paper p-7 md:p-10 overflow-hidden">
+        <div className="absolute -bottom-10 -right-10 w-48 h-48 rounded-full bg-accent/10" />
+
+        <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 mb-9">
+          <div>
+            <h2 className="font-display text-2xl md:text-3xl font-semibold">Клуб открыт ежедневно</h2>
+            <p className="font-hand text-accent text-2xl mt-1">Ждём вас с восьми утра до восьми вечера</p>
           </div>
-          <span className="inline-flex items-center gap-2 text-sm text-foreground/75">
-            <Clock className="w-4 h-4" /> 08:00 — 20:00
-          </span>
+          <div className="shrink-0 self-start md:self-auto rounded-full bg-primary text-primary-foreground px-6 py-2 font-display font-semibold tabular-nums">
+            08:00 — 20:00
+          </div>
         </div>
 
-        <div className="p-6 md:p-8">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-5">Каждый день вы можете</p>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            {/* PS5 */}
-            <div className="md:col-span-1 rounded-2xl border border-accent/25 bg-accent/5 p-5 flex flex-col">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center mb-3">
-                <Gamepad2 className="w-5 h-5" strokeWidth={1.75} />
+        <div className="relative grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-7">
+          {/* PS5 — акцентная позиция */}
+          <div className="sm:col-span-2 lg:col-span-1 lg:row-span-2 rounded-3xl bg-card border-2 border-primary/80 p-6 flex flex-col justify-between tilt-1 hover:rotate-0 transition-transform duration-300">
+            <div>
+              <div className="w-11 h-11 rounded-2xl bg-accent/20 text-primary flex items-center justify-center mb-4">
+                <Gamepad2 className="w-6 h-6" strokeWidth={1.75} />
               </div>
-              <div className="font-display text-lg font-semibold">Забронировать PS5</div>
-              <p className="text-sm text-muted-foreground mt-1">
-                300 ₽/час с клубной картой · 450 ₽/час без карты
-              </p>
-              <Button className="mt-4 w-full" onClick={() => setPsOpen(true)}>
-                Забронировать
-              </Button>
-            </div>
-
-            {/* Everyday items */}
-            <div className="md:col-span-2 grid sm:grid-cols-2 gap-3">
-              {ITEMS.map((i) => (
-                <div
-                  key={i.label}
-                  className="rounded-2xl border border-border bg-background p-4 flex items-start gap-3"
-                >
-                  <div className="w-9 h-9 shrink-0 rounded-xl bg-secondary text-secondary-foreground flex items-center justify-center">
-                    <i.icon className="w-4 h-4" strokeWidth={1.75} />
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium leading-snug">{i.label}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">{i.note}</div>
-                  </div>
+              <div className="font-display text-2xl font-semibold">PlayStation 5</div>
+              <p className="font-hand text-accent text-xl mt-1">два геймпада и большой экран</p>
+              <div className="mt-4 space-y-1 text-sm">
+                <div className="flex justify-between border-b border-border pb-1">
+                  <span className="text-muted-foreground">с клубной картой</span>
+                  <span className="font-semibold tabular-nums">300 ₽/ч</span>
                 </div>
-              ))}
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">без карты</span>
+                  <span className="font-semibold tabular-nums">450 ₽/ч</span>
+                </div>
+              </div>
             </div>
+            <Button className="mt-6 w-full rounded-2xl" onClick={() => setPsOpen(true)}>
+              Забронировать приставку
+            </Button>
           </div>
 
-          <a
-            href="#rent"
-            className="mt-4 rounded-2xl border border-border bg-secondary/40 p-5 flex items-center justify-between gap-4 hover:bg-secondary/70 transition-colors group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                <Home className="w-5 h-5" strokeWidth={1.75} />
+          {ITEMS.map((i) => (
+            <div key={i.title} className="flex gap-4 items-start">
+              <div className="w-11 h-11 shrink-0 rounded-2xl bg-accent/20 text-primary flex items-center justify-center">
+                <i.icon className="w-5 h-5" strokeWidth={1.75} />
               </div>
               <div>
-                <div className="font-display text-lg font-semibold">Забронировать клуб целиком</div>
-                <div className="text-sm text-muted-foreground">Дни рождения, лекции, корпоративы, съёмки</div>
+                <div className="font-display text-lg font-semibold leading-tight">{i.title}</div>
+                <p className="text-sm text-muted-foreground mt-0.5">{i.note}</p>
               </div>
             </div>
-            <ArrowUpRight className="w-5 h-5 shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          ))}
+
+          <a href="#rent" className="flex gap-4 items-start group">
+            <div className="w-11 h-11 shrink-0 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+              <Home className="w-5 h-5" strokeWidth={1.75} />
+            </div>
+            <div>
+              <div className="font-display text-lg font-semibold leading-tight inline-flex items-center gap-1">
+                Клуб целиком
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+              <p className="text-sm text-muted-foreground mt-0.5">дни рождения, лекции, съёмки</p>
+            </div>
           </a>
         </div>
       </div>
@@ -127,7 +126,7 @@ const ClubDaily = () => {
             <button
               type="button"
               onClick={() => setMember(true)}
-              className={`rounded-2xl border p-4 text-left transition-colors ${
+              className={`rounded-2xl border-2 p-4 text-left transition-colors ${
                 member ? "border-accent bg-accent/10" : "border-border bg-background"
               }`}
             >
@@ -137,7 +136,7 @@ const ClubDaily = () => {
             <button
               type="button"
               onClick={() => setMember(false)}
-              className={`rounded-2xl border p-4 text-left transition-colors ${
+              className={`rounded-2xl border-2 p-4 text-left transition-colors ${
                 !member ? "border-accent bg-accent/10" : "border-border bg-background"
               }`}
             >
