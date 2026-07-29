@@ -1,7 +1,6 @@
-import { Coffee, Gamepad2, Dice5, Users2, type LucideIcon } from "lucide-react";
+import { Gamepad2, Dice5, Users2, type LucideIcon } from "lucide-react";
 
 export type ScheduleKind =
-  | "quiet"
   | "console"
   | "board_5"
   | "board_12"
@@ -20,11 +19,6 @@ export const KIND_META: Record<
   ScheduleKind,
   { label: string; icon: LucideIcon; tone: string }
 > = {
-  quiet: {
-    label: "Тихий клуб",
-    icon: Coffee,
-    tone: "bg-secondary text-secondary-foreground border-border",
-  },
   console: {
     label: "Игры в приставку",
     icon: Gamepad2,
@@ -64,26 +58,17 @@ export const WEEK_DAYS = [
 
 export type WeekDayId = (typeof WEEK_DAYS)[number]["id"];
 
-const quiet: ScheduleSlot = {
-  start: "08:00",
-  end: "17:00",
-  kind: "quiet",
-  title: "Тихий клуб",
-  note: "Работа, чтение, встречи один-на-один",
-};
-
 export const WEEKLY_SCHEDULE: Record<WeekDayId, ScheduleSlot[]> = {
-  1: [quiet, { start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
-  2: [quiet, { start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
+  1: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
+  2: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
   3: [
-    quiet,
-    { start: "18:00", end: "19:30", kind: "board_5", title: "Настолки 5+", note: "для семей с детьми" },
+        { start: "18:00", end: "19:30", kind: "board_5", title: "Настолки 5+", note: "для семей с детьми" },
     { start: "19:30", end: "21:00", kind: "board_12", title: "Настолки 12+" },
   ],
-  4: [quiet, { start: "18:00", end: "19:00", kind: "board_duo", title: "Настолки для двоих" }],
-  5: [quiet, { start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
-  6: [quiet, { start: "19:00", end: "21:00", kind: "board_16", title: "Настолки 16+" }],
-  7: [quiet, { start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
+  4: [{ start: "18:00", end: "19:00", kind: "board_duo", title: "Настолки для двоих" }],
+  5: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
+  6: [{ start: "19:00", end: "21:00", kind: "board_16", title: "Настолки 16+" }],
+  7: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
 };
 
 // JS Date.getDay(): 0=Sun..6=Sat  → map to our 1..7 (Mon..Sun)

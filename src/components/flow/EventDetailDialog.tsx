@@ -28,7 +28,6 @@ export type EventDetail = {
 };
 
 const KIND_GRADIENT: Record<ScheduleKind | "special", string> = {
-  quiet: "from-secondary via-secondary to-muted",
   console: "from-accent/40 via-accent/20 to-background",
   board_5: "from-highlight/40 via-highlight/20 to-background",
   board_12: "from-highlight/50 via-highlight/25 to-background",
