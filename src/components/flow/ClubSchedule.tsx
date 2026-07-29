@@ -105,16 +105,16 @@ const ClubSchedule = () => {
     <section className="container mx-auto px-6 pb-24">
       <div className="grid md:grid-cols-12 gap-8 mb-8 items-end">
         <div className="md:col-span-7">
-          <p className="text-xs uppercase tracking-widest text-accent font-medium mb-4">
-            / Расписание
-          </p>
+          <p className="font-hand text-accent text-2xl mb-1">заглядывай на огонёк</p>
           <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight">
-            Что у нас каждый день
+            Что у нас по вечерам
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl">
-            С 08:00 до 17:00 — тихий клуб для работы и встреч. Вечером — игры,
-            настолки и мастер-классы. Всё в клубной карте, разовое посещение — 200 ₽.
+            Днём клуб просто открыт — приходи с ноутбуком, книгой или друзьями.
+            А вечером собираемся: настолки, приставка, мастер-классы. Всё в клубной
+            карте, разовое посещение — 200 ₽.
           </p>
+
         </div>
         <div className="md:col-span-5 md:justify-self-end inline-flex rounded-full border border-border bg-card p-1 text-sm flex-wrap">
           <ModeBtn active={mode === "month"} onClick={() => setMode("month")} icon={<CalendarRange className="w-3.5 h-3.5" />}>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&family=Bad+Script&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -212,6 +212,17 @@
   .font-display {
     font-family: 'Space Grotesk', system-ui, sans-serif;
   }
+  .font-hand {
+    font-family: 'Bad Script', cursive;
+    letter-spacing: 0;
+  }
+  .paper {
+    background-image: radial-gradient(hsl(var(--foreground) / 0.035) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  .tilt-1 { transform: rotate(-1deg); }
+  .tilt-2 { transform: rotate(1.2deg); }
+  .tilt-0:hover { transform: rotate(0deg); }
   .bg-gradient-forest { background: var(--gradient-forest); }
   .bg-gradient-moss { background: var(--gradient-moss); }
   .bg-gradient-fade { background: var(--gradient-fade); }
