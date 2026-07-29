@@ -15,8 +15,8 @@ import {
 
 const ITEMS = [
   { icon: Dice5, title: "Настолки", note: "40+ игр на полке, бери любую" },
-  { icon: BookOpen, title: "Книги", note: "букшеринг и тихий угол у окна" },
-  { icon: Coffee, title: "Кофе", note: "всегда свежий, всегда горячий" },
+  { icon: BookOpen, title: "Книги и рисование", note: "букшеринг, бумага и карандаши" },
+  { icon: Puzzle, title: "Паззл недели", note: "собираем всем клубом, стол у окна" },
   { icon: Users2, title: "Встречи", note: "большие столы для своих" },
 ];
 
