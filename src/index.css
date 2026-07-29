@@ -220,8 +220,8 @@
     background-image: radial-gradient(hsl(var(--foreground) / 0.035) 1px, transparent 1px);
     background-size: 18px 18px;
   }
-  .tilt-1 { transform: rotate(-1deg); }
-  .tilt-2 { transform: rotate(1.2deg); }
+  .tilt-1 { transform: rotate(0deg); }
+  .tilt-2 { transform: rotate(0deg); }
   .tilt-0:hover { transform: rotate(0deg); }
   .bg-gradient-forest { background: var(--gradient-forest); }
   .bg-gradient-moss { background: var(--gradient-moss); }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Gamepad2, Dice5, BookOpen, Coffee, Users2, Home, ArrowUpRight } from "lucide-react";
+import { Gamepad2, Dice5, BookOpen, Puzzle, Users2, Home, ArrowUpRight, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,8 +15,8 @@ import {
 
 const ITEMS = [
   { icon: Dice5, title: "Настолки", note: "40+ игр на полке, бери любую" },
-  { icon: BookOpen, title: "Книги", note: "букшеринг и тихий угол у окна" },
-  { icon: Coffee, title: "Кофе", note: "всегда свежий, всегда горячий" },
+  { icon: BookOpen, title: "Книги и рисование", note: "букшеринг, бумага и карандаши" },
+  { icon: Puzzle, title: "Паззл недели", note: "собираем всем клубом, стол у окна" },
   { icon: Users2, title: "Встречи", note: "большие столы для своих" },
 ];
 
@@ -51,13 +51,34 @@ const ClubDaily = () => {
       <div className="relative rounded-[2.5rem] border-2 border-accent/30 bg-secondary/50 paper p-7 md:p-10 overflow-hidden">
         <div className="absolute -bottom-10 -right-10 w-48 h-48 rounded-full bg-accent/10" />
 
-        <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 mb-9">
+        <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
           <div>
             <h2 className="font-display text-2xl md:text-3xl font-semibold">Клуб открыт ежедневно</h2>
             <p className="font-hand text-accent text-2xl mt-1">Ждём вас с восьми утра до восьми вечера</p>
           </div>
           <div className="shrink-0 self-start md:self-auto rounded-full bg-primary text-primary-foreground px-6 py-2 font-display font-semibold tabular-nums">
             08:00 — 20:00
+          </div>
+        </div>
+
+        {/* Свободный день в клубе */}
+        <div className="relative mb-9 rounded-3xl bg-card border-2 border-accent/40 p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4 justify-between">
+          <div>
+            <div className="font-display text-lg md:text-xl font-semibold">
+              Приходи хоть каждый день — 150 ₽ за день
+            </div>
+            <p className="font-hand text-accent text-xl mt-0.5">членам клуба — бесплатно</p>
+            <p className="text-sm text-muted-foreground mt-2 max-w-xl">
+              Играй в настолки, читай, рисуй, собирай паззл недели или просто сиди с ноутбуком —
+              без лимита по времени и без записи.
+            </p>
+          </div>
+          <div className="shrink-0 flex flex-wrap gap-2 text-sm">
+            {["без записи", "весь день", "все игры и книги"].map((t) => (
+              <span key={t} className="inline-flex items-center gap-1 rounded-full bg-accent/15 px-3 py-1">
+                <Check className="w-3.5 h-3.5 text-accent" /> {t}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -98,20 +119,35 @@ const ClubDaily = () => {
             </div>
           ))}
 
-          <a href="#rent" className="flex gap-4 items-start group">
-            <div className="w-11 h-11 shrink-0 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-              <Home className="w-5 h-5" strokeWidth={1.75} />
-            </div>
-            <div>
-              <div className="font-display text-lg font-semibold leading-tight inline-flex items-center gap-1">
-                Клуб целиком
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </div>
-              <p className="text-sm text-muted-foreground mt-0.5">дни рождения, лекции, съёмки</p>
-            </div>
-          </a>
         </div>
+
+        {/* Аренда клуба целиком */}
+        <a
+          href="#rent"
+          className="relative mt-9 block rounded-3xl bg-primary text-primary-foreground p-6 md:p-7 group"
+        >
+          <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
+            <div className="flex gap-4 items-start">
+              <div className="w-11 h-11 shrink-0 rounded-2xl bg-primary-foreground/15 flex items-center justify-center">
+                <Home className="w-5 h-5" strokeWidth={1.75} />
+              </div>
+              <div>
+                <div className="font-display text-xl md:text-2xl font-semibold leading-tight">
+                  Арендовать клуб целиком
+                </div>
+                <p className="text-sm opacity-85 mt-1">
+                  Бизнес-встречи, лекции, съёмки · до 25 гостей · от 2 500 ₽/час
+                </p>
+              </div>
+            </div>
+            <span className="shrink-0 inline-flex items-center gap-2 rounded-2xl bg-primary-foreground text-primary px-5 py-2.5 font-display font-semibold">
+              Оставить заявку
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </span>
+          </div>
+        </a>
       </div>
+
 
       <Dialog open={psOpen} onOpenChange={setPsOpen}>
         <DialogContent className="max-w-md">
