@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { ArrowUpRight, Users, Clock, MapPin, Send } from "lucide-react";
 import { toast } from "sonner";
 import Navigation from "@/components/flow/Navigation";
@@ -82,28 +81,34 @@ const Club = () => {
 
       <main className="pt-16">
         {/* HERO */}
-        <section className="container mx-auto px-6 pt-16 md:pt-24 pb-16">
-          <div className="grid md:grid-cols-12 gap-10 items-end">
-            <div className="md:col-span-8">
-              <p className="text-xs uppercase tracking-widest text-accent font-medium mb-5">/ Соседский клуб</p>
-              <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-semibold leading-[0.95] text-balance">
-                Кофе — это только повод.<br />
-                <span className="italic font-normal text-accent">Остальное — соседи.</span>
-              </h1>
-              <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl">
-                Соседский клуб SO-HO! — это про мастер-классы, игровые вечера, детские
-                выходные и вашу возможность провести здесь что-то своё.
-              </p>
+        <section className="container mx-auto px-6 pt-20 md:pt-28 pb-14 text-center">
+          <div className="relative inline-block">
+            <span className="font-hand text-accent text-2xl md:text-3xl absolute -top-9 md:-top-10 -right-10 md:-right-24 rotate-6 whitespace-nowrap">
+              наш общий дом
+            </span>
+            <h1 className="font-display text-5xl md:text-7xl lg:text-[5.5rem] font-semibold leading-[0.95] tracking-tight">
+              Соседский
+              <br />
+              клуб
+            </h1>
+          </div>
+          <p className="mt-8 mx-auto max-w-xl text-lg md:text-xl text-muted-foreground">
+            Кофе — это только повод. Остальное — соседи: настолки, мастер-классы,
+            детские выходные и место, где можно провести что-то своё.
+          </p>
+
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <div className="rounded-3xl bg-card border-2 border-border px-7 py-4 tilt-1 hover:rotate-0 transition-transform">
+              <div className="font-display text-3xl font-semibold tabular-nums">{CLUB_EVENTS.length}</div>
+              <div className="text-xs uppercase tracking-widest text-muted-foreground mt-0.5">событий в месяце</div>
             </div>
-            <div className="md:col-span-4 grid grid-cols-2 gap-4">
-              <div className="rounded-2xl bg-card border border-border p-5">
-                <div className="font-display text-4xl font-semibold tabular-nums">{CLUB_EVENTS.length}</div>
-                <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1">событий в месяце</div>
-              </div>
-              <div className="rounded-2xl bg-gradient-moss p-5">
-                <div className="font-display text-4xl font-semibold tabular-nums">40+</div>
-                <div className="text-xs uppercase tracking-widest text-foreground/70 mt-1">настольных игр</div>
-              </div>
+            <div className="rounded-3xl bg-gradient-moss px-7 py-4 tilt-2 hover:rotate-0 transition-transform">
+              <div className="font-display text-3xl font-semibold tabular-nums">40+</div>
+              <div className="text-xs uppercase tracking-widest text-foreground/70 mt-0.5">настольных игр</div>
+            </div>
+            <div className="rounded-3xl bg-card border-2 border-border px-7 py-4 tilt-1 hover:rotate-0 transition-transform">
+              <div className="font-display text-3xl font-semibold tabular-nums">7/7</div>
+              <div className="text-xs uppercase tracking-widest text-muted-foreground mt-0.5">дней открыты</div>
             </div>
           </div>
         </section>
@@ -111,16 +116,21 @@ const Club = () => {
         <ClubDaily />
 
         {/* CATEGORIES */}
-        <section className="container mx-auto px-6 pb-16">
-          <div className="grid md:grid-cols-4 gap-4">
-            {CLUB_CATEGORIES.map((c) => (
+        <section className="container mx-auto px-6 pb-20">
+          <p className="font-hand text-accent text-2xl mb-5">что здесь бывает</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {CLUB_CATEGORIES.map((c, i) => (
               <a
                 key={c.id}
                 href={`#${c.id}`}
                 id={c.id}
-                className="scroll-mt-24 rounded-3xl bg-card border border-border p-6 hover:shadow-soft hover:-translate-y-0.5 transition-all"
+                className={`scroll-mt-24 rounded-[2rem] border-2 p-6 transition-transform duration-300 hover:rotate-0 ${
+                  i % 2 === 0
+                    ? "bg-card border-primary/70 tilt-1"
+                    : "bg-secondary/60 border-accent/40 tilt-2"
+                }`}
               >
-                <div className="w-12 h-12 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-accent/20 text-primary flex items-center justify-center mb-4">
                   <c.icon className="w-5 h-5" strokeWidth={1.75} />
                 </div>
                 <div className="font-display text-xl font-semibold mb-2">{c.title}</div>
@@ -134,19 +144,19 @@ const Club = () => {
 
         {/* AFISHA */}
         <section className="container mx-auto px-6 pb-24">
-          <div className="grid md:grid-cols-12 gap-8 mb-8 items-end">
-            <div className="md:col-span-8">
-              <p className="text-xs uppercase tracking-widest text-accent font-medium mb-4">/ Афиша</p>
-              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight">
+          <div className="flex flex-wrap gap-6 justify-between items-end mb-8">
+            <div>
+              <p className="font-hand text-accent text-2xl">приходите в гости</p>
+              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight mt-1">
                 Ближайшие встречи
               </h2>
             </div>
-            <div className="md:col-span-4 flex md:justify-end flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2">
               {FILTERS.map((f) => (
                 <button
                   key={f.id}
                   onClick={() => setFilter(f.id)}
-                  className={`px-4 py-2 rounded-full text-sm border transition-colors ${
+                  className={`px-4 py-2 rounded-full text-sm border-2 transition-colors ${
                     filter === f.id
                       ? "bg-primary text-primary-foreground border-primary"
                       : "bg-background border-border text-muted-foreground hover:text-foreground"
@@ -158,51 +168,66 @@ const Club = () => {
             </div>
           </div>
 
-          <div className="rounded-3xl bg-card border border-border divide-y divide-border overflow-hidden shadow-soft">
-            {filtered.length === 0 && (
-              <div className="p-10 text-center text-muted-foreground">
-                Пока в этой категории пусто. Загляни позже.
-              </div>
-            )}
-            {filtered.map((e) => {
+          {filtered.length === 0 && (
+            <div className="rounded-[2rem] border-2 border-dashed border-accent/40 p-12 text-center text-muted-foreground">
+              Пока в этой категории пусто. Загляни позже.
+            </div>
+          )}
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((e, i) => {
               const cat = CLUB_CATEGORIES.find((c) => c.id === e.category);
+              const dark = i % 3 === 1;
               return (
                 <article
                   key={e.id}
-                  className="grid md:grid-cols-12 gap-6 items-center p-6 md:p-8 hover:bg-secondary/40 transition-colors"
+                  className={`rounded-[2rem] border-2 p-7 flex flex-col justify-between transition-transform duration-300 hover:rotate-0 ${
+                    i % 2 === 0 ? "tilt-1" : "tilt-2"
+                  } ${dark ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border"}`}
                 >
-                  <div className="md:col-span-2">
-                    <div className="font-display text-2xl md:text-3xl font-semibold tabular-nums">{e.date}</div>
-                    <div className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{e.time}</div>
-                  </div>
-                  <div className="md:col-span-6">
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <span className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+                  <div>
+                    <div className="flex items-center justify-between gap-3 mb-4">
+                      <span
+                        className={`inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest px-3 py-1 rounded-full ${
+                          dark ? "bg-primary-foreground/15" : "bg-secondary text-secondary-foreground"
+                        }`}
+                      >
                         {cat && <cat.icon className="w-3 h-3" strokeWidth={2} />}
-                        {cat?.title.split(" ")[0]}
+                        {e.date} · {e.time}
                       </span>
                       {e.ageLabel && (
-                        <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full border border-border text-muted-foreground">
+                        <span className={`font-hand text-lg ${dark ? "text-primary-foreground/80" : "text-accent"}`}>
                           {e.ageLabel}
                         </span>
                       )}
                     </div>
-                    <div className="font-display text-xl md:text-2xl font-medium leading-tight">{e.title}</div>
-                    <p className="text-sm text-muted-foreground mt-1">{e.desc}</p>
-                    <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
+                    <h3 className="font-display text-2xl font-semibold leading-tight">{e.title}</h3>
+                    <p className={`text-sm mt-2 ${dark ? "text-primary-foreground/75" : "text-muted-foreground"}`}>
+                      {e.desc}
+                    </p>
+                    <div
+                      className={`mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs ${
+                        dark ? "text-primary-foreground/70" : "text-muted-foreground"
+                      }`}
+                    >
                       <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{e.duration}</span>
                       <span className="flex items-center gap-1"><Users className="w-3 h-3" />осталось {e.seatsLeft}</span>
                       <span>ведёт {e.host}</span>
                     </div>
                   </div>
-                  <div className="md:col-span-2 md:text-right">
-                    <div className="font-display text-2xl font-semibold tabular-nums">{e.price} ₽</div>
-                    <div className="text-xs text-muted-foreground">за человека</div>
-                  </div>
-                  <div className="md:col-span-2 md:text-right">
+
+                  <div className="mt-6 flex items-end justify-between gap-4">
+                    <div>
+                      <div className="font-display text-2xl font-semibold tabular-nums">{e.price} ₽</div>
+                      <div className={`text-xs ${dark ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                        за человека
+                      </div>
+                    </div>
                     <Button
                       onClick={() => setSelected(e)}
                       disabled={e.seatsLeft === 0}
+                      variant={dark ? "secondary" : "default"}
+                      className="rounded-2xl"
                     >
                       {e.seatsLeft === 0 ? "Мест нет" : "Записаться"}
                     </Button>
@@ -214,11 +239,11 @@ const Club = () => {
         </section>
 
         {/* RENT */}
-        <section id="rent" className="scroll-mt-24 py-20 md:py-28 bg-secondary/40 border-y border-border">
-          <div className="container mx-auto px-6 grid md:grid-cols-12 gap-12">
+        <section id="rent" className="scroll-mt-24 py-20 md:py-28 bg-secondary/50 paper border-y-2 border-accent/30">
+          <div className="container mx-auto px-6 grid md:grid-cols-12 gap-12 items-start">
             <div className="md:col-span-6">
-              <p className="text-xs uppercase tracking-widest text-accent font-medium mb-4">/ Аренда</p>
-              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight text-balance">
+              <p className="font-hand text-accent text-2xl">свой праздник в клубе?</p>
+              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight text-balance mt-1">
                 Проведи у нас <span className="italic font-normal text-accent">своё событие</span>
               </h2>
               <p className="mt-6 text-muted-foreground text-lg max-w-xl">
@@ -226,18 +251,19 @@ const Club = () => {
                 для мастер-классов, лекций, съёмок, дней рождения и рабочих встреч.
               </p>
               <div className="mt-8 grid sm:grid-cols-3 gap-4">
-                <div className="rounded-2xl bg-card border border-border p-5">
-                  <div className="font-display text-2xl font-semibold">до 25</div>
-                  <div className="text-xs text-muted-foreground mt-1">гостей</div>
-                </div>
-                <div className="rounded-2xl bg-card border border-border p-5">
-                  <div className="font-display text-2xl font-semibold">от 2 ч</div>
-                  <div className="text-xs text-muted-foreground mt-1">минимум</div>
-                </div>
-                <div className="rounded-2xl bg-card border border-border p-5">
-                  <div className="font-display text-2xl font-semibold">2 500 ₽</div>
-                  <div className="text-xs text-muted-foreground mt-1">час буднего дня</div>
-                </div>
+                {[
+                  { v: "до 25", l: "гостей" },
+                  { v: "от 2 ч", l: "минимум" },
+                  { v: "2 500 ₽", l: "час буднего дня" },
+                ].map((s, i) => (
+                  <div
+                    key={s.l}
+                    className={`rounded-3xl bg-card border-2 border-border p-5 ${i % 2 === 0 ? "tilt-1" : "tilt-2"} hover:rotate-0 transition-transform`}
+                  >
+                    <div className="font-display text-2xl font-semibold">{s.v}</div>
+                    <div className="text-xs text-muted-foreground mt-1">{s.l}</div>
+                  </div>
+                ))}
               </div>
               <div className="mt-8 flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4 text-accent" />
@@ -247,9 +273,10 @@ const Club = () => {
 
             <form
               onSubmit={submitRent}
-              className="md:col-span-6 rounded-3xl bg-card border border-border p-6 md:p-8 shadow-soft"
+              className="md:col-span-6 rounded-[2.5rem] bg-card border-2 border-primary/70 p-6 md:p-8 tilt-2 hover:rotate-0 transition-transform duration-300"
             >
-              <div className="font-display text-2xl font-semibold mb-6">Оставить заявку</div>
+              <div className="font-display text-2xl font-semibold">Оставить заявку</div>
+              <p className="font-hand text-accent text-xl mb-6">позвоним и всё обсудим</p>
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="rent-name">ФИО</Label>
@@ -274,7 +301,7 @@ const Club = () => {
                   />
                 </div>
               </div>
-              <Button type="submit" className="mt-6 w-full">
+              <Button type="submit" className="mt-6 w-full rounded-2xl">
                 <Send className="w-4 h-4 mr-2" /> Отправить заявку
               </Button>
               <p className="text-xs text-muted-foreground mt-3 text-center">
@@ -286,15 +313,16 @@ const Club = () => {
 
         {/* CTA */}
         <section className="container mx-auto px-6 py-20 text-center">
-          <h3 className="font-display text-3xl md:text-4xl font-semibold text-balance max-w-2xl mx-auto">
+          <p className="font-hand text-accent text-2xl">а может, ты сам поведёшь?</p>
+          <h3 className="font-display text-3xl md:text-4xl font-semibold text-balance max-w-2xl mx-auto mt-2">
             Хочешь провести <span className="italic font-normal text-accent">свой</span> мастер-класс?
           </h3>
           <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
-            Мы охотно принимаем гостевых ведущих. Расскажи об идее — обсудим формат и разделим огранизацию.
+            Мы охотно принимаем гостевых ведущих. Расскажи об идее — обсудим формат и разделим организацию.
           </p>
           <a
             href="#rent"
-            className="mt-8 inline-flex items-center gap-2 font-display font-medium border-b border-foreground/30 hover:border-foreground pb-1"
+            className="mt-8 inline-flex items-center gap-2 font-display font-medium border-b-2 border-accent hover:border-foreground pb-1"
           >
             Написать нам <ArrowUpRight className="w-4 h-4" />
           </a>
