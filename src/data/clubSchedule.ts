@@ -1,7 +1,6 @@
 import { Coffee, Gamepad2, Dice5, Users2, type LucideIcon } from "lucide-react";
 
 export type ScheduleKind =
-  | "quiet"
   | "console"
   | "board_5"
   | "board_12"
