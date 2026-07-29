@@ -119,20 +119,35 @@ const ClubDaily = () => {
             </div>
           ))}
 
-          <a href="#rent" className="flex gap-4 items-start group">
-            <div className="w-11 h-11 shrink-0 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-              <Home className="w-5 h-5" strokeWidth={1.75} />
-            </div>
-            <div>
-              <div className="font-display text-lg font-semibold leading-tight inline-flex items-center gap-1">
-                Клуб целиком
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </div>
-              <p className="text-sm text-muted-foreground mt-0.5">дни рождения, лекции, съёмки</p>
-            </div>
-          </a>
         </div>
+
+        {/* Аренда клуба целиком */}
+        <a
+          href="#rent"
+          className="relative mt-9 block rounded-3xl bg-primary text-primary-foreground p-6 md:p-7 group"
+        >
+          <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
+            <div className="flex gap-4 items-start">
+              <div className="w-11 h-11 shrink-0 rounded-2xl bg-primary-foreground/15 flex items-center justify-center">
+                <Home className="w-5 h-5" strokeWidth={1.75} />
+              </div>
+              <div>
+                <div className="font-display text-xl md:text-2xl font-semibold leading-tight">
+                  Арендовать клуб целиком
+                </div>
+                <p className="text-sm opacity-85 mt-1">
+                  Бизнес-встречи, лекции, съёмки · до 25 гостей · от 2 500 ₽/час
+                </p>
+              </div>
+            </div>
+            <span className="shrink-0 inline-flex items-center gap-2 rounded-2xl bg-primary-foreground text-primary px-5 py-2.5 font-display font-semibold">
+              Оставить заявку
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </span>
+          </div>
+        </a>
       </div>
+
 
       <Dialog open={psOpen} onOpenChange={setPsOpen}>
         <DialogContent className="max-w-md">
