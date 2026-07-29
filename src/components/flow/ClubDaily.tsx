@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Gamepad2, Dice5, BookOpen, Coffee, Users2, Home, Clock, ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -97,8 +96,8 @@ const ClubDaily = () => {
             </div>
           </div>
 
-          <Link
-            to="/club-rent"
+          <a
+            href="#rent"
             className="mt-4 rounded-2xl border border-border bg-secondary/40 p-5 flex items-center justify-between gap-4 hover:bg-secondary/70 transition-colors group"
           >
             <div className="flex items-center gap-3">
@@ -111,7 +110,7 @@ const ClubDaily = () => {
               </div>
             </div>
             <ArrowUpRight className="w-5 h-5 shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
+          </a>
         </div>
       </div>
 
