@@ -1,5 +1,19 @@
 import { useState } from "react";
-import { Gamepad2, Dice5, BookOpen, Puzzle, Users2, Home, ArrowUpRight, Check } from "lucide-react";
+import {
+  Gamepad2,
+  Dice5,
+  BookOpen,
+  Puzzle,
+  Users2,
+  Home,
+  ArrowUpRight,
+  Check,
+  Palette,
+  Laptop,
+  Baby,
+  Coffee,
+  CalendarClock,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,9 +29,13 @@ import {
 
 const ITEMS = [
   { icon: Dice5, title: "Настолки", note: "40+ игр на полке, бери любую" },
-  { icon: BookOpen, title: "Книги и рисование", note: "букшеринг, бумага и карандаши" },
+  { icon: BookOpen, title: "Библиотека", note: "своя, пополняем каждый месяц" },
+  { icon: Palette, title: "Рисование", note: "бумага, карандаши, краски — наши" },
   { icon: Puzzle, title: "Паззл недели", note: "собираем всем клубом, стол у окна" },
-  { icon: Users2, title: "Встречи", note: "большие столы для своих" },
+  { icon: Users2, title: "Встречи", note: "большие столы для своей компании" },
+  { icon: Laptop, title: "Тихий уголок", note: "поработать с ноутбуком" },
+  { icon: Baby, title: "С детьми", note: "детские игры и творческий стол" },
+  { icon: Coffee, title: "Кофе рядом", note: "бариста в соседнем зале" },
 ];
 
 const ClubDaily = () => {
@@ -47,60 +65,54 @@ const ClubDaily = () => {
   };
 
   return (
-    <section className="container mx-auto px-6 pb-16">
+    <section id="daily" className="scroll-mt-24 container mx-auto px-6 pb-16">
       <div className="relative rounded-[2.5rem] border-2 border-accent/30 bg-secondary/50 paper p-7 md:p-10 overflow-hidden">
         <div className="absolute -bottom-10 -right-10 w-48 h-48 rounded-full bg-accent/10" />
 
         <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
-          <div>
-            <h2 className="font-display text-2xl md:text-3xl font-semibold">Клуб открыт ежедневно</h2>
-            <p className="font-hand text-accent text-2xl mt-1">Ждём вас с восьми утра до восьми вечера</p>
-          </div>
+          <h2 className="font-display text-2xl md:text-3xl font-semibold">Клуб открыт ежедневно</h2>
           <div className="shrink-0 self-start md:self-auto rounded-full bg-primary text-primary-foreground px-6 py-2 font-display font-semibold tabular-nums">
             08:00 — 20:00
           </div>
         </div>
 
-        {/* Свободный день в клубе */}
-        <div className="relative mb-9 rounded-3xl bg-card border-2 border-accent/40 p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4 justify-between">
-          <div>
-            <div className="font-display text-lg md:text-xl font-semibold">
-              Приходи хоть каждый день — 150 ₽ за день
+        {/* Вход */}
+        <div className="relative mb-8 rounded-3xl bg-card border-2 border-primary/70 p-5 md:p-7">
+          <div className="flex flex-col md:flex-row md:items-center gap-5 justify-between">
+            <div>
+              <div className="font-display text-2xl md:text-3xl font-semibold leading-tight">
+                Членам клуба — <span className="text-accent">бесплатно</span>
+              </div>
+              <p className="text-muted-foreground mt-1">
+                Без карты — 150 ₽ за день. Без записи и без лимита по времени.
+              </p>
             </div>
-            <p className="font-hand text-accent text-xl mt-0.5">членам клуба — бесплатно</p>
-            <p className="text-sm text-muted-foreground mt-2 max-w-xl">
-              Играй в настолки, читай, рисуй, собирай паззл недели или просто сиди с ноутбуком —
-              без лимита по времени и без записи.
-            </p>
+            <div className="shrink-0 flex flex-wrap gap-2 text-sm">
+              {["без записи", "весь день", "все игры и книги"].map((t) => (
+                <span key={t} className="inline-flex items-center gap-1 rounded-full bg-accent/15 px-3 py-1">
+                  <Check className="w-3.5 h-3.5 text-accent" /> {t}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="shrink-0 flex flex-wrap gap-2 text-sm">
-            {["без записи", "весь день", "все игры и книги"].map((t) => (
-              <span key={t} className="inline-flex items-center gap-1 rounded-full bg-accent/15 px-3 py-1">
-                <Check className="w-3.5 h-3.5 text-accent" /> {t}
-              </span>
-            ))}
-          </div>
+          <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground border-t border-border pt-3">
+            <CalendarClock className="w-4 h-4 text-accent shrink-0 mt-px" />
+            Иногда клуб закрыт под бронь целиком — сверяйтесь с расписанием ниже.
+          </p>
         </div>
 
         <div className="relative grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-7">
           {/* PS5 — акцентная позиция */}
-          <div className="sm:col-span-2 lg:col-span-1 lg:row-span-2 rounded-3xl bg-card border-2 border-primary/80 p-6 flex flex-col justify-between tilt-1 hover:rotate-0 transition-transform duration-300">
+          <div className="sm:col-span-2 lg:col-span-1 lg:row-span-3 rounded-3xl bg-card border-2 border-accent/50 p-6 flex flex-col justify-between">
             <div>
               <div className="w-11 h-11 rounded-2xl bg-accent/20 text-primary flex items-center justify-center mb-4">
                 <Gamepad2 className="w-6 h-6" strokeWidth={1.75} />
               </div>
               <div className="font-display text-2xl font-semibold">PlayStation 5</div>
-              <p className="font-hand text-accent text-xl mt-1">два геймпада и большой экран</p>
-              <div className="mt-4 space-y-1 text-sm">
-                <div className="flex justify-between border-b border-border pb-1">
-                  <span className="text-muted-foreground">с клубной картой</span>
-                  <span className="font-semibold tabular-nums">300 ₽/ч</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">без карты</span>
-                  <span className="font-semibold tabular-nums">450 ₽/ч</span>
-                </div>
-              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Два геймпада и большой экран. Бронь минимум на час.
+              </p>
+              <div className="mt-4 font-display text-3xl font-semibold tabular-nums">от 300 ₽/ч</div>
             </div>
             <Button className="mt-6 w-full rounded-2xl" onClick={() => setPsOpen(true)}>
               Забронировать приставку
@@ -118,7 +130,6 @@ const ClubDaily = () => {
               </div>
             </div>
           ))}
-
         </div>
 
         {/* Аренда клуба целиком */}
@@ -141,13 +152,12 @@ const ClubDaily = () => {
               </div>
             </div>
             <span className="shrink-0 inline-flex items-center gap-2 rounded-2xl bg-primary-foreground text-primary px-5 py-2.5 font-display font-semibold">
-              Оставить заявку
+              Узнать больше
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </span>
           </div>
         </a>
       </div>
-
 
       <Dialog open={psOpen} onOpenChange={setPsOpen}>
         <DialogContent className="max-w-md">
