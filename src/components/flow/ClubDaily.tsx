@@ -134,7 +134,7 @@ const ClubDaily = () => {
 
         {/* Аренда клуба целиком */}
         <a
-          href="#rent"
+          href="mailto:hello@so-ho.ru?subject=Аренда клуба целиком"
           className="relative mt-9 block rounded-3xl bg-primary text-primary-foreground p-6 md:p-7 group"
         >
           <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">

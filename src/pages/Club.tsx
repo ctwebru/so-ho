@@ -45,8 +45,8 @@ const Club = () => {
       <Navigation />
 
       <main>
-        {/* HERO — на всю ширину, фото + затемнение */}
-        <section className="relative min-h-[88vh] flex items-end overflow-hidden">
+        {/* HERO — на всю высоту экрана */}
+        <section className="relative h-screen min-h-[600px] flex items-end overflow-hidden">
           <img
             src={clubPhoto}
             alt="Зал соседского клуба SO-HO! в Новосибирске"
@@ -62,7 +62,7 @@ const Club = () => {
             <h1 className="mt-6 font-display text-6xl md:text-8xl font-semibold leading-[0.9] tracking-tight max-w-4xl">
               Соседский клуб
               <br />
-              <span className="text-accent">на Дачном</span>
+              <span className="text-accent">в Flora&amp;Fauna</span>
             </h1>
 
             <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-xl">
@@ -70,36 +70,16 @@ const Club = () => {
               членам клуба бесплатно, остальным 150 ₽ за день.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="rounded-2xl text-base">
-                <a href="#daily">Что тут делать</a>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="rounded-2xl text-base bg-background/60 backdrop-blur">
-                <a href="#membership">Членство · 990 ₽/мес</a>
-              </Button>
-            </div>
-
-            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
-              {[
-                { icon: Dices, v: "40+", l: "настольных игр" },
-                { icon: Clock, v: "7/7", l: "дней открыты" },
-                { icon: Users, v: "до 25", l: "гостей в зале" },
-                { icon: MapPin, v: "22/3", l: "Дачное шоссе" },
-              ].map((s) => (
-                <div
-                  key={s.l}
-                  className="rounded-2xl bg-card/80 backdrop-blur border-2 border-border px-4 py-3 flex items-center gap-3"
-                >
-                  <s.icon className="w-5 h-5 text-accent shrink-0" strokeWidth={1.75} />
-                  <div>
-                    <div className="font-display text-xl font-semibold tabular-nums leading-none">{s.v}</div>
-                    <div className="text-[11px] text-muted-foreground leading-tight mt-1">{s.l}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <a
+              href="#daily"
+              className="mt-12 inline-flex flex-col items-center gap-2 text-xs uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors"
+            >
+              подробнее
+              <span className="w-px h-8 bg-current animate-pulse" />
+            </a>
           </div>
         </section>
+
 
 
         <ClubDaily />
