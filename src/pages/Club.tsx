@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { ArrowUpRight, Users, Clock, MapPin, Send } from "lucide-react";
+import { useState } from "react";
+import { Send, MapPin, Check, Users, Clock, Dices } from "lucide-react";
 import { toast } from "sonner";
 import Navigation from "@/components/flow/Navigation";
 import Footer from "@/components/flow/Footer";
@@ -7,58 +7,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { CLUB_CATEGORIES, CLUB_EVENTS, type ClubCategory, type ClubEvent } from "@/data/club";
 import ClubSchedule from "@/components/flow/ClubSchedule";
 import ClubDaily from "@/components/flow/ClubDaily";
+import clubPhoto from "@/assets/real/club-front.png";
 
-const FILTERS: { id: ClubCategory | "all"; label: string }[] = [
-  { id: "all", label: "Все" },
-  { id: "adults", label: "Взрослым" },
-  { id: "kids", label: "Детям" },
-  { id: "games", label: "Игры" },
-];
+const FAMILY_ADDONS = [500, 400, 300];
 
 const Club = () => {
-  const [filter, setFilter] = useState<ClubCategory | "all">("all");
-  const [selected, setSelected] = useState<ClubEvent | null>(null);
-  const [regName, setRegName] = useState("");
-  const [regPhone, setRegPhone] = useState("");
-  const [regGuests, setRegGuests] = useState(1);
-  const [regComment, setRegComment] = useState("");
-
   const [rentName, setRentName] = useState("");
   const [rentPhone, setRentPhone] = useState("");
   const [rentDate, setRentDate] = useState("");
   const [rentDetails, setRentDetails] = useState("");
+  const [family, setFamily] = useState(0);
 
-  const filtered = useMemo(
-    () => (filter === "all" ? CLUB_EVENTS : CLUB_EVENTS.filter((e) => e.category === filter)),
-    [filter],
-  );
-
-  const submitRegistration = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!regName.trim() || !regPhone.trim()) {
-      toast.error("Заполни имя и телефон");
-      return;
-    }
-    toast.success("Записали!", {
-      description: `${selected?.title} · ${regGuests} чел. Позвоним подтвердить.`,
-    });
-    setSelected(null);
-    setRegName("");
-    setRegPhone("");
-    setRegGuests(1);
-    setRegComment("");
-  };
+  const familyPrice =
+    990 + Array.from({ length: family }, (_, i) => FAMILY_ADDONS[Math.min(i, FAMILY_ADDONS.length - 1)]).reduce((a, b) => a + b, 0);
+  const people = family + 1;
+  const singleCost = people * 150 * 8; // 8 визитов в месяц на человека
 
   const submitRent = (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,185 +46,149 @@ const Club = () => {
 
       <main className="pt-16">
         {/* HERO */}
-        <section className="container mx-auto px-6 pt-20 md:pt-28 pb-14 text-center">
-          <div className="relative inline-block">
-            <span className="font-hand text-accent text-2xl md:text-3xl absolute -top-9 md:-top-10 -right-10 md:-right-24 rotate-6 whitespace-nowrap">
-              наш общий дом
-            </span>
-            <h1 className="font-display text-5xl md:text-7xl lg:text-[5.5rem] font-semibold leading-[0.95] tracking-tight">
-              Соседский
-              <br />
-              клуб
-            </h1>
-          </div>
-          <p className="mt-8 mx-auto max-w-xl text-lg md:text-xl text-muted-foreground">
-            Кофе — это только повод. Остальное — соседи: настолки, мастер-классы,
-            детские выходные и место, где можно провести что-то своё.
-          </p>
+        <section className="container mx-auto px-6 pt-10 md:pt-14 pb-14">
+          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+            <div className="rounded-[2.5rem] border-2 border-border bg-secondary/50 paper p-8 md:p-10 flex flex-col justify-between">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full bg-accent/15 px-4 py-1.5 text-sm">
+                  <span className="w-2 h-2 rounded-full bg-accent" /> Открыты сегодня 08:00 — 20:00
+                </span>
+                <h1 className="mt-6 font-display text-5xl md:text-6xl font-semibold leading-[0.95] tracking-tight">
+                  Соседский
+                  <br />
+                  клуб
+                </h1>
+                <p className="mt-5 text-lg text-muted-foreground max-w-md">
+                  Приходи играть, читать, рисовать и знакомиться. Членам клуба — бесплатно,
+                  остальным — 150 ₽ за день.
+                </p>
+              </div>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <div className="rounded-3xl bg-card border-2 border-border px-7 py-4 tilt-1 hover:rotate-0 transition-transform">
-              <div className="font-display text-3xl font-semibold tabular-nums">{CLUB_EVENTS.length}</div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground mt-0.5">событий в месяце</div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild size="lg" className="rounded-2xl">
+                  <a href="#membership">Стать членом клуба · 990 ₽/мес</a>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="rounded-2xl">
+                  <a href="#daily">Что тут делать</a>
+                </Button>
+              </div>
             </div>
-            <div className="rounded-3xl bg-gradient-moss px-7 py-4 tilt-2 hover:rotate-0 transition-transform">
-              <div className="font-display text-3xl font-semibold tabular-nums">40+</div>
-              <div className="text-xs uppercase tracking-widest text-foreground/70 mt-0.5">настольных игр</div>
-            </div>
-            <div className="rounded-3xl bg-card border-2 border-border px-7 py-4 tilt-1 hover:rotate-0 transition-transform">
-              <div className="font-display text-3xl font-semibold tabular-nums">7/7</div>
-              <div className="text-xs uppercase tracking-widest text-muted-foreground mt-0.5">дней открыты</div>
+
+            <div className="relative rounded-[2.5rem] overflow-hidden border-2 border-border min-h-[280px]">
+              <img
+                src={clubPhoto}
+                alt="Зал соседского клуба SO-HO! в Новосибирске"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 bg-gradient-to-t from-background via-background/80 to-transparent">
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { icon: Dices, v: "40+", l: "настольных игр" },
+                    { icon: Clock, v: "7/7", l: "дней открыты" },
+                    { icon: Users, v: "до 25", l: "гостей в зале" },
+                  ].map((s) => (
+                    <div key={s.l} className="rounded-2xl bg-card/90 border border-border px-3 py-2.5 text-center">
+                      <div className="font-display text-xl font-semibold tabular-nums">{s.v}</div>
+                      <div className="text-[11px] text-muted-foreground leading-tight mt-0.5">{s.l}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         <ClubDaily />
 
-        {/* CATEGORIES */}
-        <section className="container mx-auto px-6 pb-20">
-          <p className="font-hand text-accent text-2xl mb-5">что здесь бывает</p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {CLUB_CATEGORIES.map((c, i) => (
-              <a
-                key={c.id}
-                href={`#${c.id}`}
-                id={c.id}
-                className={`scroll-mt-24 rounded-[2rem] border-2 p-6 transition-transform duration-300 hover:rotate-0 ${
-                  i % 2 === 0
-                    ? "bg-card border-primary/70 tilt-1"
-                    : "bg-secondary/60 border-accent/40 tilt-2"
-                }`}
-              >
-                <div className="w-12 h-12 rounded-2xl bg-accent/20 text-primary flex items-center justify-center mb-4">
-                  <c.icon className="w-5 h-5" strokeWidth={1.75} />
+        {/* MEMBERSHIP */}
+        <section id="membership" className="scroll-mt-24 container mx-auto px-6 pb-20">
+          <div className="rounded-[2.5rem] bg-primary text-primary-foreground p-7 md:p-10 grid lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 className="font-display text-3xl md:text-4xl font-semibold leading-tight">
+                Ходить каждый день выгоднее
+                <br />
+                по клубной карте
+              </h2>
+              <div className="mt-6 flex items-end gap-3">
+                <div className="font-display text-5xl md:text-6xl font-semibold tabular-nums">990 ₽</div>
+                <div className="pb-2 opacity-80">в месяц</div>
+              </div>
+              <ul className="mt-6 space-y-2.5 text-sm md:text-base">
+                {[
+                  "Вход в клуб каждый день — бесплатно",
+                  "PS5 за 300 ₽/ч вместо 450 ₽/ч",
+                  "Скидки на события и мастер-классы",
+                  "Приоритетная запись и ранний доступ",
+                ].map((t) => (
+                  <li key={t} className="flex gap-2.5 items-start">
+                    <Check className="w-5 h-5 shrink-0 opacity-90" /> {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-[2rem] bg-primary-foreground text-foreground p-6 md:p-7">
+              <div className="font-display text-xl font-semibold">Добавь семью — дешевле</div>
+              <p className="text-sm text-muted-foreground mt-1">
+                +500 ₽ за первого, +400 ₽ за второго, +300 ₽ за каждого следующего.
+              </p>
+
+              <div className="mt-5 flex items-center gap-2">
+                {[0, 1, 2, 3].map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => setFamily(n)}
+                    className={`flex-1 rounded-2xl border-2 py-3 font-display font-semibold transition-colors ${
+                      family === n ? "border-accent bg-accent/15" : "border-border"
+                    }`}
+                  >
+                    {n + 1}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">человек в семье</p>
+
+              <div className="mt-5 rounded-2xl bg-secondary/60 p-5">
+                <div className="flex items-end justify-between">
+                  <span className="text-sm text-muted-foreground">Итого в месяц</span>
+                  <span className="font-display text-4xl font-semibold tabular-nums">{familyPrice} ₽</span>
                 </div>
-                <div className="font-display text-xl font-semibold mb-2">{c.title}</div>
-                <p className="text-sm text-muted-foreground">{c.desc}</p>
-              </a>
-            ))}
+                <div className="mt-2 text-sm text-accent">
+                  Без карты это ≈ {singleCost.toLocaleString("ru-RU")} ₽ — экономия{" "}
+                  {(singleCost - familyPrice).toLocaleString("ru-RU")} ₽
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-1">
+                  Расчёт при 8 визитах в месяц на человека
+                </p>
+              </div>
+
+              <Button asChild size="lg" className="mt-5 w-full rounded-2xl">
+                <a href="/app/club">Оформить членство</a>
+              </Button>
+            </div>
           </div>
         </section>
 
         <ClubSchedule />
 
-        {/* AFISHA */}
-        <section className="container mx-auto px-6 pb-24">
-          <div className="flex flex-wrap gap-6 justify-between items-end mb-8">
-            <div>
-              <p className="font-hand text-accent text-2xl">приходите в гости</p>
-              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight mt-1">
-                Ближайшие встречи
-              </h2>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {FILTERS.map((f) => (
-                <button
-                  key={f.id}
-                  onClick={() => setFilter(f.id)}
-                  className={`px-4 py-2 rounded-full text-sm border-2 transition-colors ${
-                    filter === f.id
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-background border-border text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {f.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {filtered.length === 0 && (
-            <div className="rounded-[2rem] border-2 border-dashed border-accent/40 p-12 text-center text-muted-foreground">
-              Пока в этой категории пусто. Загляни позже.
-            </div>
-          )}
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((e, i) => {
-              const cat = CLUB_CATEGORIES.find((c) => c.id === e.category);
-              const dark = i % 3 === 1;
-              return (
-                <article
-                  key={e.id}
-                  className={`rounded-[2rem] border-2 p-7 flex flex-col justify-between transition-transform duration-300 hover:rotate-0 ${
-                    i % 2 === 0 ? "tilt-1" : "tilt-2"
-                  } ${dark ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border"}`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-3 mb-4">
-                      <span
-                        className={`inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest px-3 py-1 rounded-full ${
-                          dark ? "bg-primary-foreground/15" : "bg-secondary text-secondary-foreground"
-                        }`}
-                      >
-                        {cat && <cat.icon className="w-3 h-3" strokeWidth={2} />}
-                        {e.date} · {e.time}
-                      </span>
-                      {e.ageLabel && (
-                        <span className={`font-hand text-lg ${dark ? "text-primary-foreground/80" : "text-accent"}`}>
-                          {e.ageLabel}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="font-display text-2xl font-semibold leading-tight">{e.title}</h3>
-                    <p className={`text-sm mt-2 ${dark ? "text-primary-foreground/75" : "text-muted-foreground"}`}>
-                      {e.desc}
-                    </p>
-                    <div
-                      className={`mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs ${
-                        dark ? "text-primary-foreground/70" : "text-muted-foreground"
-                      }`}
-                    >
-                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{e.duration}</span>
-                      <span className="flex items-center gap-1"><Users className="w-3 h-3" />осталось {e.seatsLeft}</span>
-                      <span>ведёт {e.host}</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 flex items-end justify-between gap-4">
-                    <div>
-                      <div className="font-display text-2xl font-semibold tabular-nums">{e.price} ₽</div>
-                      <div className={`text-xs ${dark ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                        за человека
-                      </div>
-                    </div>
-                    <Button
-                      onClick={() => setSelected(e)}
-                      disabled={e.seatsLeft === 0}
-                      variant={dark ? "secondary" : "default"}
-                      className="rounded-2xl"
-                    >
-                      {e.seatsLeft === 0 ? "Мест нет" : "Записаться"}
-                    </Button>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
         {/* RENT */}
         <section id="rent" className="scroll-mt-24 py-20 md:py-28 bg-secondary/50 paper border-y-2 border-accent/30">
           <div className="container mx-auto px-6 grid md:grid-cols-12 gap-12 items-start">
             <div className="md:col-span-6">
-              <p className="font-hand text-accent text-2xl">свой праздник в клубе?</p>
-              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight text-balance mt-1">
-                Проведи у нас <span className="italic font-normal text-accent">своё событие</span>
+              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight text-balance">
+                Арендовать клуб целиком
               </h2>
               <p className="mt-6 text-muted-foreground text-lg max-w-xl">
-                Уютный зал на 25 гостей, проектор, звук, кухня и бариста. Подходит
-                для бизнес-встреч, лекций, съёмок и мастер-классов.
+                Уютный зал на 25 гостей, проектор, звук, кухня и бариста. Бизнес-встречи,
+                лекции, съёмки и мастер-классы.
               </p>
               <div className="mt-8 grid sm:grid-cols-3 gap-4">
                 {[
                   { v: "до 25", l: "гостей" },
                   { v: "от 2 ч", l: "минимум" },
                   { v: "2 500 ₽", l: "час буднего дня" },
-                ].map((s, i) => (
-                  <div
-                    key={s.l}
-                    className={`rounded-3xl bg-card border-2 border-border p-5 ${i % 2 === 0 ? "tilt-1" : "tilt-2"} hover:rotate-0 transition-transform`}
-                  >
+                ].map((s) => (
+                  <div key={s.l} className="rounded-3xl bg-card border-2 border-border p-5">
                     <div className="font-display text-2xl font-semibold">{s.v}</div>
                     <div className="text-xs text-muted-foreground mt-1">{s.l}</div>
                   </div>
@@ -273,10 +202,10 @@ const Club = () => {
 
             <form
               onSubmit={submitRent}
-              className="md:col-span-6 rounded-[2.5rem] bg-card border-2 border-primary/70 p-6 md:p-8 tilt-2 hover:rotate-0 transition-transform duration-300"
+              className="md:col-span-6 rounded-[2.5rem] bg-card border-2 border-primary/70 p-6 md:p-8"
             >
               <div className="font-display text-2xl font-semibold">Оставить заявку</div>
-              <p className="font-hand text-accent text-xl mb-6">позвоним и всё обсудим</p>
+              <p className="text-sm text-muted-foreground mb-6">Позвоним и всё обсудим</p>
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="rent-name">ФИО</Label>
@@ -310,79 +239,9 @@ const Club = () => {
             </form>
           </div>
         </section>
-
-        {/* CTA */}
-        <section className="container mx-auto px-6 py-20 text-center">
-          <p className="font-hand text-accent text-2xl">а может, ты сам поведёшь?</p>
-          <h3 className="font-display text-3xl md:text-4xl font-semibold text-balance max-w-2xl mx-auto mt-2">
-            Хочешь провести <span className="italic font-normal text-accent">свой</span> мастер-класс?
-          </h3>
-          <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
-            Мы охотно принимаем гостевых ведущих. Расскажи об идее — обсудим формат и разделим организацию.
-          </p>
-          <a
-            href="#rent"
-            className="mt-8 inline-flex items-center gap-2 font-display font-medium border-b-2 border-accent hover:border-foreground pb-1"
-          >
-            Написать нам <ArrowUpRight className="w-4 h-4" />
-          </a>
-        </section>
       </main>
 
       <Footer />
-
-      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="font-display text-2xl leading-tight">{selected?.title}</DialogTitle>
-            <DialogDescription>
-              {selected?.date} · {selected?.time} · {selected?.duration} · {selected?.price} ₽/чел
-            </DialogDescription>
-          </DialogHeader>
-          <form onSubmit={submitRegistration} className="space-y-4">
-            <div>
-              <Label htmlFor="reg-name">ФИО</Label>
-              <Input id="reg-name" value={regName} onChange={(e) => setRegName(e.target.value)} placeholder="Как записать" />
-            </div>
-            <div>
-              <Label htmlFor="reg-phone">Телефон</Label>
-              <Input id="reg-phone" value={regPhone} onChange={(e) => setRegPhone(e.target.value)} placeholder="+7" inputMode="tel" />
-            </div>
-            <div>
-              <Label htmlFor="reg-guests">Сколько человек</Label>
-              <Input
-                id="reg-guests"
-                type="number"
-                min={1}
-                max={selected?.seatsLeft ?? 1}
-                value={regGuests}
-                onChange={(e) => setRegGuests(Math.max(1, Number(e.target.value) || 1))}
-              />
-              {selected && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  Свободно {selected.seatsLeft} мест
-                </p>
-              )}
-            </div>
-            <div>
-              <Label htmlFor="reg-comment">Комментарий</Label>
-              <Textarea
-                id="reg-comment"
-                value={regComment}
-                onChange={(e) => setRegComment(e.target.value)}
-                placeholder="Особенности, аллергии, пожелания"
-                rows={3}
-              />
-            </div>
-            <DialogFooter className="gap-2">
-              <Button type="button" variant="ghost" onClick={() => setSelected(null)}>
-                Отмена
-              </Button>
-              <Button type="submit">Записаться · {(selected?.price ?? 0) * regGuests} ₽</Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

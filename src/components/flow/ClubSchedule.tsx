@@ -105,7 +105,7 @@ const ClubSchedule = () => {
     <section className="container mx-auto px-6 pb-24">
       <div className="grid md:grid-cols-12 gap-8 mb-8 items-end">
         <div className="md:col-span-7">
-          <p className="font-hand text-accent text-2xl mb-1">заглядывай на огонёк</p>
+          
           <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight">
             Что у нас по вечерам
           </h2>
