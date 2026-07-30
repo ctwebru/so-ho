@@ -87,75 +87,6 @@ const Club = () => {
 
         <ClubSchedule />
 
-        {/* RENT */}
-        <section id="rent" className="scroll-mt-24 py-20 md:py-28 bg-secondary/50 paper border-y-2 border-accent/30">
-          <div className="container mx-auto px-6 grid md:grid-cols-12 gap-12 items-start">
-            <div className="md:col-span-6">
-              <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight text-balance">
-                Арендовать клуб целиком
-              </h2>
-              <p className="mt-6 text-muted-foreground text-lg max-w-xl">
-                Уютный зал на 25 гостей, проектор, звук, кухня и бариста. Бизнес-встречи,
-                лекции, съёмки и мастер-классы.
-              </p>
-              <div className="mt-8 grid sm:grid-cols-3 gap-4">
-                {[
-                  { v: "до 25", l: "гостей" },
-                  { v: "от 2 ч", l: "минимум" },
-                  { v: "2 500 ₽", l: "час буднего дня" },
-                ].map((s) => (
-                  <div key={s.l} className="rounded-3xl bg-card border-2 border-border p-5">
-                    <div className="font-display text-2xl font-semibold">{s.v}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{s.l}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="w-4 h-4 text-accent" />
-                Дачное шоссе, 22/3 · Новосибирск
-              </div>
-            </div>
-
-            <form
-              onSubmit={submitRent}
-              className="md:col-span-6 rounded-[2.5rem] bg-card border-2 border-primary/70 p-6 md:p-8"
-            >
-              <div className="font-display text-2xl font-semibold">Оставить заявку</div>
-              <p className="text-sm text-muted-foreground mb-6">Позвоним и всё обсудим</p>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="rent-name">ФИО</Label>
-                  <Input id="rent-name" value={rentName} onChange={(e) => setRentName(e.target.value)} placeholder="Как к тебе обращаться" />
-                </div>
-                <div>
-                  <Label htmlFor="rent-phone">Телефон</Label>
-                  <Input id="rent-phone" value={rentPhone} onChange={(e) => setRentPhone(e.target.value)} placeholder="+7" inputMode="tel" />
-                </div>
-                <div>
-                  <Label htmlFor="rent-date">Желаемая дата и время</Label>
-                  <Input id="rent-date" value={rentDate} onChange={(e) => setRentDate(e.target.value)} placeholder="напр. 25 мая, 18:00–21:00" />
-                </div>
-                <div>
-                  <Label htmlFor="rent-details">Что планируешь провести?</Label>
-                  <Textarea
-                    id="rent-details"
-                    value={rentDetails}
-                    onChange={(e) => setRentDetails(e.target.value)}
-                    placeholder="Тип события, число гостей, что нужно из оборудования"
-                    rows={4}
-                  />
-                </div>
-              </div>
-              <Button type="submit" className="mt-6 w-full rounded-2xl">
-                <Send className="w-4 h-4 mr-2" /> Отправить заявку
-              </Button>
-              <p className="text-xs text-muted-foreground mt-3 text-center">
-                Или напиши нам на <a href="mailto:hello@so-ho.ru" className="underline">hello@so-ho.ru</a>
-              </p>
-            </form>
-          </div>
-        </section>
-
         {/* MEMBERSHIP — внизу страницы */}
         <section id="membership" className="scroll-mt-24 container mx-auto px-6 py-20">
           <div className="rounded-[2.5rem] bg-primary text-primary-foreground p-7 md:p-10 grid lg:grid-cols-2 gap-8 items-center">
@@ -204,32 +135,24 @@ const Club = () => {
               </div>
               <p className="text-xs text-muted-foreground mt-2">человек в семье</p>
 
-              <div className="mt-5 rounded-2xl bg-secondary/60 p-5">
-                <div className="space-y-1.5 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">6 визитов × 150 ₽</span>
-                    <span className="tabular-nums">{(people * 900).toLocaleString("ru-RU")} ₽</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">2 настолки × 500 ₽</span>
-                    <span className="tabular-nums">{(people * 1000).toLocaleString("ru-RU")} ₽</span>
-                  </div>
-                  <div className="flex justify-between border-t border-border pt-1.5">
-                    <span className="text-muted-foreground">Без карты</span>
-                    <span className="tabular-nums font-semibold">{singleCost.toLocaleString("ru-RU")} ₽</span>
-                  </div>
+              <div className="mt-5 rounded-2xl bg-secondary/60 p-5 text-center">
+                <div className="flex items-end justify-center gap-4">
+                  <span className="font-display text-3xl font-semibold tabular-nums text-muted-foreground line-through decoration-2">
+                    {singleCost.toLocaleString("ru-RU")} ₽
+                  </span>
+                  <span className="font-display text-5xl font-semibold tabular-nums text-accent leading-none">
+                    {familyPrice.toLocaleString("ru-RU")} ₽
+                  </span>
                 </div>
-                <div className="mt-4 flex items-end justify-between">
-                  <span className="text-sm text-muted-foreground">С членством</span>
-                  <span className="font-display text-4xl font-semibold tabular-nums">{familyPrice} ₽</span>
+                <div className="mt-3 text-sm">
+                  Экономия {(singleCost - familyPrice).toLocaleString("ru-RU")} ₽ в месяц — и это без
+                  учёта кешбэка ×2 в кофейне
                 </div>
-                <div className="mt-2 text-sm text-accent">
-                  Экономия {(singleCost - familyPrice).toLocaleString("ru-RU")} ₽ в месяц — и это без учёта кешбэка ×2 в кофейне
-                </div>
-                <p className="text-[11px] text-muted-foreground mt-1">
+                <p className="text-[11px] text-muted-foreground mt-2">
                   Расчёт: 6 визитов и 2 события в месяц на человека
                 </p>
               </div>
+
 
               <Button asChild size="lg" className="mt-5 w-full rounded-2xl">
                 <a href="/app/club">Оформить членство</a>
