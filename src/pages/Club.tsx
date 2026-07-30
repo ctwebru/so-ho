@@ -44,59 +44,63 @@ const Club = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <main className="pt-16">
-        {/* HERO */}
-        <section className="container mx-auto px-6 pt-10 md:pt-14 pb-14">
-          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-            <div className="rounded-[2.5rem] border-2 border-border bg-secondary/50 paper p-8 md:p-10 flex flex-col justify-between">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full bg-accent/15 px-4 py-1.5 text-sm">
-                  <span className="w-2 h-2 rounded-full bg-accent" /> Открыты сегодня 08:00 — 20:00
-                </span>
-                <h1 className="mt-6 font-display text-5xl md:text-6xl font-semibold leading-[0.95] tracking-tight">
-                  Соседский
-                  <br />
-                  клуб
-                </h1>
-                <p className="mt-5 text-lg text-muted-foreground max-w-md">
-                  Приходи играть, читать, рисовать и знакомиться. Членам клуба — бесплатно,
-                  остальным — 150 ₽ за день.
-                </p>
-              </div>
+      <main>
+        {/* HERO — на всю ширину, фото + затемнение */}
+        <section className="relative min-h-[88vh] flex items-end overflow-hidden">
+          <img
+            src={clubPhoto}
+            alt="Зал соседского клуба SO-HO! в Новосибирске"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button asChild size="lg" className="rounded-2xl">
-                  <a href="#membership">Стать членом клуба · 990 ₽/мес</a>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="rounded-2xl">
-                  <a href="#daily">Что тут делать</a>
-                </Button>
-              </div>
+          <div className="relative container mx-auto px-6 pt-32 pb-14">
+            <span className="inline-flex items-center gap-2 rounded-full bg-accent/20 backdrop-blur px-4 py-1.5 text-sm border border-accent/40">
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" /> Сегодня открыто 08:00 — 20:00
+            </span>
+
+            <h1 className="mt-6 font-display text-6xl md:text-8xl font-semibold leading-[0.9] tracking-tight max-w-4xl">
+              Соседский клуб
+              <br />
+              <span className="text-accent">на Дачном</span>
+            </h1>
+
+            <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-xl">
+              Настолки, книги, рисование и живые люди рядом. Заходи без записи —
+              членам клуба бесплатно, остальным 150 ₽ за день.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl text-base">
+                <a href="#daily">Что тут делать</a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="rounded-2xl text-base bg-background/60 backdrop-blur">
+                <a href="#membership">Членство · 990 ₽/мес</a>
+              </Button>
             </div>
 
-            <div className="relative rounded-[2.5rem] overflow-hidden border-2 border-border min-h-[280px]">
-              <img
-                src={clubPhoto}
-                alt="Зал соседского клуба SO-HO! в Новосибирске"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 bg-gradient-to-t from-background via-background/80 to-transparent">
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { icon: Dices, v: "40+", l: "настольных игр" },
-                    { icon: Clock, v: "7/7", l: "дней открыты" },
-                    { icon: Users, v: "до 25", l: "гостей в зале" },
-                  ].map((s) => (
-                    <div key={s.l} className="rounded-2xl bg-card/90 border border-border px-3 py-2.5 text-center">
-                      <div className="font-display text-xl font-semibold tabular-nums">{s.v}</div>
-                      <div className="text-[11px] text-muted-foreground leading-tight mt-0.5">{s.l}</div>
-                    </div>
-                  ))}
+            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
+              {[
+                { icon: Dices, v: "40+", l: "настольных игр" },
+                { icon: Clock, v: "7/7", l: "дней открыты" },
+                { icon: Users, v: "до 25", l: "гостей в зале" },
+                { icon: MapPin, v: "22/3", l: "Дачное шоссе" },
+              ].map((s) => (
+                <div
+                  key={s.l}
+                  className="rounded-2xl bg-card/80 backdrop-blur border-2 border-border px-4 py-3 flex items-center gap-3"
+                >
+                  <s.icon className="w-5 h-5 text-accent shrink-0" strokeWidth={1.75} />
+                  <div>
+                    <div className="font-display text-xl font-semibold tabular-nums leading-none">{s.v}</div>
+                    <div className="text-[11px] text-muted-foreground leading-tight mt-1">{s.l}</div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
+
 
         <ClubDaily />
 
