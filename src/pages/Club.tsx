@@ -1,12 +1,8 @@
 import { useState } from "react";
-import { Send, MapPin, Check, Users, Clock, Dices } from "lucide-react";
-import { toast } from "sonner";
+import { Check } from "lucide-react";
 import Navigation from "@/components/flow/Navigation";
 import Footer from "@/components/flow/Footer";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import ClubSchedule from "@/components/flow/ClubSchedule";
 import ClubDaily from "@/components/flow/ClubDaily";
 import clubPhoto from "@/assets/real/club-front.png";
@@ -14,10 +10,6 @@ import clubPhoto from "@/assets/real/club-front.png";
 const FAMILY_ADDONS = [500, 400, 300];
 
 const Club = () => {
-  const [rentName, setRentName] = useState("");
-  const [rentPhone, setRentPhone] = useState("");
-  const [rentDate, setRentDate] = useState("");
-  const [rentDetails, setRentDetails] = useState("");
   const [family, setFamily] = useState(0);
 
   const familyPrice =
@@ -25,20 +17,6 @@ const Club = () => {
   const people = family + 1;
   const singleCost = people * (6 * 150 + 2 * 500); // 6 визитов + 2 события в месяц
 
-  const submitRent = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!rentName.trim() || !rentPhone.trim()) {
-      toast.error("Заполни имя и телефон");
-      return;
-    }
-    toast.success("Заявка отправлена", {
-      description: "Свяжемся в течение дня и обсудим детали.",
-    });
-    setRentName("");
-    setRentPhone("");
-    setRentDate("");
-    setRentDetails("");
-  };
 
   return (
     <div className="min-h-screen bg-background">
