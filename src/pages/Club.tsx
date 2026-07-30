@@ -23,7 +23,7 @@ const Club = () => {
   const familyPrice =
     990 + Array.from({ length: family }, (_, i) => FAMILY_ADDONS[Math.min(i, FAMILY_ADDONS.length - 1)]).reduce((a, b) => a + b, 0);
   const people = family + 1;
-  const singleCost = people * 150 * 8; // 8 визитов в месяц на человека
+  const singleCost = people * (6 * 150 + 2 * 500); // 6 визитов + 2 события в месяц
 
   const submitRent = (e: React.FormEvent) => {
     e.preventDefault();
