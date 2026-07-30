@@ -23,7 +23,7 @@ const Club = () => {
   const familyPrice =
     990 + Array.from({ length: family }, (_, i) => FAMILY_ADDONS[Math.min(i, FAMILY_ADDONS.length - 1)]).reduce((a, b) => a + b, 0);
   const people = family + 1;
-  const singleCost = people * 150 * 8; // 8 визитов в месяц на человека
+  const singleCost = people * (6 * 150 + 2 * 500); // 6 визитов + 2 события в месяц
 
   const submitRent = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,130 +44,66 @@ const Club = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <main className="pt-16">
-        {/* HERO */}
-        <section className="container mx-auto px-6 pt-10 md:pt-14 pb-14">
-          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-            <div className="rounded-[2.5rem] border-2 border-border bg-secondary/50 paper p-8 md:p-10 flex flex-col justify-between">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full bg-accent/15 px-4 py-1.5 text-sm">
-                  <span className="w-2 h-2 rounded-full bg-accent" /> Открыты сегодня 08:00 — 20:00
-                </span>
-                <h1 className="mt-6 font-display text-5xl md:text-6xl font-semibold leading-[0.95] tracking-tight">
-                  Соседский
-                  <br />
-                  клуб
-                </h1>
-                <p className="mt-5 text-lg text-muted-foreground max-w-md">
-                  Приходи играть, читать, рисовать и знакомиться. Членам клуба — бесплатно,
-                  остальным — 150 ₽ за день.
-                </p>
-              </div>
+      <main>
+        {/* HERO — на всю ширину, фото + затемнение */}
+        <section className="relative min-h-[88vh] flex items-end overflow-hidden">
+          <img
+            src={clubPhoto}
+            alt="Зал соседского клуба SO-HO! в Новосибирске"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button asChild size="lg" className="rounded-2xl">
-                  <a href="#membership">Стать членом клуба · 990 ₽/мес</a>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="rounded-2xl">
-                  <a href="#daily">Что тут делать</a>
-                </Button>
-              </div>
+          <div className="relative container mx-auto px-6 pt-32 pb-14">
+            <span className="inline-flex items-center gap-2 rounded-full bg-accent/20 backdrop-blur px-4 py-1.5 text-sm border border-accent/40">
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" /> Сегодня открыто 08:00 — 20:00
+            </span>
+
+            <h1 className="mt-6 font-display text-6xl md:text-8xl font-semibold leading-[0.9] tracking-tight max-w-4xl">
+              Соседский клуб
+              <br />
+              <span className="text-accent">на Дачном</span>
+            </h1>
+
+            <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-xl">
+              Настолки, книги, рисование и живые люди рядом. Заходи без записи —
+              членам клуба бесплатно, остальным 150 ₽ за день.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="rounded-2xl text-base">
+                <a href="#daily">Что тут делать</a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="rounded-2xl text-base bg-background/60 backdrop-blur">
+                <a href="#membership">Членство · 990 ₽/мес</a>
+              </Button>
             </div>
 
-            <div className="relative rounded-[2.5rem] overflow-hidden border-2 border-border min-h-[280px]">
-              <img
-                src={clubPhoto}
-                alt="Зал соседского клуба SO-HO! в Новосибирске"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 bg-gradient-to-t from-background via-background/80 to-transparent">
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { icon: Dices, v: "40+", l: "настольных игр" },
-                    { icon: Clock, v: "7/7", l: "дней открыты" },
-                    { icon: Users, v: "до 25", l: "гостей в зале" },
-                  ].map((s) => (
-                    <div key={s.l} className="rounded-2xl bg-card/90 border border-border px-3 py-2.5 text-center">
-                      <div className="font-display text-xl font-semibold tabular-nums">{s.v}</div>
-                      <div className="text-[11px] text-muted-foreground leading-tight mt-0.5">{s.l}</div>
-                    </div>
-                  ))}
+            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
+              {[
+                { icon: Dices, v: "40+", l: "настольных игр" },
+                { icon: Clock, v: "7/7", l: "дней открыты" },
+                { icon: Users, v: "до 25", l: "гостей в зале" },
+                { icon: MapPin, v: "22/3", l: "Дачное шоссе" },
+              ].map((s) => (
+                <div
+                  key={s.l}
+                  className="rounded-2xl bg-card/80 backdrop-blur border-2 border-border px-4 py-3 flex items-center gap-3"
+                >
+                  <s.icon className="w-5 h-5 text-accent shrink-0" strokeWidth={1.75} />
+                  <div>
+                    <div className="font-display text-xl font-semibold tabular-nums leading-none">{s.v}</div>
+                    <div className="text-[11px] text-muted-foreground leading-tight mt-1">{s.l}</div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
+
 
         <ClubDaily />
 
-        {/* MEMBERSHIP */}
-        <section id="membership" className="scroll-mt-24 container mx-auto px-6 pb-20">
-          <div className="rounded-[2.5rem] bg-primary text-primary-foreground p-7 md:p-10 grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h2 className="font-display text-3xl md:text-4xl font-semibold leading-tight">
-                Ходить каждый день выгоднее
-                <br />
-                по клубной карте
-              </h2>
-              <div className="mt-6 flex items-end gap-3">
-                <div className="font-display text-5xl md:text-6xl font-semibold tabular-nums">990 ₽</div>
-                <div className="pb-2 opacity-80">в месяц</div>
-              </div>
-              <ul className="mt-6 space-y-2.5 text-sm md:text-base">
-                {[
-                  "Вход в клуб каждый день — бесплатно",
-                  "PS5 за 300 ₽/ч вместо 450 ₽/ч",
-                  "Скидки на события и мастер-классы",
-                  "Приоритетная запись и ранний доступ",
-                ].map((t) => (
-                  <li key={t} className="flex gap-2.5 items-start">
-                    <Check className="w-5 h-5 shrink-0 opacity-90" /> {t}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="rounded-[2rem] bg-primary-foreground text-foreground p-6 md:p-7">
-              <div className="font-display text-xl font-semibold">Добавь семью — дешевле</div>
-              <p className="text-sm text-muted-foreground mt-1">
-                +500 ₽ за первого, +400 ₽ за второго, +300 ₽ за каждого следующего.
-              </p>
-
-              <div className="mt-5 flex items-center gap-2">
-                {[0, 1, 2, 3].map((n) => (
-                  <button
-                    key={n}
-                    onClick={() => setFamily(n)}
-                    className={`flex-1 rounded-2xl border-2 py-3 font-display font-semibold transition-colors ${
-                      family === n ? "border-accent bg-accent/15" : "border-border"
-                    }`}
-                  >
-                    {n + 1}
-                  </button>
-                ))}
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">человек в семье</p>
-
-              <div className="mt-5 rounded-2xl bg-secondary/60 p-5">
-                <div className="flex items-end justify-between">
-                  <span className="text-sm text-muted-foreground">Итого в месяц</span>
-                  <span className="font-display text-4xl font-semibold tabular-nums">{familyPrice} ₽</span>
-                </div>
-                <div className="mt-2 text-sm text-accent">
-                  Без карты это ≈ {singleCost.toLocaleString("ru-RU")} ₽ — экономия{" "}
-                  {(singleCost - familyPrice).toLocaleString("ru-RU")} ₽
-                </div>
-                <p className="text-[11px] text-muted-foreground mt-1">
-                  Расчёт при 8 визитах в месяц на человека
-                </p>
-              </div>
-
-              <Button asChild size="lg" className="mt-5 w-full rounded-2xl">
-                <a href="/app/club">Оформить членство</a>
-              </Button>
-            </div>
-          </div>
-        </section>
 
         <ClubSchedule />
 
@@ -239,7 +175,90 @@ const Club = () => {
             </form>
           </div>
         </section>
+
+        {/* MEMBERSHIP — внизу страницы */}
+        <section id="membership" className="scroll-mt-24 container mx-auto px-6 py-20">
+          <div className="rounded-[2.5rem] bg-primary text-primary-foreground p-7 md:p-10 grid lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 className="font-display text-3xl md:text-4xl font-semibold leading-tight">
+                Одно членство вместо
+                <br />
+                разовых оплат
+              </h2>
+              <div className="mt-6 flex items-end gap-3">
+                <div className="font-display text-5xl md:text-6xl font-semibold tabular-nums">990 ₽</div>
+                <div className="pb-2 opacity-80">в месяц</div>
+              </div>
+              <ul className="mt-6 space-y-2.5 text-sm md:text-base">
+                {[
+                  "Вход в клуб каждый день — бесплатно (иначе 150 ₽)",
+                  "Взрослые настолки и события — бесплатно (иначе 500 ₽)",
+                  "PS5 за 300 ₽/ч вместо 450 ₽/ч",
+                  "Кешбэк ×2 в кофейне и ранний доступ к событиям",
+                ].map((t) => (
+                  <li key={t} className="flex gap-2.5 items-start">
+                    <Check className="w-5 h-5 shrink-0 opacity-90" /> {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-[2rem] bg-primary-foreground text-foreground p-6 md:p-7">
+              <div className="font-display text-xl font-semibold">Добавь семью — дешевле</div>
+              <p className="text-sm text-muted-foreground mt-1">
+                +500 ₽ за первого, +400 ₽ за второго, +300 ₽ за каждого следующего.
+              </p>
+
+              <div className="mt-5 flex items-center gap-2">
+                {[0, 1, 2, 3].map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => setFamily(n)}
+                    className={`flex-1 rounded-2xl border-2 py-3 font-display font-semibold transition-colors ${
+                      family === n ? "border-accent bg-accent/15" : "border-border"
+                    }`}
+                  >
+                    {n + 1}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">человек в семье</p>
+
+              <div className="mt-5 rounded-2xl bg-secondary/60 p-5">
+                <div className="space-y-1.5 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">6 визитов × 150 ₽</span>
+                    <span className="tabular-nums">{(people * 900).toLocaleString("ru-RU")} ₽</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">2 настолки × 500 ₽</span>
+                    <span className="tabular-nums">{(people * 1000).toLocaleString("ru-RU")} ₽</span>
+                  </div>
+                  <div className="flex justify-between border-t border-border pt-1.5">
+                    <span className="text-muted-foreground">Без карты</span>
+                    <span className="tabular-nums font-semibold">{singleCost.toLocaleString("ru-RU")} ₽</span>
+                  </div>
+                </div>
+                <div className="mt-4 flex items-end justify-between">
+                  <span className="text-sm text-muted-foreground">С членством</span>
+                  <span className="font-display text-4xl font-semibold tabular-nums">{familyPrice} ₽</span>
+                </div>
+                <div className="mt-2 text-sm text-accent">
+                  Экономия {(singleCost - familyPrice).toLocaleString("ru-RU")} ₽ в месяц — и это без учёта кешбэка ×2 в кофейне
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-1">
+                  Расчёт: 6 визитов и 2 события в месяц на человека
+                </p>
+              </div>
+
+              <Button asChild size="lg" className="mt-5 w-full rounded-2xl">
+                <a href="/app/club">Оформить членство</a>
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
+
 
       <Footer />
     </div>

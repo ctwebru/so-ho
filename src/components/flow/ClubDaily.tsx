@@ -9,7 +9,7 @@ import {
   ArrowUpRight,
   Check,
   Palette,
-  Laptop,
+  Swords,
   Baby,
   Coffee,
   CalendarClock,
@@ -33,7 +33,7 @@ const ITEMS = [
   { icon: Palette, title: "Рисование", note: "бумага, карандаши, краски — наши" },
   { icon: Puzzle, title: "Паззл недели", note: "собираем всем клубом, стол у окна" },
   { icon: Users2, title: "Встречи", note: "большие столы для своей компании" },
-  { icon: Laptop, title: "Тихий уголок", note: "поработать с ноутбуком" },
+  { icon: Swords, title: "Турниры", note: "мини-чемпионаты по настолкам" },
   { icon: Baby, title: "С детьми", note: "детские игры и творческий стол" },
   { icon: Coffee, title: "Кофе рядом", note: "бариста в соседнем зале" },
 ];
