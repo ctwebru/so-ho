@@ -70,9 +70,9 @@ const ClubDaily = () => {
         <div className="absolute -bottom-10 -right-10 w-48 h-48 rounded-full bg-accent/10" />
 
         <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
-          <h2 className="font-display text-2xl md:text-3xl font-semibold">Клуб открыт ежедневно</h2>
+          <h2 className="font-display text-2xl md:text-3xl font-semibold">Днём — свободный клуб</h2>
           <div className="shrink-0 self-start md:self-auto rounded-full bg-primary text-primary-foreground px-6 py-2 font-display font-semibold tabular-nums">
-            08:00 — 20:00
+            08:00 — 17:00
           </div>
         </div>
 
@@ -85,8 +85,7 @@ const ClubDaily = () => {
               </div>
               <p className="text-muted-foreground mt-1">
                 Без карты дневной клуб (08:00 — 17:00) — 150 ₽ за день, без записи и без лимита по времени.
-                Вечерние занятия из расписания оплачиваются отдельно — 200 ₽ (спецсобытия — 500 ₽).
-                Пришёл только вечером — дневные 150 ₽ платить не нужно.
+                Вечерние занятия из расписания оплачиваются отдельно.
               </p>
             </div>
             <div className="shrink-0 flex flex-wrap gap-2 text-sm">
@@ -149,7 +148,7 @@ const ClubDaily = () => {
                   Арендовать клуб целиком
                 </div>
                 <p className="text-sm opacity-85 mt-1">
-                  Бизнес-встречи, лекции, съёмки · до 25 гостей · от 2 500 ₽/час
+                  Бизнес-встречи, лекции, съёмки · до 12 гостей · 1 250 ₽/час
                 </p>
               </div>
             </div>
