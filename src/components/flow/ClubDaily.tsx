@@ -70,9 +70,9 @@ const ClubDaily = () => {
         <div className="absolute -bottom-10 -right-10 w-48 h-48 rounded-full bg-accent/10" />
 
         <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
-          <h2 className="font-display text-2xl md:text-3xl font-semibold">Клуб открыт ежедневно</h2>
+          <h2 className="font-display text-2xl md:text-3xl font-semibold">Днём — свободный клуб</h2>
           <div className="shrink-0 self-start md:self-auto rounded-full bg-primary text-primary-foreground px-6 py-2 font-display font-semibold tabular-nums">
-            08:00 — 20:00
+            08:00 — 17:00
           </div>
         </div>
 
