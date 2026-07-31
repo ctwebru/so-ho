@@ -110,10 +110,20 @@ const ClubSchedule = () => {
             Что у нас по вечерам
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl">
-            Днём клуб просто открыт — приходи с ноутбуком, книгой или друзьями.
-            А вечером собираемся: настолки, приставка, мастер-классы. Всё в клубной
-            карте, разовое посещение — 200 ₽.
+            Днём клуб просто открыт — приходи с книгой, настолкой или друзьями.
+            А вечером собираемся вместе: настолки, приставка, мастер-классы.
           </p>
+          <div className="mt-4 rounded-2xl border-2 border-accent/30 bg-accent/5 p-4 max-w-2xl">
+            <div className="font-display text-lg font-semibold">
+              Членам клуба — бесплатно, кроме специальных мероприятий
+            </div>
+            <p className="text-sm text-muted-foreground mt-1">
+              Без карты вход в клуб — 150 ₽ за день, всё расписание уже внутри.
+              Спецсобытия с ведущим — 500 ₽ (членам клуба бесплатно).
+              На регулярное расписание запись не нужна, на спецсобытия — записывайся
+              по клику на карточку.
+            </p>
+          </div>
 
         </div>
         <div className="md:col-span-5 md:justify-self-end inline-flex rounded-full border border-border bg-card p-1 text-sm flex-wrap">
@@ -196,6 +206,9 @@ const ClubSchedule = () => {
                             {s.note}
                           </div>
                         )}
+                        <div className="text-[11px] mt-2 pt-2 border-t border-current/15 opacity-80 tabular-nums">
+                          по карте бесплатно · без карты 150 ₽
+                        </div>
                       </button>
                     );
                   })}
@@ -210,6 +223,9 @@ const ClubSchedule = () => {
                       </div>
                       <div className="font-display text-sm font-medium leading-tight mt-1">
                         {e.title}
+                      </div>
+                      <div className="text-[11px] text-muted-foreground mt-2 pt-2 border-t border-border tabular-nums">
+                        по карте бесплатно · без карты 500 ₽
                       </div>
                     </button>
                   ))}
@@ -304,6 +320,9 @@ const ClubSchedule = () => {
                           {s.note}
                         </div>
                       )}
+                      <div className="text-[11px] mt-2 pt-2 border-t border-current/15 opacity-80 tabular-nums">
+                        по карте бесплатно · без карты 150 ₽
+                      </div>
                     </button>
                   );
                 })}
@@ -318,6 +337,9 @@ const ClubSchedule = () => {
                     </div>
                     <div className="font-display text-sm font-medium mt-1">
                       {e.title}
+                    </div>
+                    <div className="text-[11px] text-muted-foreground mt-2 pt-2 border-t border-border tabular-nums">
+                      по карте бесплатно · без карты 500 ₽
                     </div>
                   </button>
                 ))}
@@ -419,6 +441,9 @@ const DayList = ({
                   {s.note}
                 </div>
               )}
+              <div className="text-xs text-muted-foreground mt-1 tabular-nums">
+                по карте бесплатно · без карты 150 ₽ · без записи
+              </div>
             </div>
           </button>
         );
@@ -446,6 +471,9 @@ const DayList = ({
             </div>
             <div className="text-xs text-muted-foreground mt-0.5">
               {e.host}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1 tabular-nums">
+              по карте бесплатно · без карты 500 ₽ · нужна запись
             </div>
           </div>
         </button>

@@ -31,7 +31,7 @@ const ITEMS = [
   { icon: Dice5, title: "Настолки", note: "40+ игр на полке, бери любую" },
   { icon: BookOpen, title: "Библиотека", note: "своя, пополняем каждый месяц" },
   { icon: Palette, title: "Рисование", note: "бумага, карандаши, краски — наши" },
-  { icon: Puzzle, title: "Паззл недели", note: "собираем всем клубом, стол у окна" },
+  { icon: Puzzle, title: "Пазл недели", note: "собираем всем клубом, стол у окна" },
   { icon: Users2, title: "Встречи", note: "большие столы для своей компании" },
   { icon: Swords, title: "Турниры", note: "мини-чемпионаты по настолкам" },
   { icon: Baby, title: "С детьми", note: "детские игры и творческий стол" },
@@ -84,7 +84,7 @@ const ClubDaily = () => {
                 Членам клуба — <span className="text-accent">бесплатно</span>
               </div>
               <p className="text-muted-foreground mt-1">
-                Без карты — 150 ₽ за день. Без записи и без лимита по времени.
+                Без карты — 150 ₽ за день. Без записи и без лимита по времени: цена входа одна и на день, и на вечернее расписание.
               </p>
             </div>
             <div className="shrink-0 flex flex-wrap gap-2 text-sm">
