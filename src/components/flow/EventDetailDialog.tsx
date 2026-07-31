@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { KIND_META, type ScheduleKind } from "@/data/clubSchedule";
 
+export const EVENING_PRICE = 200;
 export const DAY_PRICE = 150;
 export const EVENT_PRICE = 500;
 
@@ -50,7 +51,7 @@ const EventDetailDialog = ({
   const gradient = event ? KIND_GRADIENT[event.kind] : "";
 
   const isSpecial = event?.kind === "special";
-  const price = isSpecial ? EVENT_PRICE : DAY_PRICE;
+  const price = isSpecial ? EVENT_PRICE : EVENING_PRICE;
 
   const handleBuy = () => {
     if (!event) return;
@@ -138,7 +139,7 @@ const EventDetailDialog = ({
             </div>
             <div className="rounded-2xl border border-border bg-card p-4 flex flex-col">
               <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                {isSpecial ? "Разовое событие" : "Разовый вход"}
+                {isSpecial ? "Разовое событие" : "Разовое участие"}
               </div>
               <div className="font-display text-2xl font-semibold tabular-nums mt-2">
                 {price} ₽
@@ -146,7 +147,7 @@ const EventDetailDialog = ({
               <div className="text-[11px] text-muted-foreground mt-1 leading-snug flex-1">
                 {isSpecial
                   ? "Спецсобытие с ведущим — нужна запись."
-                  : "Дневной вход в клуб, всё расписание внутри. Записываться не нужно — просто приходи."}
+                  : "Оплата за это вечернее занятие. Дневной клуб (08:00–17:00, 150 ₽) оплачивается отдельно — если приходишь только вечером, платить его не нужно. Записываться не надо."}
               </div>
               <Button size="sm" onClick={handleBuy} className="mt-3 w-full">
                 {isSpecial ? "Записаться" : "Забронировать место"}
