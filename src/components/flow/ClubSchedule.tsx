@@ -107,11 +107,11 @@ const ClubSchedule = () => {
         <div className="md:col-span-7">
           
           <h2 className="font-display text-4xl md:text-5xl font-semibold leading-tight">
-            Что у нас по вечерам
+            Расписание занятий
           </h2>
           <p className="mt-4 text-muted-foreground max-w-2xl">
             Днём клуб просто открыт — приходи с книгой, настолкой или друзьями.
-            А вечером собираемся вместе: настолки, приставка, мастер-классы.
+            А по расписанию собираемся вместе: настолки, приставка, мастер-классы.
           </p>
           <div className="mt-4 rounded-2xl border-2 border-accent/30 bg-accent/5 p-4 max-w-2xl">
             <div className="font-display text-lg font-semibold">
