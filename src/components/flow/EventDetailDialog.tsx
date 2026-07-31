@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { KIND_META, type ScheduleKind } from "@/data/clubSchedule";
 
+export const EVENING_PRICE = 200;
 export const DAY_PRICE = 150;
 export const EVENT_PRICE = 500;
 
