@@ -15,7 +15,7 @@ const Club = () => {
   const familyPrice =
     990 + Array.from({ length: family }, (_, i) => FAMILY_ADDONS[Math.min(i, FAMILY_ADDONS.length - 1)]).reduce((a, b) => a + b, 0);
   const people = family + 1;
-  const singleCost = people * (6 * 150 + 2 * 500); // 6 визитов + 2 события в месяц
+  const singleCost = people * (4 * 150 + 4 * 200 + 1 * 500); // дни + вечера + событие
 
 
   return (
