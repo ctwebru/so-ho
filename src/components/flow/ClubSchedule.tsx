@@ -208,7 +208,7 @@ const ClubSchedule = () => {
                           </div>
                         )}
                         <div className="text-[11px] mt-2 pt-2 border-t border-current/15 opacity-80 tabular-nums">
-                          по карте бесплатно · без карты 150 ₽
+                          по карте бесплатно · без карты 200 ₽
                         </div>
                       </button>
                     );
@@ -322,7 +322,7 @@ const ClubSchedule = () => {
                         </div>
                       )}
                       <div className="text-[11px] mt-2 pt-2 border-t border-current/15 opacity-80 tabular-nums">
-                        по карте бесплатно · без карты 150 ₽
+                        по карте бесплатно · без карты 200 ₽
                       </div>
                     </button>
                   );
@@ -443,7 +443,7 @@ const DayList = ({
                 </div>
               )}
               <div className="text-xs text-muted-foreground mt-1 tabular-nums">
-                по карте бесплатно · без карты 150 ₽ · без записи
+                по карте бесплатно · без карты 200 ₽ · без записи
               </div>
             </div>
           </button>
