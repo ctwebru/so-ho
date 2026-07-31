@@ -51,7 +51,7 @@ const EventDetailDialog = ({
   const gradient = event ? KIND_GRADIENT[event.kind] : "";
 
   const isSpecial = event?.kind === "special";
-  const price = isSpecial ? EVENT_PRICE : DAY_PRICE;
+  const price = isSpecial ? EVENT_PRICE : EVENING_PRICE;
 
   const handleBuy = () => {
     if (!event) return;
