@@ -1,4 +1,4 @@
-import { Moon, Users2, Baby, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import clubFront from "@/assets/real/club-front.png";
 import clubReverse from "@/assets/real/club-reverse.png";
 import coworkView from "@/assets/real/cowork-view.png";
@@ -7,26 +7,26 @@ import promoVideo from "@/assets/coffee-promo.mp4";
 
 const SCENARIOS = [
   {
-    icon: Moon,
-    title: "Пришёл один",
-    text: "Скучно вечером и дома сидеть не хочется. Заходи один: за общим столом всегда есть игра, в которую берут четвёртым, и пазл, который собирают всем клубом.",
+    num: "01",
+    title: "Один",
+    text: "Скучно вечером и дома сидеть не хочется. За общим столом всегда есть игра, в которую берут четвёртым, и пазл, который собирают всем клубом.",
   },
   {
-    icon: Users2,
-    title: "Пришёл компанией",
-    text: "Не знаете, куда пойти вдвоём или впятером. Большие столы, 40+ настолок, PS5 и кофе рядом — вечер складывается сам, без бронирования ресторана и лишних поводов.",
+    num: "02",
+    title: "Компанией",
+    text: "Не знаете, куда пойти вдвоём или впятером. Столы, 40+ настолок, PS5 и кофе рядом — вечер складывается сам, без бронирования ресторана и лишних поводов.",
   },
   {
-    icon: Baby,
-    title: "Пришёл с детьми",
+    num: "03",
+    title: "С детьми",
     text: "Ребёнку — настолки, рисование и другие дети. Взрослому — своя игра, книга или просто тишина за соседним столом. Никого не нужно развлекать по очереди.",
   },
 ];
 
 const STEPS = [
-  { n: "01", t: "Просто зайди", d: "Без записи и без звонка. Днём, когда нет занятий, — 150 ₽ за весь день." },
-  { n: "02", t: "Попробуй вечер", d: "Возьми одно занятие из расписания за 200 ₽ — настолки, турнир или мастер-класс." },
-  { n: "03", t: "Останься", d: "Понравилось — членство 990 ₽ в месяц окупается уже с пятого визита." },
+  { n: "01", t: "Просто зайди", d: "Без записи и без звонка — днём, когда в клубе нет занятий." },
+  { n: "02", t: "Попробуй вечер", d: "Возьми одно занятие из расписания: настолки, турнир или мастер-класс." },
+  { n: "03", t: "Останься", d: "Понравилось — членство окупается уже со второго визита." },
 ];
 
 const ClubStory = () => {
@@ -44,12 +44,14 @@ const ClubStory = () => {
           гостиная района, где вечер занимает сам себя.
         </p>
 
-        <div className="mt-10 grid md:grid-cols-3 gap-5">
+        <div className="mt-10 grid md:grid-cols-3 gap-px bg-border/60 rounded-3xl overflow-hidden border border-border/60">
           {SCENARIOS.map((s) => (
-            <div key={s.title} className="paper rounded-3xl p-6 border border-border/60">
-              <s.icon className="w-7 h-7 text-accent" />
-              <div className="mt-4 font-display text-2xl font-semibold">{s.title}</div>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.text}</p>
+            <div key={s.title} className="bg-background p-7 md:p-8">
+              <span className="font-display text-sm tracking-[0.2em] text-accent/70 tabular-nums">
+                {s.num}
+              </span>
+              <div className="mt-5 font-display text-2xl font-semibold">{s.title}</div>
+              <p className="mt-2.5 text-sm text-muted-foreground leading-relaxed">{s.text}</p>
             </div>
           ))}
         </div>
@@ -59,14 +61,14 @@ const ClubStory = () => {
       <div className="container mx-auto px-6 py-16">
         <div className="flex items-end justify-between gap-6 flex-wrap">
           <div>
-            <p className="font-hand text-2xl text-accent">как это выглядит</p>
+            <p className="font-hand italic text-2xl text-accent">как это выглядит</p>
             <h2 className="mt-2 font-display text-3xl md:text-4xl font-semibold">
               Один зал, много вечеров
             </h2>
           </div>
           <p className="text-sm text-muted-foreground max-w-sm">
-            Мягкий свет, большие столы, много дерева и зелени. Мы в Flora&amp;Fauna на Дачном шоссе,
-            22/3 — вход через кофейню.
+            Уютно, по-соседски и без пафоса: сюда легко зайти одному. Мы в Flora&amp;Fauna на
+            Дачном шоссе, 22/3 — вход через кофейню.
           </p>
         </div>
 
@@ -108,7 +110,7 @@ const ClubStory = () => {
         <div className="rounded-[2.5rem] border border-border/60 paper p-7 md:p-10">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="font-hand text-2xl text-accent">с чего начать</p>
+              <p className="font-hand italic text-2xl text-accent">с чего начать</p>
               <h2 className="mt-1 font-display text-3xl md:text-4xl font-semibold">
                 Сначала приходят, потом остаются
               </h2>
