@@ -141,16 +141,6 @@ const ClubSchedule = () => {
             Когда нет занятий и брони — клуб открыт для свободного входа. А по расписанию собираемся вместе:
             настолки, приставка, мастер-классы.
           </p>
-          <div className="mt-4 rounded-2xl border-2 border-accent/30 bg-accent/5 p-4 max-w-2xl">
-            <div className="font-display text-lg font-semibold">
-              Членам клуба — бесплатно, кроме специальных мероприятий
-            </div>
-            <p className="text-sm text-muted-foreground mt-1">
-              Без карты: свободный вход между занятиями — 150 ₽ за день, вечерние занятия из расписания — 200 ₽,
-              спецсобытия с ведущим — 500 ₽. На регулярное расписание запись не нужна, на спецсобытия — записывайся
-              по клику на карточку.
-            </p>
-          </div>
 
         </div>
         <div className="md:col-span-5 md:justify-self-end inline-flex rounded-full border border-border bg-card p-1 text-sm flex-wrap">
