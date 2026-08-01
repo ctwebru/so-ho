@@ -47,6 +47,8 @@ const App = () => (
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/qr-menu" element={<QrMenu />} />
             <Route path="/club" element={<Club />} />
+            <Route path="/rent" element={<Rent />} />
+
             <Route path="/auth" element={<Auth />} />
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="/app" element={<AppLayout />}>
