@@ -12,6 +12,7 @@ import Login from "./pages/Login.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import QrMenu from "./pages/QrMenu.tsx";
 import Club from "./pages/Club.tsx";
+import Rent from "./pages/Rent.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AppLayout from "./layouts/AppLayout";
 import Dashboard from "./pages/app/Dashboard";
@@ -46,6 +47,8 @@ const App = () => (
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/qr-menu" element={<QrMenu />} />
             <Route path="/club" element={<Club />} />
+            <Route path="/rent" element={<Rent />} />
+
             <Route path="/auth" element={<Auth />} />
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="/app" element={<AppLayout />}>
