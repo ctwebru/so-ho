@@ -44,12 +44,14 @@ const ClubStory = () => {
           гостиная района, где вечер занимает сам себя.
         </p>
 
-        <div className="mt-10 grid md:grid-cols-3 gap-5">
+        <div className="mt-10 grid md:grid-cols-3 gap-px bg-border/60 rounded-3xl overflow-hidden border border-border/60">
           {SCENARIOS.map((s) => (
-            <div key={s.title} className="paper rounded-3xl p-6 border border-border/60">
-              <s.icon className="w-7 h-7 text-accent" />
-              <div className="mt-4 font-display text-2xl font-semibold">{s.title}</div>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.text}</p>
+            <div key={s.title} className="bg-background p-7 md:p-8">
+              <span className="font-display text-sm tracking-[0.2em] text-accent/70 tabular-nums">
+                {s.num}
+              </span>
+              <div className="mt-5 font-display text-2xl font-semibold">{s.title}</div>
+              <p className="mt-2.5 text-sm text-muted-foreground leading-relaxed">{s.text}</p>
             </div>
           ))}
         </div>
@@ -59,14 +61,14 @@ const ClubStory = () => {
       <div className="container mx-auto px-6 py-16">
         <div className="flex items-end justify-between gap-6 flex-wrap">
           <div>
-            <p className="font-hand text-2xl text-accent">как это выглядит</p>
+            <p className="font-hand italic text-2xl text-accent">как это выглядит</p>
             <h2 className="mt-2 font-display text-3xl md:text-4xl font-semibold">
               Один зал, много вечеров
             </h2>
           </div>
           <p className="text-sm text-muted-foreground max-w-sm">
-            Мягкий свет, большие столы, много дерева и зелени. Мы в Flora&amp;Fauna на Дачном шоссе,
-            22/3 — вход через кофейню.
+            Уютно, по-соседски и без пафоса: сюда легко зайти одному. Мы в Flora&amp;Fauna на
+            Дачном шоссе, 22/3 — вход через кофейню.
           </p>
         </div>
 
