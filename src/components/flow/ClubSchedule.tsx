@@ -337,9 +337,8 @@ const ClubSchedule = () => {
                           {s.note}
                         </div>
                       )}
-                      <div className="text-[11px] mt-2 pt-2 border-t border-current/15 opacity-80 tabular-nums">
-                        по карте бесплатно · без карты 200 ₽
-                      </div>
+                      <MetaRow price={200} age={meta.age} />
+
                     </button>
                   );
                 })}
