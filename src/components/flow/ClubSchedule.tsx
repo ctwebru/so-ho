@@ -354,9 +354,10 @@ const ClubSchedule = () => {
                     <div className="font-display text-sm font-medium mt-1">
                       {e.title}
                     </div>
-                    <div className="text-[11px] text-muted-foreground mt-2 pt-2 border-t border-border tabular-nums">
-                      по карте бесплатно · без карты 500 ₽
+                    <div className="text-muted-foreground">
+                      <MetaRow price={500} age={e.ageLabel} dark />
                     </div>
+
                   </button>
                 ))}
               </div>
