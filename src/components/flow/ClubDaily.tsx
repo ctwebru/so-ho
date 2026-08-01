@@ -85,11 +85,11 @@ const ClubDaily = () => {
               </div>
               <p className="text-muted-foreground mt-1">
                 Когда в клубе нет запланированных занятий и он не забронирован целиком — приходи посидеть,
-                поиграть в настолки, почитать или порисовать. Без карты — 150 ₽ за день, без записи и лимита по времени.
+                поиграть в настолки, почитать или порисовать. Без карты — 150 ₽ за день, без записи.
               </p>
             </div>
             <div className="shrink-0 flex flex-wrap gap-2 text-sm">
-              {["без записи", "весь день", "все игры и книги"].map((t) => (
+              {["без записи", "все игры и книги"].map((t) => (
                 <span key={t} className="inline-flex items-center gap-1 rounded-full bg-accent/15 px-3 py-1">
                   <Check className="w-3.5 h-3.5 text-accent" /> {t}
                 </span>
@@ -98,8 +98,8 @@ const ClubDaily = () => {
           </div>
           <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground border-t border-border pt-3">
             <CalendarClock className="w-4 h-4 text-accent shrink-0 mt-px" />
-            Время свободного входа зависит от расписания — суббота может быть занята утренними настолками.
-            Сверяйтесь с календарём ниже.
+            Свободное время зависит от расписания: занятия и брони занимают клуб на несколько часов —
+            сверяйтесь с календарём ниже, чтобы выбрать свободное окно.
           </p>
         </div>
 
