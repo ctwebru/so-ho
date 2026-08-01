@@ -65,16 +65,16 @@ export const WEEK_DAYS = [
 export type WeekDayId = (typeof WEEK_DAYS)[number]["id"];
 
 export const WEEKLY_SCHEDULE: Record<WeekDayId, ScheduleSlot[]> = {
-  1: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
-  2: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
+  1: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку", capacity: 6, booked: 2, booking: true }],
+  2: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку", capacity: 6, booked: 5, booking: true }],
   3: [
-    { start: "18:00", end: "19:30", kind: "board_5", title: "Настолки", note: "для семей с детьми" },
-    { start: "19:30", end: "21:00", kind: "board_12", title: "Настолки" },
+    { start: "18:00", end: "19:30", kind: "board_5", title: "Настолки", note: "для семей с детьми", capacity: 12, booked: 7, booking: true },
+    { start: "19:30", end: "21:00", kind: "board_12", title: "Настолки", capacity: 12, booked: 10, booking: true },
   ],
-  4: [{ start: "18:00", end: "19:00", kind: "board_duo", title: "Настолки для двоих" }],
-  5: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
-  6: [{ start: "19:00", end: "21:00", kind: "board_16", title: "Настолки" }],
-  7: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку" }],
+  4: [{ start: "18:00", end: "19:00", kind: "board_duo", title: "Настолки для двоих", capacity: 8, booked: 3, booking: true }],
+  5: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку", capacity: 6, booked: 4, booking: true }],
+  6: [{ start: "19:00", end: "21:00", kind: "board_16", title: "Настолки", capacity: 12, booked: 6, booking: true }],
+  7: [{ start: "17:00", end: "20:00", kind: "console", title: "Игры в приставку", capacity: 6, booked: 1, booking: true }],
 };
 
 // JS Date.getDay(): 0=Sun..6=Sat  → map to our 1..7 (Mon..Sun)
