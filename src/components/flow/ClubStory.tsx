@@ -110,7 +110,7 @@ const ClubStory = () => {
         <div className="rounded-[2.5rem] border border-border/60 paper p-7 md:p-10">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="font-hand text-2xl text-accent">с чего начать</p>
+              <p className="font-hand italic text-2xl text-accent">с чего начать</p>
               <h2 className="mt-1 font-display text-3xl md:text-4xl font-semibold">
                 Сначала приходят, потом остаются
               </h2>
