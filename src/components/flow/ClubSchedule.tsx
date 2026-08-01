@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight, Sparkles, Coins, ChevronRight as ChevronRightSm } from "lucide-react";
 import {
   HoverCard,
   HoverCardTrigger,
@@ -65,6 +65,34 @@ const eventToDetail = (e: ClubEvent): EventDetail => ({
   image: e.image,
 });
 
+const MetaRow = ({
+  price,
+  age,
+  dark,
+}: {
+  price: number;
+  age?: string;
+  dark?: boolean;
+}) => (
+  <div
+    className={`flex items-center gap-1.5 flex-wrap mt-2 pt-2 border-t text-[11px] ${
+      dark ? "border-border" : "border-current/15"
+    }`}
+  >
+    <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
+      <Coins className="w-3 h-3" /> {price} ₽
+    </span>
+    {age && (
+      <span className="inline-flex items-center rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
+        {age}
+      </span>
+    )}
+    <span className="ml-auto inline-flex items-center gap-0.5 font-medium underline underline-offset-2 decoration-current/40">
+      подробнее <ChevronRightSm className="w-3 h-3" />
+    </span>
+  </div>
+);
+
 const ClubSchedule = () => {
   const [mode, setMode] = useState<Mode>("week");
   const [activeDay, setActiveDay] = useState<WeekDayId>(todayId());
@@ -113,16 +141,6 @@ const ClubSchedule = () => {
             Когда нет занятий и брони — клуб открыт для свободного входа. А по расписанию собираемся вместе:
             настолки, приставка, мастер-классы.
           </p>
-          <div className="mt-4 rounded-2xl border-2 border-accent/30 bg-accent/5 p-4 max-w-2xl">
-            <div className="font-display text-lg font-semibold">
-              Членам клуба — бесплатно, кроме специальных мероприятий
-            </div>
-            <p className="text-sm text-muted-foreground mt-1">
-              Без карты: свободный вход между занятиями — 150 ₽ за день, вечерние занятия из расписания — 200 ₽,
-              спецсобытия с ведущим — 500 ₽. На регулярное расписание запись не нужна, на спецсобытия — записывайся
-              по клику на карточку.
-            </p>
-          </div>
 
         </div>
         <div className="md:col-span-5 md:justify-self-end inline-flex rounded-full border border-border bg-card p-1 text-sm flex-wrap">
@@ -205,9 +223,8 @@ const ClubSchedule = () => {
                             {s.note}
                           </div>
                         )}
-                        <div className="text-[11px] mt-2 pt-2 border-t border-current/15 opacity-80 tabular-nums">
-                          по карте бесплатно · без карты 200 ₽
-                        </div>
+                        <MetaRow price={200} age={meta.age} />
+
                       </button>
                     );
                   })}
@@ -223,9 +240,10 @@ const ClubSchedule = () => {
                       <div className="font-display text-sm font-medium leading-tight mt-1">
                         {e.title}
                       </div>
-                      <div className="text-[11px] text-muted-foreground mt-2 pt-2 border-t border-border tabular-nums">
-                        по карте бесплатно · без карты 500 ₽
+                      <div className="text-muted-foreground">
+                        <MetaRow price={500} age={e.ageLabel} dark />
                       </div>
+
                     </button>
                   ))}
                 </div>
@@ -319,9 +337,8 @@ const ClubSchedule = () => {
                           {s.note}
                         </div>
                       )}
-                      <div className="text-[11px] mt-2 pt-2 border-t border-current/15 opacity-80 tabular-nums">
-                        по карте бесплатно · без карты 200 ₽
-                      </div>
+                      <MetaRow price={200} age={meta.age} />
+
                     </button>
                   );
                 })}
@@ -337,9 +354,10 @@ const ClubSchedule = () => {
                     <div className="font-display text-sm font-medium mt-1">
                       {e.title}
                     </div>
-                    <div className="text-[11px] text-muted-foreground mt-2 pt-2 border-t border-border tabular-nums">
-                      по карте бесплатно · без карты 500 ₽
+                    <div className="text-muted-foreground">
+                      <MetaRow price={500} age={e.ageLabel} dark />
                     </div>
+
                   </button>
                 ))}
               </div>
@@ -440,9 +458,10 @@ const DayList = ({
                   {s.note}
                 </div>
               )}
-              <div className="text-xs text-muted-foreground mt-1 tabular-nums">
-                по карте бесплатно · без карты 200 ₽ · без записи
+              <div className="text-muted-foreground">
+                <MetaRow price={200} age={meta.age} dark />
               </div>
+
             </div>
           </button>
         );
@@ -471,9 +490,10 @@ const DayList = ({
             <div className="text-xs text-muted-foreground mt-0.5">
               {e.host}
             </div>
-            <div className="text-xs text-muted-foreground mt-1 tabular-nums">
-              по карте бесплатно · без карты 500 ₽ · нужна запись
+            <div className="text-muted-foreground">
+              <MetaRow price={500} age={e.ageLabel} dark />
             </div>
+
           </div>
         </button>
       ))}
