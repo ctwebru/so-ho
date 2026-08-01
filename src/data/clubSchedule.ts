@@ -13,6 +13,9 @@ export type ScheduleSlot = {
   kind: ScheduleKind;
   title: string;
   note?: string;
+  capacity: number; // максимум человек
+  booked: number; // уже записались
+  booking?: boolean; // требуется запись
 };
 
 export const KIND_META: Record<
