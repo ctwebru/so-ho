@@ -70,9 +70,9 @@ const ClubDaily = () => {
         <div className="absolute -bottom-10 -right-10 w-48 h-48 rounded-full bg-accent/10" />
 
         <div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
-          <h2 className="font-display text-2xl md:text-3xl font-semibold">Днём — свободный клуб</h2>
-          <div className="shrink-0 self-start md:self-auto rounded-full bg-primary text-primary-foreground px-6 py-2 font-display font-semibold tabular-nums">
-            08:00 — 17:00
+          <h2 className="font-display text-2xl md:text-3xl font-semibold">Свободный клуб между мероприятиями</h2>
+          <div className="shrink-0 self-start md:self-auto rounded-full bg-primary text-primary-foreground px-6 py-2 font-display font-semibold text-sm">
+            когда нет занятий и брони
           </div>
         </div>
 
@@ -84,8 +84,8 @@ const ClubDaily = () => {
                 Членам клуба — <span className="text-accent">бесплатно</span>
               </div>
               <p className="text-muted-foreground mt-1">
-                Без карты дневной клуб (08:00 — 17:00) — 150 ₽ за день, без записи и без лимита по времени.
-                Вечерние занятия из расписания оплачиваются отдельно.
+                Когда в клубе нет запланированных занятий и он не забронирован целиком — приходи посидеть,
+                поиграть в настолки, почитать или порисовать. Без карты — 150 ₽ за день, без записи и лимита по времени.
               </p>
             </div>
             <div className="shrink-0 flex flex-wrap gap-2 text-sm">
@@ -98,7 +98,8 @@ const ClubDaily = () => {
           </div>
           <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground border-t border-border pt-3">
             <CalendarClock className="w-4 h-4 text-accent shrink-0 mt-px" />
-            Иногда клуб закрыт под бронь целиком — сверяйтесь с расписанием ниже.
+            Время свободного входа зависит от расписания — суббота может быть занята утренними настолками.
+            Сверяйтесь с календарём ниже.
           </p>
         </div>
 
