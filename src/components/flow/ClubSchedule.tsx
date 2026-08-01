@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight, Sparkles, Coins, ChevronRight as ChevronRightSm } from "lucide-react";
+import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight, Sparkles, Coins, Users, ClipboardCheck, ChevronRight as ChevronRightSm } from "lucide-react";
 import {
   HoverCard,
   HoverCardTrigger,
@@ -65,33 +65,69 @@ const eventToDetail = (e: ClubEvent): EventDetail => ({
   image: e.image,
 });
 
+const EVENT_CAPACITY = 12;
+
 const MetaRow = ({
   price,
   age,
+  booking,
+  capacity,
+  booked,
   dark,
 }: {
   price: number;
   age?: string;
+  booking?: boolean;
+  capacity: number;
+  booked: number;
   dark?: boolean;
-}) => (
-  <div
-    className={`flex items-center gap-1.5 flex-wrap mt-2 pt-2 border-t text-[11px] ${
-      dark ? "border-border" : "border-current/15"
-    }`}
-  >
-    <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
-      <Coins className="w-3 h-3" /> {price} ₽
-    </span>
-    {age && (
-      <span className="inline-flex items-center rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
-        {age}
-      </span>
-    )}
-    <span className="ml-auto inline-flex items-center gap-0.5 font-medium underline underline-offset-2 decoration-current/40">
-      подробнее <ChevronRightSm className="w-3 h-3" />
-    </span>
-  </div>
-);
+}) => {
+  const pct = Math.min(100, Math.round((booked / Math.max(1, capacity)) * 100));
+  const left = Math.max(0, capacity - booked);
+  const almost = left <= Math.max(1, Math.round(capacity * 0.25));
+  return (
+    <div
+      className={`mt-2 pt-2 border-t text-[11px] ${dark ? "border-border" : "border-current/15"}`}
+    >
+      <div className="flex items-center gap-1.5 flex-wrap">
+        <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
+          <Coins className="w-3 h-3" /> {price} ₽
+        </span>
+        {booking && (
+          <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5">
+            <ClipboardCheck className="w-3 h-3" /> по записи
+          </span>
+        )}
+        {age && (
+          <span className="inline-flex items-center rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
+            {age}
+          </span>
+        )}
+        <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
+          <Users className="w-3 h-3" /> до {capacity}
+        </span>
+      </div>
+
+      <div className="mt-2 flex items-center gap-2">
+        <div className="h-1.5 flex-1 rounded-full bg-current/15 overflow-hidden">
+          <div
+            className={`h-full rounded-full ${almost ? "bg-destructive" : "bg-current/60"}`}
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+        <span className="tabular-nums whitespace-nowrap opacity-80">
+          {left === 0 ? "мест нет" : almost ? `осталось ${left}` : `${booked}/${capacity}`}
+        </span>
+      </div>
+
+      <div className="mt-1.5 flex justify-end">
+        <span className="inline-flex items-center gap-0.5 font-medium underline underline-offset-2 decoration-current/40">
+          подробнее <ChevronRightSm className="w-3 h-3" />
+        </span>
+      </div>
+    </div>
+  );
+};
 
 const ClubSchedule = () => {
   const [mode, setMode] = useState<Mode>("week");
@@ -223,7 +259,7 @@ const ClubSchedule = () => {
                             {s.note}
                           </div>
                         )}
-                        <MetaRow price={200} age={meta.age} />
+                        <MetaRow price={200} age={meta.age} booking capacity={s.capacity} booked={s.booked} />
 
                       </button>
                     );
@@ -241,7 +277,7 @@ const ClubSchedule = () => {
                         {e.title}
                       </div>
                       <div className="text-muted-foreground">
-                        <MetaRow price={500} age={e.ageLabel} dark />
+                        <MetaRow price={500} age={e.ageLabel} booking capacity={EVENT_CAPACITY} booked={Math.max(0, EVENT_CAPACITY - e.seatsLeft)} dark />
                       </div>
 
                     </button>
@@ -337,7 +373,7 @@ const ClubSchedule = () => {
                           {s.note}
                         </div>
                       )}
-                      <MetaRow price={200} age={meta.age} />
+                      <MetaRow price={200} age={meta.age} booking capacity={s.capacity} booked={s.booked} />
 
                     </button>
                   );
@@ -355,7 +391,7 @@ const ClubSchedule = () => {
                       {e.title}
                     </div>
                     <div className="text-muted-foreground">
-                      <MetaRow price={500} age={e.ageLabel} dark />
+                      <MetaRow price={500} age={e.ageLabel} booking capacity={EVENT_CAPACITY} booked={Math.max(0, EVENT_CAPACITY - e.seatsLeft)} dark />
                     </div>
 
                   </button>
@@ -459,7 +495,7 @@ const DayList = ({
                 </div>
               )}
               <div className="text-muted-foreground">
-                <MetaRow price={200} age={meta.age} dark />
+                <MetaRow price={200} age={meta.age} booking capacity={s.capacity} booked={s.booked} dark />
               </div>
 
             </div>
@@ -491,7 +527,7 @@ const DayList = ({
               {e.host}
             </div>
             <div className="text-muted-foreground">
-              <MetaRow price={500} age={e.ageLabel} dark />
+              <MetaRow price={500} age={e.ageLabel} booking capacity={EVENT_CAPACITY} booked={Math.max(0, EVENT_CAPACITY - e.seatsLeft)} dark />
             </div>
 
           </div>
