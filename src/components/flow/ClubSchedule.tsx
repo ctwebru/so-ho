@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight, Sparkles, Coins, ChevronRight as ChevronRightSm } from "lucide-react";
+import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight, Sparkles, Coins, Users, ClipboardCheck, ChevronRight as ChevronRightSm } from "lucide-react";
 import {
   HoverCard,
   HoverCardTrigger,
@@ -259,7 +259,7 @@ const ClubSchedule = () => {
                             {s.note}
                           </div>
                         )}
-                        <MetaRow price={200} age={meta.age} />
+                        <MetaRow price={200} age={meta.age} booking capacity={s.capacity} booked={s.booked} />
 
                       </button>
                     );
@@ -277,7 +277,7 @@ const ClubSchedule = () => {
                         {e.title}
                       </div>
                       <div className="text-muted-foreground">
-                        <MetaRow price={500} age={e.ageLabel} dark />
+                        <MetaRow price={500} age={e.ageLabel} booking capacity={EVENT_CAPACITY} booked={Math.max(0, EVENT_CAPACITY - e.seatsLeft)} dark />
                       </div>
 
                     </button>
@@ -373,7 +373,7 @@ const ClubSchedule = () => {
                           {s.note}
                         </div>
                       )}
-                      <MetaRow price={200} age={meta.age} />
+                      <MetaRow price={200} age={meta.age} booking capacity={s.capacity} booked={s.booked} />
 
                     </button>
                   );
@@ -391,7 +391,7 @@ const ClubSchedule = () => {
                       {e.title}
                     </div>
                     <div className="text-muted-foreground">
-                      <MetaRow price={500} age={e.ageLabel} dark />
+                      <MetaRow price={500} age={e.ageLabel} booking capacity={EVENT_CAPACITY} booked={Math.max(0, EVENT_CAPACITY - e.seatsLeft)} dark />
                     </div>
 
                   </button>
@@ -495,7 +495,7 @@ const DayList = ({
                 </div>
               )}
               <div className="text-muted-foreground">
-                <MetaRow price={200} age={meta.age} dark />
+                <MetaRow price={200} age={meta.age} booking capacity={s.capacity} booked={s.booked} dark />
               </div>
 
             </div>
@@ -527,7 +527,7 @@ const DayList = ({
               {e.host}
             </div>
             <div className="text-muted-foreground">
-              <MetaRow price={500} age={e.ageLabel} dark />
+              <MetaRow price={500} age={e.ageLabel} booking capacity={EVENT_CAPACITY} booked={Math.max(0, EVENT_CAPACITY - e.seatsLeft)} dark />
             </div>
 
           </div>
