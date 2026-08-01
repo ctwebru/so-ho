@@ -5,6 +5,7 @@ import Footer from "@/components/flow/Footer";
 import { Button } from "@/components/ui/button";
 import ClubSchedule from "@/components/flow/ClubSchedule";
 import ClubDaily from "@/components/flow/ClubDaily";
+import ClubStory from "@/components/flow/ClubStory";
 import clubPhoto from "@/assets/real/club-front.png";
 
 const FAMILY_ADDONS = [500, 400, 300];
@@ -59,6 +60,8 @@ const Club = () => {
         </section>
 
 
+
+        <ClubStory />
 
         <ClubDaily />
 
