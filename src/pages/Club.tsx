@@ -117,23 +117,32 @@ const Club = () => {
               </div>
               <p className="text-xs text-muted-foreground mt-2">человек в семье</p>
 
-              <div className="mt-5 rounded-2xl bg-secondary/60 p-5 text-center">
-                <div className="flex items-end justify-center gap-4">
-                  <span className="font-display text-3xl font-semibold tabular-nums text-muted-foreground line-through decoration-2">
-                    {singleCost.toLocaleString("ru-RU")} ₽
+              <div className="mt-5 rounded-2xl bg-secondary/60 p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-sm text-muted-foreground">
+                    Без карты
+                    <span className="block font-display text-lg font-semibold tabular-nums line-through decoration-1 opacity-70">
+                      {singleCost.toLocaleString("ru-RU")} ₽
+                    </span>
                   </span>
-                  <span className="font-display text-5xl font-semibold tabular-nums text-accent leading-none">
-                    {familyPrice.toLocaleString("ru-RU")} ₽
+                  <span className="text-right text-sm text-muted-foreground">
+                    По членству
+                    <span className="block font-display text-3xl font-semibold tabular-nums text-accent leading-tight whitespace-nowrap">
+                      {familyPrice.toLocaleString("ru-RU")} ₽
+                    </span>
                   </span>
                 </div>
-                <div className="mt-3 text-sm">
-                  Экономия {(singleCost - familyPrice).toLocaleString("ru-RU")} ₽ в месяц — и это без
-                  учёта кешбэка ×2 в кофейне
+
+                <div className="mt-4 rounded-xl bg-accent/10 px-3 py-2 text-center text-sm font-medium text-accent">
+                  Экономия {(singleCost - familyPrice).toLocaleString("ru-RU")} ₽ в месяц
                 </div>
-                <p className="text-[11px] text-muted-foreground mt-2">
-                  Расчёт на человека: 4 дня в клубе (150 ₽) + 4 вечерних занятия (200 ₽) + 1 спецсобытие (500 ₽)
+
+                <p className="text-[11px] text-muted-foreground mt-3 leading-relaxed">
+                  Без учёта кешбэка ×2 в кофейне. Расчёт на человека: 4 дня в клубе (150 ₽) +
+                  4 вечерних занятия (200 ₽) + 1 спецсобытие (500 ₽)
                 </p>
               </div>
+
 
 
               <Button asChild size="lg" className="mt-5 w-full rounded-2xl">
