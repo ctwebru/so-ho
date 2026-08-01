@@ -458,9 +458,10 @@ const DayList = ({
                   {s.note}
                 </div>
               )}
-              <div className="text-xs text-muted-foreground mt-1 tabular-nums">
-                по карте бесплатно · без карты 200 ₽ · без записи
+              <div className="text-muted-foreground">
+                <MetaRow price={200} age={meta.age} dark />
               </div>
+
             </div>
           </button>
         );
