@@ -65,6 +65,34 @@ const eventToDetail = (e: ClubEvent): EventDetail => ({
   image: e.image,
 });
 
+const MetaRow = ({
+  price,
+  age,
+  dark,
+}: {
+  price: number;
+  age?: string;
+  dark?: boolean;
+}) => (
+  <div
+    className={`flex items-center gap-1.5 flex-wrap mt-2 pt-2 border-t text-[11px] ${
+      dark ? "border-border" : "border-current/15"
+    }`}
+  >
+    <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
+      <Coins className="w-3 h-3" /> {price} ₽
+    </span>
+    {age && (
+      <span className="inline-flex items-center rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
+        {age}
+      </span>
+    )}
+    <span className="ml-auto inline-flex items-center gap-0.5 font-medium underline underline-offset-2 decoration-current/40">
+      подробнее <ChevronRightSm className="w-3 h-3" />
+    </span>
+  </div>
+);
+
 const ClubSchedule = () => {
   const [mode, setMode] = useState<Mode>("week");
   const [activeDay, setActiveDay] = useState<WeekDayId>(todayId());
