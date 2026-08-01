@@ -1,4 +1,4 @@
-import { Moon, Users2, Baby, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import clubFront from "@/assets/real/club-front.png";
 import clubReverse from "@/assets/real/club-reverse.png";
 import coworkView from "@/assets/real/cowork-view.png";
