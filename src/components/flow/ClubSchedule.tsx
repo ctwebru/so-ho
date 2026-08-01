@@ -89,18 +89,26 @@ const MetaRow = ({
     <div
       className={`mt-2 pt-2 border-t text-[11px] ${dark ? "border-border" : "border-current/15"}`}
     >
+      {/* Row 1: money icon + age */}
       <div className="flex items-center gap-1.5 flex-wrap">
-        <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
-          <Coins className="w-3 h-3" /> {price} ₽
+        <span
+          className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5"
+          title={price ? `${price} ₽` : undefined}
+        >
+          <Coins className="w-3 h-3" />
         </span>
-        {booking && (
-          <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5">
-            <ClipboardCheck className="w-3 h-3" /> по записи
-          </span>
-        )}
         {age && (
           <span className="inline-flex items-center rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
             {age}
+          </span>
+        )}
+      </div>
+
+      {/* Row 2: booking + capacity */}
+      <div className="flex items-center gap-1.5 flex-wrap mt-1.5">
+        {booking && (
+          <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5">
+            <ClipboardCheck className="w-3 h-3" /> по записи
           </span>
         )}
         <span className="inline-flex items-center gap-1 rounded-full border border-current/25 px-1.5 py-0.5 tabular-nums">
