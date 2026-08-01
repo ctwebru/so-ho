@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { CalendarDays, LayoutGrid, Rows3, CalendarRange, ChevronLeft, ChevronRight, Sparkles, Coins, ChevronRight as ChevronRightSm } from "lucide-react";
 import {
   HoverCard,
   HoverCardTrigger,
