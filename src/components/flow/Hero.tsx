@@ -29,12 +29,12 @@ const Hero = () => {
           </h1>
 
           <p className="mt-6 font-display text-2xl md:text-4xl text-primary-foreground/90 tracking-tight text-balance animate-fade-up" style={{ animationDelay: "0.15s" }}>
-            Кофейня, <span className="text-highlight">коворкинг</span> и соседский клуб — в одном зале
+            Кофейня, <span className="text-highlight">коворкинг</span> и соседский клуб — в одном пространстве
           </p>
 
           <p className="mt-8 text-lg md:text-xl text-primary-foreground/75 max-w-xl leading-relaxed animate-fade-up" style={{ animationDelay: "0.3s" }}>
-            Заходите просто за кофе, останьтесь поработать или проведите вечер с соседями.
-            Без записи и без членства — как в обычную кофейню.
+            Заходите за кофе, останьтесь поработать или проведите вечер с соседями.
+            Пространство с членством и арендой: оплата за место и время.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
