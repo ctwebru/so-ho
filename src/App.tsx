@@ -52,7 +52,11 @@ const App = () => (
             <Route path="/club" element={<Club />} />
             <Route path="/rent" element={<Rent />} />
 
+            <Route path="/about" element={<About />} />
+            <Route path="/cowork" element={<Cowork />} />
+
             <Route path="/auth" element={<Auth />} />
+
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="/app" element={<AppLayout />}>
               <Route index element={<Dashboard />} />
