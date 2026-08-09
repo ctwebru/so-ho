@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroImg from "@/assets/real/cowork-view.png";
-import { ArrowDown } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -39,22 +38,17 @@ const Hero = () => {
 
           <div className="mt-10 flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
             <Button variant="hero" size="xl" asChild>
-              <a href="#first-time">Я здесь впервые</a>
+              <Link to="/coffee">Кофейня</Link>
             </Button>
             <Button variant="glass" size="xl" asChild>
-              <Link to="/coffee">Меню кофейни</Link>
+              <Link to="/club">Соседский клуб</Link>
+            </Button>
+            <Button variant="glass" size="xl" asChild>
+              <Link to="/cowork">Коворкинг</Link>
             </Button>
           </div>
         </div>
 
-
-        <a
-          href="#sections"
-          className="hidden md:flex absolute bottom-10 right-10 w-14 h-14 rounded-full border border-background/30 items-center justify-center text-primary-foreground hover:bg-background/10 transition-colors"
-          aria-label="Прокрутить вниз"
-        >
-          <ArrowDown className="w-5 h-5 animate-bounce" />
-        </a>
 
       </div>
     </section>
