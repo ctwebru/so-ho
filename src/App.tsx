@@ -13,7 +13,10 @@ import Checkout from "./pages/Checkout.tsx";
 import QrMenu from "./pages/QrMenu.tsx";
 import Club from "./pages/Club.tsx";
 import Rent from "./pages/Rent.tsx";
+import About from "./pages/About.tsx";
+import Cowork from "./pages/Cowork.tsx";
 import NotFound from "./pages/NotFound.tsx";
+
 import AppLayout from "./layouts/AppLayout";
 import Dashboard from "./pages/app/Dashboard";
 import PlansPage from "./pages/app/PlansPage";
