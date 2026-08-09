@@ -21,31 +21,32 @@ const Hero = () => {
         <div className="max-w-4xl">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-background/10 backdrop-blur-md border border-background/20 text-primary-foreground/90 text-xs uppercase tracking-[0.25em] mb-8 animate-fade-in">
             <span className="w-1.5 h-1.5 rounded-full bg-highlight animate-pulse" />
-            Coffee · Work · Meet
+            Новосибирск · Дачное шоссе, 22/3 · 08:00—20:00
           </div>
 
-          <h1 className="font-display text-primary-foreground text-7xl md:text-9xl lg:text-[12rem] font-bold leading-[0.85] tracking-tight text-balance animate-fade-up">
+          <h1 className="font-display text-primary-foreground text-6xl md:text-8xl lg:text-[10rem] font-bold leading-[0.85] tracking-tight text-balance animate-fade-up">
             SO-HO<span className="text-highlight">!</span>
           </h1>
 
-          <p className="mt-6 font-display text-2xl md:text-4xl text-primary-foreground/90 tracking-tight animate-fade-up" style={{ animationDelay: "0.15s" }}>
-            <span className="text-highlight">Coffee.</span> Work. Meet.
+          <p className="mt-6 font-display text-2xl md:text-4xl text-primary-foreground/90 tracking-tight text-balance animate-fade-up" style={{ animationDelay: "0.15s" }}>
+            Кофейня, <span className="text-highlight">коворкинг</span> и соседский клуб — в одном зале
           </p>
 
           <p className="mt-8 text-lg md:text-xl text-primary-foreground/75 max-w-xl leading-relaxed animate-fade-up" style={{ animationDelay: "0.3s" }}>
-            Кофейня, коворкинг и соседский клуб под одной крышей.
-            Приходи за кофе — оставайся жить.
+            Заходите просто за кофе, останьтесь поработать или проведите вечер с соседями.
+            Без записи и без членства — как в обычную кофейню.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
             <Button variant="hero" size="xl" asChild>
-              <a href="#sections">Выбрать раздел</a>
+              <a href="#first-time">Я здесь впервые</a>
             </Button>
             <Button variant="glass" size="xl" asChild>
-              <Link to="/about">Узнать о SO-HO!</Link>
+              <Link to="/coffee">Меню кофейни</Link>
             </Button>
           </div>
         </div>
+
 
         <a
           href="#sections"
