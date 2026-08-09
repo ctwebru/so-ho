@@ -13,7 +13,10 @@ import Checkout from "./pages/Checkout.tsx";
 import QrMenu from "./pages/QrMenu.tsx";
 import Club from "./pages/Club.tsx";
 import Rent from "./pages/Rent.tsx";
+import About from "./pages/About.tsx";
+import Cowork from "./pages/Cowork.tsx";
 import NotFound from "./pages/NotFound.tsx";
+
 import AppLayout from "./layouts/AppLayout";
 import Dashboard from "./pages/app/Dashboard";
 import PlansPage from "./pages/app/PlansPage";
@@ -49,7 +52,11 @@ const App = () => (
             <Route path="/club" element={<Club />} />
             <Route path="/rent" element={<Rent />} />
 
+            <Route path="/about" element={<About />} />
+            <Route path="/cowork" element={<Cowork />} />
+
             <Route path="/auth" element={<Auth />} />
+
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="/app" element={<AppLayout />}>
               <Route index element={<Dashboard />} />

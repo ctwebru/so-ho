@@ -39,21 +39,22 @@ const Hero = () => {
 
           <div className="mt-10 flex flex-wrap gap-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
             <Button variant="hero" size="xl" asChild>
-              <Link to="/app">Открыть кабинет</Link>
+              <a href="#sections">Выбрать раздел</a>
             </Button>
             <Button variant="glass" size="xl" asChild>
-              <a href="#concept">Узнать о SO-HO!</a>
+              <Link to="/about">Узнать о SO-HO!</Link>
             </Button>
           </div>
         </div>
 
         <a
-          href="#concept"
+          href="#sections"
           className="hidden md:flex absolute bottom-10 right-10 w-14 h-14 rounded-full border border-background/30 items-center justify-center text-primary-foreground hover:bg-background/10 transition-colors"
           aria-label="Прокрутить вниз"
         >
           <ArrowDown className="w-5 h-5 animate-bounce" />
         </a>
+
       </div>
     </section>
   );

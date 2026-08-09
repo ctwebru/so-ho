@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import Logo from "./Logo";
 
 const links = [
-  { label: "Концепция", href: "/#concept" },
-  { label: "Кофе", href: "/coffee" },
-  { label: "Тарифы", href: "/#plans" },
-  { label: "Клуб", href: "/club" },
-  { label: "Афиша", href: "/#events-teaser" },
+  { label: "Кофейня", href: "/coffee" },
+  { label: "Соседский клуб", href: "/club" },
+  { label: "Коворкинг", href: "/cowork" },
+  { label: "Аренда", href: "/rent" },
+  { label: "О SO-HO!", href: "/about" },
   { label: "Контакты", href: "/#contact" },
 ];
+
 
 const Navigation = () => {
   const { pathname } = useLocation();
