@@ -9,34 +9,34 @@ const sections = [
     no: "01",
     to: "/coffee",
     eyebrow: "Кофейня",
-    title: "Кофе, который держит день",
-    desc: "Спешелти-зерно, сезонные напитки и десерты. Заказ онлайн — заберёшь у стойки или принесём к столу.",
+    title: "Кофейня",
+    desc: "Обычная кофейня, куда можно просто зайти: спешелти-кофе, сезонные напитки, десерты. Можно с собой или заказать онлайн.",
     meta: ["08:00 — 20:00", "заказ онлайн", "меню по QR"],
     img: coffeeImg,
     icon: Coffee,
-    cta: "Открыть кофейню",
+    cta: "Меню и заказ",
   },
   {
     no: "02",
     to: "/club",
     eyebrow: "Соседский клуб",
-    title: "Вечера, игры и соседи рядом",
-    desc: "Настолки, PS5, мастер-классы и мягкий фитнес. Приходи один или компанией — по членству или за день.",
+    title: "Соседский клуб",
+    desc: "Вечерняя жизнь того же зала: настолки, PS5, мастер-классы, фитнес. Приходить можно одному — за 150 ₽ в день или по членству.",
     meta: ["расписание занятий", "свободный клуб", "аренда зала"],
     img: clubImg,
     icon: Users,
-    cta: "В соседский клуб",
+    cta: "Расписание клуба",
   },
   {
     no: "03",
     to: "/cowork",
     eyebrow: "Коворкинг",
-    title: "Работа без дороги в центр",
-    desc: "15 мест, две skype-комнаты и тихая зона. Гибкие тарифы — от пары часов до закреплённого стола.",
+    title: "Коворкинг",
+    desc: "Рабочие места в двух шагах от дома: 15 столов, две skype-комнаты, тихая зона. Оплата по времени, от пары часов.",
     meta: ["15 мест", "2 skype-комнаты", "тарифы от 2 часов"],
     img: coworkImg,
     icon: Laptop,
-    cta: "О коворкинге",
+    cta: "Тарифы коворкинга",
   },
 ];
 
@@ -44,9 +44,9 @@ const HubSections = () => {
   return (
     <section id="sections" className="py-20 md:py-32 container mx-auto px-6">
       <div className="mb-12 md:mb-16 max-w-2xl">
-        <p className="text-xs uppercase tracking-widest text-accent font-medium mb-4">/ Три пространства</p>
+        <p className="text-xs uppercase tracking-widest text-accent font-medium mb-4">/ Разделы</p>
         <h2 className="font-display text-4xl md:text-6xl font-semibold leading-tight text-balance">
-          Выбери, зачем ты <span className="italic font-normal text-accent">сегодня здесь</span>
+          Три формата <span className="italic font-normal text-accent">одного места</span>
         </h2>
       </div>
 
