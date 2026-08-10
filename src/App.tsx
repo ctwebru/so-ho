@@ -15,6 +15,7 @@ import Club from "./pages/Club.tsx";
 import Rent from "./pages/Rent.tsx";
 import About from "./pages/About.tsx";
 import Cowork from "./pages/Cowork.tsx";
+import Police from "./pages/Police.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 import AppLayout from "./layouts/AppLayout";
@@ -54,6 +55,7 @@ const App = () => (
 
             <Route path="/about" element={<About />} />
             <Route path="/cowork" element={<Cowork />} />
+            <Route path="/police" element={<Police />} />
 
             <Route path="/auth" element={<Auth />} />
 
